@@ -26,6 +26,8 @@
     "@angular/platform-browser": "~8.2.14",
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
+    "@ngxs/store": "^3.6.2",
+    "@types/jquery": "^3.5.0",
     "angular-notifier": "^6.0.1",
     "animate.css": "^4.1.0",
     "bootstrap": "^4.5.0",
