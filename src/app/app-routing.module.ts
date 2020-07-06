@@ -1,16 +1,24 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import {PreloadAllModules, RouterModule, Routes} from '@angular/router';
+import {UnauthorizedGuard} from './guards/unauthorized/unauthorized.guard';
+import {SessionGuard} from './guards/session/session.guard';
 
-const routes: Routes = [{
-  path: '',
-  loadChildren: './login/login.module#LoginModule'
-} ];
+const routes: Routes = [
+  {
+    path: '',
+    loadChildren: './components/layout/layout.module#LayoutModule',
+    canActivate: [UnauthorizedGuard]
+  },
+  {
+    path: 'login',
+    loadChildren: './components/login/login.module#LoginModule',
+    canActivate: [SessionGuard]
+  }
+];
 
 @NgModule({
   declarations: [],
   imports: [
-    CommonModule,
     RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
   ],
   exports: [RouterModule]
