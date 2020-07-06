@@ -1,0 +1,46 @@
+<body class="pace-done" [ngClass]="{'mini-navbar':miniNavBar}">
+  <nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse ">
+      <ul class="nav metismenu" id="side-menu">
+        <li class="nav-header">
+          <div class="dropdown profile-element">
+            <img alt="image" class="profile-image rounded-circle" src="assets/images/profile.png"/>
+            <a data-toggle="dropdown" class="dropdown-toggle" href>
+              <span class="block m-t-xs font-bold">{{ 'Invitado' }}</span>
+              <span class="text-muted text-xs block">{{ 'Administrador' }} <b class="caret"></b></span>
+            </a>
+            <ul class="dropdown-menu animated fadeInRight m-t-xs">
+              <li class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="javascript:void(0)" (click)="logout()">Logout</a></li>
+            </ul>
+          </div>
+          <div class="logo-element">
+            MERAK
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div id="page-wrapper" class="gray-bg">
+    <div class="row border-bottom">
+      <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+          <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" href="javascript:void(0)" (click)="collapseNavBar()"><i class="fa fa-bars"></i> </a>
+        </div>
+        <ul class="nav navbar-top-links navbar-right">
+          <li>
+            <span class="m-r-sm text-muted welcome-message">Bienvenido a Merak Inventario.</span>
+          </li>
+          <li>
+            <a (click)="logout()" href="javascript:void(0)">
+              <i class="fa fa-sign-out" (click)="logout()"></i> Log out
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <ng-content select=".body"></ng-content>
+    <ng-content select=".body"></ng-content>
+  </div>
+</body>
+
