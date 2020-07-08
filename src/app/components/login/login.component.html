@@ -6,11 +6,10 @@
       <form class="m-t" form [formGroup]="LoginForm">
         <div class="form-group">
           <label class="col-sm-12 col-form-label">
-            <input type="email" class="form-control" formControlName="email" placeholder="Correo Electrónico" required="true"
-                   [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
-            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
-              <div *ngIf="f.email.errors.required">Email es Requerido</div>
-              <div *ngIf="f.email.errors.email">Email Debe Tener una Dirección Válida</div>
+            <input class="form-control" formControlName="username" placeholder="Username" required="true"
+                   [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+            <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+              <div *ngIf="f.username.errors.required">Username es Requerido</div>
             </div>
           </label>
         </div>
