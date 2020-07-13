@@ -5,7 +5,6 @@ import { LoginComponent } from './login.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatProgressSpinnerModule} from '@angular/material';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
-import {NotifierModule} from 'angular-notifier';
 import {UserService} from '../../services/user/user.service';
 
 
@@ -18,22 +17,7 @@ import {UserService} from '../../services/user/user.service';
     ReactiveFormsModule,
     LoginRoutingModule,
     MatProgressSpinnerModule,
-    HttpClientModule,
-    NotifierModule.withConfig({
-      position: {
-        vertical: {
-          position: 'top',
-          distance: 20,
-        },
-        horizontal: {
-          position: 'middle'
-        }
-      },
-      behaviour: {
-        onClick: 'hide',
-        autoHide: 15000,
-      }
-    })
+    HttpClientModule
   ],
   providers : [UserService]
 })
