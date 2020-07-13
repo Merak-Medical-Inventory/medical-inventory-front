@@ -9,6 +9,9 @@ import {Router} from '@angular/router';
 })
 export class SidebarComponent implements OnInit {
 
+  public ariaExpanded =  {
+    categories: false
+  };
   public isAuthenticated = false;
   public miniNavBar: boolean;
 
@@ -17,6 +20,17 @@ export class SidebarComponent implements OnInit {
   ngOnInit() {
     this.isAuthenticated = Boolean(localStorage.getItem('isAuthenticated'));
     setTimeout(() => $('#side-menu').metisMenu(), 0);
+  }
+
+  changeAriaExpanded(type: string) {
+    switch (type) {
+      case 'categories':
+        this.ariaExpanded.categories = !this.ariaExpanded.categories;
+        break;
+      default: for (let value of Object.values(this.ariaExpanded) ) {
+        value = false;
+      }
+    }
   }
 
   collapseNavBar() {

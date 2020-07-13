@@ -13,6 +13,7 @@ import {LayoutRoutingModule} from './layout-routing.module';
   imports: [
     CommonModule,
     LayoutRoutingModule
-  ]
+  ],
+  exports: [SidebarComponent]
 })
 export class LayoutModule { }
