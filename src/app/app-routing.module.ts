@@ -13,6 +13,11 @@ const routes: Routes = [
     path: 'login',
     loadChildren: './components/login/login.module#LoginModule',
     canActivate: [SessionGuard]
+  },
+  {
+    path: 'categories',
+    loadChildren: './components/categories/categories.module#CategoriesModule',
+    canActivate: [UnauthorizedGuard]
   }
 ];
 
