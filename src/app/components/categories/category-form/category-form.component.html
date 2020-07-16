@@ -35,8 +35,8 @@
                            placeholder="Nombre"
                            [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
                     <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
-                      <div *ngIf="f.name.errors.required">El nombre de la categoría es requerido
-                      </div>
+                      <div *ngIf="f.name.errors.required; else maxLength">El Nombre es Requerido</div>
+                      <ng-template #maxLength>El Nombre no Debe Exceder a 20 Caracteres</ng-template>
                     </div>
                   </label>
                 </div>
@@ -48,8 +48,8 @@
                            placeholder="Descripción"
                            [ngClass]="{ 'is-invalid': submitted && f.description.errors }">
                     <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
-                      <div *ngIf="f.description.errors.required">La descripción de la categoría es requerida
-                      </div>
+                      <div *ngIf="f.description.errors.required; else maxLength">La Descripción es Requerida</div>
+                      <ng-template #maxLength>La Descripción no Debe Exceder a 40 Caracteres</ng-template>
                     </div>
                   </label>
                 </div>

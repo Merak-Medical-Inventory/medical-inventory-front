@@ -8,6 +8,7 @@ import {FilterTablePipe} from '../../pipes/filter-table.pipe';
 import {MatPaginatorModule, MatProgressSpinnerModule} from '@angular/material';
 import {LayoutModule} from '../layout/layout.module';
 import { CategoryFormComponent } from './category-form/category-form.component';
+import {CategoryService} from '../../services/category/category.service';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import { CategoryFormComponent } from './category-form/category-form.component';
     MatPaginatorModule,
     LayoutModule,
     ReactiveFormsModule
-  ]
+  ],
+  providers: [CategoryService]
 })
 export class CategoriesModule { }

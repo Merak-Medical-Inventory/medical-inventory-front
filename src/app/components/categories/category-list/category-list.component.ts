@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Category} from '../../../entities/category';
+import {CategoryService} from '../../../services/category/category.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-category-list',
@@ -11,10 +13,23 @@ export class CategoryListComponent implements OnInit {
   search = '';
   isLoading = true;
 
-  constructor() { }
+  constructor(private service: CategoryService) { }
 
   ngOnInit() {
-    this.isLoading = false;
+    this.service.getCategories()
+      .subscribe(response => {
+        this.isLoading = false;
+        this.categories = response.body['data'];
+      }, error => {
+        this.isLoading = false;
+        console.log(error.error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al Obtener las Categorías',
+          text: 'Intente más Tarde',
+          confirmButtonColor: '#1ab394'
+        });
+      });
   }
 
 }
