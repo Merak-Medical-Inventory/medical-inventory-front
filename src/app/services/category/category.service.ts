@@ -11,22 +11,22 @@ export class CategoryService {
   constructor(private http: HttpClient) { }
 
   getCategories() {
-    return this.http.get(`${environment.baseUrl}category`, {observe: 'response'});
+    return this.http.get(`${environment.inventoryServiceUrl}category`, {observe: 'response'});
   }
 
   getCategoryById(id: number) {
-    return this.http.get(`${environment.baseUrl}category/${id}`, {observe: 'response'});
+    return this.http.get(`${environment.inventoryServiceUrl}category/${id}`, {observe: 'response'});
   }
 
   postCategory(body: PostCategory) {
-    return this.http.post(`${environment.baseUrl}category`, body, {observe: 'response'});
+    return this.http.post(`${environment.inventoryServiceUrl}category`, body, {observe: 'response'});
   }
 
   updateCategory(body: PostCategory, id: number) {
-    return this.http.put(`${environment.baseUrl}category/${id}`, {observe: 'response'});
+    return this.http.put(`${environment.inventoryServiceUrl}category/${id}`, {observe: 'response'});
   }
 
   deleteCategory(id: number) {
-    return this.http.delete(`${environment.baseUrl}category/${id}`, {observe: 'response'});
+    return this.http.delete(`${environment.inventoryServiceUrl}category/${id}`, {observe: 'response'});
   }
 }

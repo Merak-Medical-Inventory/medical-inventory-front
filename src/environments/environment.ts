@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'http://localhost:3001/api/'
+  authServiceUrl: 'http://localhost:3001/api/',
+  inventoryServiceUrl: 'http://localhost:3002/api/'
 };
 
 /*

@@ -11,22 +11,22 @@ export class DepartmentService {
   constructor(private http: HttpClient) { }
 
   getDepartments() {
-    return this.http.get(`${environment.baseUrl}department`, {observe: 'response'});
+    return this.http.get(`${environment.authServiceUrl}department`, {observe: 'response'});
   }
 
   getDepartmentById(id: number) {
-    return this.http.get(`${environment.baseUrl}department/${id}`, {observe: 'response'});
+    return this.http.get(`${environment.authServiceUrl}department/${id}`, {observe: 'response'});
   }
 
   postDepartment(body: PostDepartment) {
-    return this.http.post(`${environment.baseUrl}department`, body, {observe: 'response'});
+    return this.http.post(`${environment.authServiceUrl}department`, body, {observe: 'response'});
   }
 
   updateDepartment(body: PostDepartment, id: number) {
-    return this.http.put(`${environment.baseUrl}department/${id}`, {observe: 'response'});
+    return this.http.put(`${environment.authServiceUrl}department/${id}`, {observe: 'response'});
   }
 
   deleteDepartment(id: number) {
-    return this.http.delete(`${environment.baseUrl}department/${id}`, {observe: 'response'});
+    return this.http.delete(`${environment.authServiceUrl}department/${id}`, {observe: 'response'});
   }
 }
