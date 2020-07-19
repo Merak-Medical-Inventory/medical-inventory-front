@@ -21,4 +21,12 @@ export class CategoryService {
   postCategory(body: PostCategory) {
     return this.http.post(`${environment.baseUrl}category`, body, {observe: 'response'});
   }
+
+  updateCategory(body: PostCategory, id: number) {
+    return this.http.put(`${environment.baseUrl}category/${id}`, {observe: 'response'});
+  }
+
+  deleteCategory(id: number) {
+    return this.http.delete(`${environment.baseUrl}category/${id}`, {observe: 'response'});
+  }
 }
