@@ -39,20 +39,22 @@
                 <table class="table table-striped">
                   <thead>
                   <tr>
-                    <th>Código</th>
                     <th>Nombre</th>
                     <th>Descripción</th>
                   </tr>
                   </thead>
                   <tbody>
                   <tr *ngFor="let category of (categories | filterTable:search)">
-                    <td><a href="">{{ category.id }}</a></td>
                     <td>{{ category.name }}</td>
                     <td>{{ category.description }}</td>
                     <td>
                       <a routerLink="/"
                          class="btn btn-sm btn-outline-warning">
                         <span class="fa fa-pencil"></span>
+                      </a>
+                      <a routerLink="/"
+                         class="btn btn-sm btn-outline-warning">
+                        <span class="fa fa-trash"></span>
                       </a>
                     </td>
                   </tr>
