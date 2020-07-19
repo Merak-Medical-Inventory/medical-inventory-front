@@ -18,13 +18,22 @@
             MERAK
           </div>
         </li>
-        <li [ngClass]="{'mm-active border-left-green':ariaExpanded.categories}"
-            (click)="changeAriaExpanded('categories')">
-          <a aria-expanded="ariaExpanded.project"><i class="fa fa-th-large"></i> <span
+        <li [ngClass]="{'mm-active border-left-green':ariaExpanded.items}"
+            (click)="changeAriaExpanded('items')">
+          <a aria-expanded="ariaExpanded.items"><i class="fa fa-th-large"></i> <span
             class="nav-label">Insumos</span> <span
             class="fa arrow"></span></a>
           <ul class="nav nav-second-level mm-collapse">
             <li><a [routerLink]="'/categories'">Categorías</a></li>
+          </ul>
+        </li>
+        <li [ngClass]="{'mm-active border-left-green':ariaExpanded.departments}"
+            (click)="changeAriaExpanded('departments')">
+          <a aria-expanded="ariaExpanded.departments"><i class="fa fa-th-large"></i> <span
+            class="nav-label">Departamentos</span> <span
+            class="fa arrow"></span></a>
+          <ul class="nav nav-second-level mm-collapse">
+            <li><a [routerLink]="'/departments'">Datos de los Departamentos</a></li>
           </ul>
         </li>
       </ul>

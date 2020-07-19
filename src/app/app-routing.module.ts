@@ -2,11 +2,12 @@ import { NgModule } from '@angular/core';
 import {PreloadAllModules, RouterModule, Routes} from '@angular/router';
 import {UnauthorizedGuard} from './guards/unauthorized/unauthorized.guard';
 import {SessionGuard} from './guards/session/session.guard';
+import {DepartmentsModule} from './components/departments/departments.module';
 
 const routes: Routes = [
   {
     path: '',
-    loadChildren: './components/layout/layout.module#LayoutModule',
+    loadChildren: './components/categories/categories.module#CategoriesModule',
     canActivate: [UnauthorizedGuard]
   },
   {
@@ -17,6 +18,11 @@ const routes: Routes = [
   {
     path: 'categories',
     loadChildren: './components/categories/categories.module#CategoriesModule',
+    canActivate: [UnauthorizedGuard]
+  },
+  {
+    path: 'departments',
+    loadChildren: './components/departments/departments.module#DepartmentsModule',
     canActivate: [UnauthorizedGuard]
   }
 ];

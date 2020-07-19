@@ -11,7 +11,8 @@ import {User} from '../../../entities/user';
 export class SidebarComponent implements OnInit {
 
   public ariaExpanded =  {
-    categories: false
+    items: false,
+    departments: false
   };
   public isAuthenticated = false;
   public miniNavBar: boolean;
@@ -27,8 +28,8 @@ export class SidebarComponent implements OnInit {
 
   changeAriaExpanded(type: string) {
     switch (type) {
-      case 'categories':
-        this.ariaExpanded.categories = !this.ariaExpanded.categories;
+      case 'items':
+        this.ariaExpanded.items = !this.ariaExpanded.items;
         break;
       default: for (let value of Object.values(this.ariaExpanded) ) {
         value = false;

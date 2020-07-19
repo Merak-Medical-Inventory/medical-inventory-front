@@ -1,0 +1,81 @@
+<app-sidebar>
+  <ng-container class="body">
+    <div class="row wrapper border-bottom white-bg page-heading">
+      <div class="col-lg-10">
+        <h2>Departamentos</h2>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="">Home</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a routerLink="/departments">Departamentos</a>
+          </li>
+          <li *ngIf="!edit" class="breadcrumb-item active">
+            <strong>Agregar</strong>
+          </li>
+          <li *ngIf="edit" class="breadcrumb-item active">
+            <strong>Editar</strong>
+          </li>
+        </ol>
+      </div>
+      <div class="col-lg-2">
+      </div>
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight">
+      <div class="ibox">
+        <div class="ibox-content">
+          <form [formGroup]="departmentForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <label class="col-sm-12 col-form-label">Código
+                    <input type="text"
+                           formControlName="code"
+                           class="form-control"
+                           placeholder="Código"
+                           [ngClass]="{ 'is-invalid': submitted && f.code.errors }">
+                    <div *ngIf="submitted && f.code.errors" class="invalid-feedback">
+                      <div *ngIf="f.code.errors.required; else maxLength">El Código es Requerido</div>
+                      <ng-template #maxLength>El Código no Debe Exceder a 20 Caracteres</ng-template>
+                    </div>
+                  </label>
+                  <label class="col-sm-12 col-form-label">Nombre
+                    <input type="text"
+                           formControlName="name"
+                           class="form-control"
+                           placeholder="Nombre"
+                           [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
+                    <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                      <div *ngIf="f.name.errors.required; else maxLength">El Nombre es Requerido</div>
+                      <ng-template #maxLength>El Nombre no Debe Exceder a 20 Caracteres</ng-template>
+                    </div>
+                  </label>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-12 col-form-label">Descripción
+                    <input type="text"
+                           formControlName="description"
+                           class="form-control"
+                           placeholder="Descripción"
+                           [ngClass]="{ 'is-invalid': submitted && f.description.errors }">
+                    <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+                      <div *ngIf="f.description.errors.required; else maxLength">La Descripción es Requerida</div>
+                      <ng-template #maxLength>La Descripción no Debe Exceder a 40 Caracteres</ng-template>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group row">
+              <div class="col-sm-11"></div>
+              <div class="form-group">
+                <button class="btn btn-primary btn-sm" [disabled]="buttonDisabled" type="submit">Guardar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</app-sidebar>
