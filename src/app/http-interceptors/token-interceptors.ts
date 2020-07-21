@@ -8,7 +8,6 @@ export class TokenInterceptor implements HttpInterceptor {
 
   private router: Router;
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log('Intercepting');
     const token = localStorage.getItem('token');
     if (token != null) {
       const modifiedReq = req.clone({
