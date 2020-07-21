@@ -13,6 +13,11 @@ const routes: Routes = [{
     path: 'add',
     component: CategoryFormComponent,
     canActivate: [UnauthorizedGuard]
+  },
+  {
+    path: 'edit/:categoryId',
+    component: CategoryFormComponent,
+    canActivate: [UnauthorizedGuard]
   }];
 
 @NgModule({

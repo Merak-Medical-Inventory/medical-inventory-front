@@ -8,9 +8,14 @@ import {DepartmentFormComponent} from './department-form/department-form.compone
 const routes: Routes = [{
   path: '',
   component: DepartmentListComponent
-},
+  },
   {
     path: 'add',
+    component: DepartmentFormComponent,
+    canActivate: [UnauthorizedGuard]
+  },
+  {
+    path: 'edit/:departmentId',
     component: DepartmentFormComponent,
     canActivate: [UnauthorizedGuard]
   }];
