@@ -10,10 +10,10 @@
           <li class="breadcrumb-item">
             <a routerLink="/departments">Departamentos</a>
           </li>
-          <li *ngIf="!edit" class="breadcrumb-item active">
+          <li *ngIf="!this.departmentId" class="breadcrumb-item active">
             <strong>Agregar</strong>
           </li>
-          <li *ngIf="edit" class="breadcrumb-item active">
+          <li *ngIf="this.departmentId" class="breadcrumb-item active">
             <strong>Editar</strong>
           </li>
         </ol>
@@ -39,6 +39,8 @@
                       <ng-template #maxLength>El Código no Debe Exceder a 20 Caracteres</ng-template>
                     </div>
                   </label>
+                </div>
+                <div class="form-group row">
                   <label class="col-sm-12 col-form-label">Nombre
                     <input type="text"
                            formControlName="name"

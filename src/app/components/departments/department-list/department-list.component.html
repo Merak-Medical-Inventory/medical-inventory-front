@@ -50,11 +50,11 @@
                     <td>{{ department.name }}</td>
                     <td>{{ department.description }}</td>
                     <td>
-                      <a routerLink="/"
+                      <a [routerLink]="['/departments/edit', department.id]"
                          class="btn btn-sm btn-outline-warning">
                         <span class="fa fa-pencil"></span>
                       </a>
-                      <a routerLink="/"
+                      <a (click)="onDelete(department.id)"
                          class="btn btn-sm btn-outline-warning">
                         <span class="fa fa-trash"></span>
                       </a>

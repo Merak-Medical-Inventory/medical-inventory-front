@@ -23,7 +23,7 @@ export class DepartmentService {
   }
 
   updateDepartment(body: PostDepartment, id: number) {
-    return this.http.put(`${environment.authServiceUrl}department/${id}`, {observe: 'response'});
+    return this.http.put(`${environment.authServiceUrl}department/${id}`, body,{observe: 'response'});
   }
 
   deleteDepartment(id: number) {
