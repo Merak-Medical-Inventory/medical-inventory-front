@@ -23,7 +23,7 @@ export class CategoryService {
   }
 
   updateCategory(body: PostCategory, id: number) {
-    return this.http.put(`${environment.inventoryServiceUrl}category/${id}`, {observe: 'response'});
+    return this.http.put(`${environment.inventoryServiceUrl}category/${id}`, body, {observe: 'response'});
   }
 
   deleteCategory(id: number) {

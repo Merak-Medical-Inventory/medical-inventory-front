@@ -8,12 +8,12 @@
             <a href="">Home</a>
           </li>
           <li class="breadcrumb-item">
-            <a routerLink="/categories">Categories</a>
+            <a routerLink="/categories">Categorías</a>
           </li>
-          <li *ngIf="!edit" class="breadcrumb-item active">
+          <li *ngIf="!this.categoryId" class="breadcrumb-item active">
             <strong>Agregar</strong>
           </li>
-          <li *ngIf="edit" class="breadcrumb-item active">
+          <li *ngIf="this.categoryId" class="breadcrumb-item active">
             <strong>Editar</strong>
           </li>
         </ol>

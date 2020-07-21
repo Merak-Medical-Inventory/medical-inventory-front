@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import Swal from 'sweetalert2';
-import {PostCategory} from '../../../entities/category';
+import {Category, PostCategory} from '../../../entities/category';
 import {CategoryService} from '../../../services/category/category.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-category-form',
@@ -20,10 +20,22 @@ export class CategoryFormComponent implements OnInit {
   submitted = false;
   buttonDisabled = false;
   isLoading = true;
+  category: Category;
 
-  constructor(private categoryService: CategoryService, private router: Router) { }
+  constructor(private service: CategoryService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.route.params.subscribe(params => {
+      this.categoryId = parseInt(params.categoryId, 0);
+    });
+    if (this.categoryId) {
+      this.service.getCategoryById(this.categoryId).subscribe(response => {
+        this.category = response.body['data'];
+        console.log(response);
+        this.f.name.setValue(this.category.name);
+        this.f.description.setValue(this.category.description);
+      });
+    }
     this.isLoading = false;
   }
 
@@ -42,25 +54,49 @@ export class CategoryFormComponent implements OnInit {
       description: this.categoryForm.value.description
     };
     console.log(body);
-    this.categoryService.postCategory(body)
-      .subscribe( response => {
-         this.router.navigate(['/categories']).then(result =>
-           Swal.fire({
-             position: 'top-end',
-             icon: 'success',
-             title: 'La Categoría se ha Agregado Exitosamente',
-             showConfirmButton: false,
-             timer: 1500
-           })
-         );
-      }, error => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error al Agregar Categoría',
-          text: 'Intente Nuevamente',
-          confirmButtonColor: '#1ab394'
+    if (!this.categoryId) {
+      this.service.postCategory(body)
+        .subscribe(response => {
+          this.router.navigate(['/categories']).then(result =>
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'La Categoría se ha Agregado Exitosamente',
+              showConfirmButton: false,
+              timer: 1500
+            })
+          );
+        }, error => {
+          this.buttonDisabled = false;
+          Swal.fire({
+            icon: 'error',
+            title: 'Error al Agregar Categoría',
+            text: 'Intente Nuevamente',
+            confirmButtonColor: '#1ab394'
+          });
         });
-      });
+    } else {
+      this.service.updateCategory(body, this.categoryId)
+        .subscribe(response => {
+          this.router.navigate(['/categories']).then(result =>
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'La Categoría se ha Editado Exitosamente',
+              showConfirmButton: false,
+              timer: 1500
+            })
+          );
+        }, error => {
+          this.buttonDisabled = false;
+          Swal.fire({
+            icon: 'error',
+            title: 'Error al Editar la Categoría',
+            text: 'Intente Nuevamente',
+            confirmButtonColor: '#1ab394'
+          });
+        });
+    }
   }
 
 }
