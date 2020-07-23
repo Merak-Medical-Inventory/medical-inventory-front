@@ -2,6 +2,11 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700");
 @import url("https://fonts.googleapis.com/css?family=Roboto:400,300,500,700");
 
+:host ::ng-deep .mat-progress-spinner circle, .mat-spinner circle {
+  stroke: #1ab394;
+  margin: 0 auto;
+}
+
 .glyphicon {
   position: relative;
   top: 1px;
