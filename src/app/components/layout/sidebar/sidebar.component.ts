@@ -30,6 +30,11 @@ export class SidebarComponent implements OnInit {
     switch (type) {
       case 'items':
         this.ariaExpanded.items = !this.ariaExpanded.items;
+        this.ariaExpanded.departments = false;
+        break;
+      case 'departments':
+        this.ariaExpanded.departments = !this.ariaExpanded.departments;
+        this.ariaExpanded.items = false;
         break;
       default: for (let value of Object.values(this.ariaExpanded) ) {
         value = false;

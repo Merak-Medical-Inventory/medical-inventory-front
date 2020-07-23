@@ -1,0 +1,95 @@
+<app-sidebar>
+  <ng-container class="body">
+    <div class="row wrapper border-bottom white-bg page-heading">
+      <div class="col-lg-10">
+        <h2>Presentaciones</h2>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="">Home</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a routerLink="/presentations">Presentaciones</a>
+          </li>
+          <li *ngIf="!this.presentationId" class="breadcrumb-item active">
+            <strong>Agregar</strong>
+          </li>
+          <li *ngIf="this.presentationId" class="breadcrumb-item active">
+            <strong>Editar</strong>
+          </li>
+        </ol>
+      </div>
+      <div class="col-lg-2">
+      </div>
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight">
+      <div class="ibox">
+        <div class="ibox-content">
+          <form [formGroup]="presentationForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group row">
+                  <label class="col-sm-12 col-form-label">Nombre
+                    <input type="text"
+                           formControlName="name"
+                           class="form-control"
+                           placeholder="Nombre"
+                           [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
+                    <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                      <div *ngIf="f.name.errors.required; else maxLength">El Nombre es Requerido</div>
+                      <ng-template #maxLength>El Nombre no Debe Exceder a 20 Caracteres</ng-template>
+                    </div>
+                  </label>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-12 col-form-label">Cantidad
+                    <input type="number"
+                           formControlName="quantity"
+                           class="form-control"
+                           placeholder="Cantidad"
+                           [ngClass]="{ 'is-invalid': submitted && f.quantity.errors }">
+                    <div *ngIf="submitted && f.quantity.errors" class="invalid-feedback">
+                      <div *ngIf="f.quantity.errors.required">La Cantidad es Requerida</div>
+                    </div>
+                  </label>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-12 col-form-label">Unidad de Medida
+                    <input type="text"
+                           formControlName="measure"
+                           class="form-control"
+                           placeholder="Unidad de Medida"
+                           [ngClass]="{ 'is-invalid': submitted && f.measure.errors }">
+                    <div *ngIf="submitted && f.measure.errors" class="invalid-feedback">
+                      <div *ngIf="f.measure.errors.required; else maxLength">La Unidad de Medida es Requerida</div>
+                      <ng-template #maxLength>La Unidad de Medida no Debe Exceder a 20 Caracteres</ng-template>
+                    </div>
+                  </label>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-12 col-form-label">Valor Unidad de Medida
+                    <input type="number"
+                           step="any"
+                           formControlName="measure_value"
+                           class="form-control"
+                           placeholder="Valor de la Unidad de Medida"
+                           [ngClass]="{ 'is-invalid': submitted && f.measure_value.errors }">
+                    <div *ngIf="submitted && f.measure_value.errors" class="invalid-feedback">
+                      <div *ngIf="f.measure_value.errors.required">El Valor es Requerido</div>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group row">
+              <div class="col-sm-11"></div>
+              <div class="form-group">
+                <button class="btn btn-primary btn-sm" [disabled]="buttonDisabled" type="submit">Guardar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</app-sidebar>

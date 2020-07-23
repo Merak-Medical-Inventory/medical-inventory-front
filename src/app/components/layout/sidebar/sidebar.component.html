@@ -26,6 +26,9 @@
           <ul class="nav nav-second-level mm-collapse">
             <li><a [routerLink]="'/categories'">Categorías</a></li>
           </ul>
+          <ul class="nav nav-second-level mm-collapse">
+            <li><a [routerLink]="'/presentations'">Presentaciones</a></li>
+          </ul>
         </li>
         <li [ngClass]="{'mm-active border-left-green':ariaExpanded.departments}"
             (click)="changeAriaExpanded('departments')">
