@@ -28,7 +28,13 @@ const routes: Routes = [
     path: 'presentations',
     loadChildren: './components/presentations/presentations.module#PresentationsModule',
     canActivate: [UnauthorizedGuard]
+  },
+  {
+    path: 'brands',
+    loadChildren: './components/brands/brands.module#BrandsModule',
+    canActivate: [UnauthorizedGuard]
   }
+
 ];
 
 @NgModule({
