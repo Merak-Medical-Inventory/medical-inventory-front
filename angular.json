@@ -29,6 +29,7 @@
               "node_modules/metismenu/dist/metisMenu.css",
               "node_modules/animate.css/animate.css",
               "node_modules/font-awesome/css/font-awesome.css",
+              "node_modules/select2/dist/css/select2.min.css",
               "src/styles.css"
             ],
             "scripts": [
@@ -36,6 +37,7 @@
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.min.js",
               "node_modules/metismenu/dist/metisMenu.js",
+              "node_modules/select2/dist/js/select2.min.js",
               "src/assets/js/inspinia.js"
             ]
           },

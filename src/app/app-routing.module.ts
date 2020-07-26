@@ -33,8 +33,12 @@ const routes: Routes = [
     path: 'brands',
     loadChildren: './components/brands/brands.module#BrandsModule',
     canActivate: [UnauthorizedGuard]
+  },
+  {
+    path: 'items',
+    loadChildren: './components/items/items.module#ItemsModule',
+    canActivate: [UnauthorizedGuard]
   }
-
 ];
 
 @NgModule({
