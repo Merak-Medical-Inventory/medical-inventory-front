@@ -13,4 +13,8 @@ export class UserService {
   postLogin(body: UserLogin) {
     return this.http.post(`${environment.authServiceUrl}auth/login`, body, {observe: 'response'});
   }
+
+  getAllUsers() {
+    return this.http.get(`${environment.authServiceUrl}/user`,{observe : 'response'});
+  }
 }

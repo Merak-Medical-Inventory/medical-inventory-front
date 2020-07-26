@@ -15,6 +15,11 @@ const routes: Routes = [
     canActivate: [SessionGuard]
   },
   {
+    path: 'users',
+    loadChildren: './components/users/users.module#UsersModule',
+    canActivate: [UnauthorizedGuard]
+  },
+  {
     path: 'categories',
     loadChildren: './components/categories/categories.module#CategoriesModule',
     canActivate: [UnauthorizedGuard]
