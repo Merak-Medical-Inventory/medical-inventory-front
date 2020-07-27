@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {UserLogin} from '../../entities/user';
+import {UserLogin, PostUser} from '../../entities/user';
 import {environment} from '../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 
@@ -15,6 +15,18 @@ export class UserService {
   }
 
   getAllUsers() {
-    return this.http.get(`${environment.authServiceUrl}/user`,{observe : 'response'});
+    return this.http.get(`${environment.authServiceUrl}user`,{observe : 'response'});
+  }
+
+  getUserById(id: number) {
+    return this.http.get(`${environment.authServiceUrl}user/${id}`,{observe : 'response'});
+  }
+
+  postUser(user: PostUser) {
+    return this.http.post(`${environment.authServiceUrl}user`,user,{observe : 'response'});
+  }
+
+  putUser(id: number,user: PostUser) {
+    return this.http.put(`${environment.authServiceUrl}user/${id}`,user,{observe : 'response'});
   }
 }

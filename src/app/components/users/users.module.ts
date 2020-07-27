@@ -7,10 +7,13 @@ import { LayoutModule } from '../layout/layout.module';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule, MatPaginatorModule } from '@angular/material';
 import { UserService } from 'src/app/services/user/user.service';
+import { NgSelect2Module } from 'ng-select2';
+import { RolService } from 'src/app/services/rol/rol.service';
+import { UsersFormComponent } from './users-form/users-form.component';
 
 
 @NgModule({
-  declarations: [UsersListComponent],
+  declarations: [UsersListComponent,UsersFormComponent],
   imports: [
     CommonModule,
     UsersRoutingModule,
@@ -18,8 +21,10 @@ import { UserService } from 'src/app/services/user/user.service';
     ReactiveFormsModule,
     FormsModule,
     MatProgressSpinnerModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    ReactiveFormsModule,
+    NgSelect2Module
   ],
-  providers: [UserService]
+  providers: [UserService,RolService]
 })
 export class UsersModule { }

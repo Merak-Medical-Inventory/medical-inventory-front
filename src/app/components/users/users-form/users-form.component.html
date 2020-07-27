@@ -1,0 +1,120 @@
+<app-sidebar>
+    <ng-container class="body">
+      <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-10">
+          <h2>Usuarios</h2>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a routerLink="/items">Usuarios</a>
+            </li>
+            <li *ngIf="!this.UserId" class="breadcrumb-item active">
+              <strong>Agregar</strong>
+            </li>
+            <li *ngIf="this.UserId" class="breadcrumb-item active">
+              <strong>Editar</strong>
+            </li>
+          </ol>
+        </div>
+        <div class="col-lg-2">
+        </div>
+      </div>
+      <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="ibox">
+          <div class="ibox-content">
+            <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group row align-items-center">
+                    <label class="col-sm-12 col-form-label">Nombre de usuario
+                      <input type="text"
+                             formControlName="username"
+                             class="form-control"
+                             placeholder="Nombre de usuario"
+                             [ngClass]="{ 'is-invalid': submitted && f.username.errors }">
+                      <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+                        <div *ngIf="f.username.errors.required;">El nombre de usuario es Requerido</div>
+                      </div>
+                    </label>
+                  </div>
+                  <div class="form-group row align-items-center">
+                    <label class="col-sm-12 col-form-label">Nombre
+                      <input type="text"
+                             formControlName="name"
+                             class="form-control"
+                             placeholder="Nombre"
+                             [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
+                      <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                        <div *ngIf="f.name.errors.required; else maxLength">El Nombre es Requerido</div>
+                        <ng-template #maxLength>El Nombre no Debe Exceder a 20 Caracteres</ng-template>
+                      </div>
+                    </label>
+                  </div>
+                  <div class="form-group row align-items-center">
+                    <label class="col-sm-12 col-form-label">Apellido
+                      <input type="text"
+                             formControlName="last_name"
+                             class="form-control"
+                             placeholder="Apellido"
+                             [ngClass]="{ 'is-invalid': submitted && f.last_name.errors }">
+                      <div *ngIf="submitted && f.last_name.errors" class="invalid-feedback">
+                        <div *ngIf="f.last_name.errors.required; else maxLength">El Apellido es Requerido</div>
+                        <ng-template #maxLength>El Apellido no Debe Exceder a 20 Caracteres</ng-template>
+                      </div>
+                    </label>
+                  </div>
+                  <div class="form-group row align-items-center">
+                    <label class="col-sm-12 col-form-label">Email
+                      <input type="email"
+                             formControlName="email"
+                             class="form-control"
+                             placeholder="Email"
+                             [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
+                      <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                        <div *ngIf="f.email.errors.required; else maxLength">El Número de Catálogo es Requerido</div>
+                      </div>
+                    </label>
+                  </div>
+                  <div class="form-group row align-items-center">
+                    <label class="col-sm-12 col-form-label">Contraseña
+                      <input type="password"
+                             formControlName="password"
+                             class="form-control"
+                             placeholder="Contraseña"
+                             [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
+                      <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                        <div *ngIf="f.password.errors.required; else maxLength">La Contraseña es Requerido</div>
+                      </div>
+                    </label>
+                  </div>
+                  <div class="form-group row align-items-center">
+                    <label class="col-sm-12 col-form-label">Roles
+                      <ng-select2 formControlName="rol" width="100%"
+                                  [ngClass]="{'is-invalid': submitted && f.rol.errors }"
+                                  [data]="rols"
+                                  [options]="rolOptions"
+                                  (valueChanged)="rolChanged($event)">
+                      </ng-select2>
+                      <div *ngIf="submitted && f.rol.errors" class="invalid-feedback">
+                        <div *ngIf="f.rol.errors.required">El rol es Requerido</div>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="hr-line-dashed"></div>
+              <div class="form-group row">
+                <div class="col-sm-11"></div>
+                <div class="form-group">
+                  <button class="btn btn-primary btn-sm" [disabled]="buttonDisabled" type="submit">Guardar</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </app-sidebar>
+  
