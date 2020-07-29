@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { CategoryListComponent} from './category-list/category-list.component';
 import {CategoryFormComponent} from './category-form/category-form.component';
-import {UnauthorizedGuard} from '../../guards/unauthorized/unauthorized.guard';
+import {AdminAuthGuard} from '../../guards/adminAuth/admin-auth.guard';
 
 
 const routes: Routes = [{
@@ -12,12 +12,12 @@ const routes: Routes = [{
   {
     path: 'add',
     component: CategoryFormComponent,
-    canActivate: [UnauthorizedGuard]
+    canActivate: [AdminAuthGuard]
   },
   {
     path: 'edit/:categoryId',
     component: CategoryFormComponent,
-    canActivate: [UnauthorizedGuard]
+    canActivate: [AdminAuthGuard]
   }];
 
 @NgModule({

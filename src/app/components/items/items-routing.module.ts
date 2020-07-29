@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {UnauthorizedGuard} from '../../guards/unauthorized/unauthorized.guard';
 import {ItemListComponent} from './item-list/item-list.component';
 import {ItemFormComponent} from './item-form/item-form.component';
+import {AdminAuthGuard} from '../../guards/adminAuth/admin-auth.guard';
 
 
 const routes: Routes = [{
@@ -12,12 +12,12 @@ const routes: Routes = [{
   {
     path: 'add',
     component: ItemFormComponent,
-    canActivate: [UnauthorizedGuard]
+    canActivate: [AdminAuthGuard]
   },
   {
     path: 'edit/:itemId',
     component: ItemFormComponent,
-    canActivate: [UnauthorizedGuard]
+    canActivate: [AdminAuthGuard]
   }];
 
 @NgModule({

@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {UnauthorizedGuard} from '../../guards/unauthorized/unauthorized.guard';
 import {DepartmentListComponent} from './department-list/department-list.component';
 import {DepartmentFormComponent} from './department-form/department-form.component';
+import {SuperuserAuthGuard} from '../../guards/superuserAuth/superuser-auth.guard';
 
 
 const routes: Routes = [{
@@ -12,12 +12,12 @@ const routes: Routes = [{
   {
     path: 'add',
     component: DepartmentFormComponent,
-    canActivate: [UnauthorizedGuard]
+    canActivate: [SuperuserAuthGuard]
   },
   {
     path: 'edit/:departmentId',
     component: DepartmentFormComponent,
-    canActivate: [UnauthorizedGuard]
+    canActivate: [SuperuserAuthGuard]
   }];
 
 @NgModule({

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import 'metismenu';
 import {Router} from '@angular/router';
 import {User} from '../../../entities/user';
+import {Rol} from '../../../entities/rol';
 
 @Component({
   selector: 'app-sidebar',
@@ -17,13 +18,15 @@ export class SidebarComponent implements OnInit {
   };
   public isAuthenticated = false;
   public miniNavBar: boolean;
-  private user: User;
+  user: User;
+  rol: Rol;
 
   constructor(private router: Router) { }
 
   ngOnInit() {
     this.isAuthenticated = Boolean(localStorage.getItem('isAuthenticated'));
     this.user = JSON.parse(localStorage.getItem('User') );
+    this.rol = this.user.rol;
     setTimeout(() => $('#side-menu').metisMenu(), 0);
   }
 

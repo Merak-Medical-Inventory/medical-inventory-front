@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { UsersListComponent } from './users-list/users-list.component';
 import { UsersFormComponent } from './users-form/users-form.component';
-import { UnauthorizedGuard } from 'src/app/guards/unauthorized/unauthorized.guard';
+import {SuperuserAuthGuard} from '../../guards/superuserAuth/superuser-auth.guard';
 
 
 const routes: Routes = [
@@ -13,7 +13,7 @@ const routes: Routes = [
   {
     path: 'create',
     component: UsersFormComponent,
-    canActivate: [UnauthorizedGuard]
+    canActivate: [SuperuserAuthGuard]
   }
 ];
 

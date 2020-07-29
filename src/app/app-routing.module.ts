@@ -2,11 +2,13 @@ import { NgModule } from '@angular/core';
 import {PreloadAllModules, RouterModule, Routes} from '@angular/router';
 import {UnauthorizedGuard} from './guards/unauthorized/unauthorized.guard';
 import {SessionGuard} from './guards/session/session.guard';
+import {SuperuserAuthGuard} from './guards/superuserAuth/superuser-auth.guard';
+import {AdminAuthGuard} from './guards/adminAuth/admin-auth.guard';
 
 const routes: Routes = [
   {
     path: '',
-    loadChildren: './components/categories/categories.module#CategoriesModule',
+    loadChildren: './components/layout/layout.module#LayoutModule',
     canActivate: [UnauthorizedGuard]
   },
   {
@@ -17,32 +19,32 @@ const routes: Routes = [
   {
     path: 'users',
     loadChildren: './components/users/users.module#UsersModule',
-    canActivate: [UnauthorizedGuard]
+    canActivate: [SuperuserAuthGuard]
   },
   {
     path: 'categories',
     loadChildren: './components/categories/categories.module#CategoriesModule',
-    canActivate: [UnauthorizedGuard]
+    canActivate: [AdminAuthGuard]
   },
   {
     path: 'departments',
     loadChildren: './components/departments/departments.module#DepartmentsModule',
-    canActivate: [UnauthorizedGuard]
+    canActivate: [SuperuserAuthGuard]
   },
   {
     path: 'presentations',
     loadChildren: './components/presentations/presentations.module#PresentationsModule',
-    canActivate: [UnauthorizedGuard]
+    canActivate: [AdminAuthGuard]
   },
   {
     path: 'brands',
     loadChildren: './components/brands/brands.module#BrandsModule',
-    canActivate: [UnauthorizedGuard]
+    canActivate: [AdminAuthGuard]
   },
   {
     path: 'items',
     loadChildren: './components/items/items.module#ItemsModule',
-    canActivate: [UnauthorizedGuard]
+    canActivate: [AdminAuthGuard]
   }
 ];
 

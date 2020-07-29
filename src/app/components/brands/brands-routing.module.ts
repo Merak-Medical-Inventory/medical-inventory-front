@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {UnauthorizedGuard} from '../../guards/unauthorized/unauthorized.guard';
 import {BrandListComponent} from './brand-list/brand-list.component';
 import {BrandFormComponent} from './brand-form/brand-form.component';
+import {AdminAuthGuard} from '../../guards/adminAuth/admin-auth.guard';
 
 
 const routes: Routes = [{
@@ -12,12 +12,12 @@ const routes: Routes = [{
   {
     path: 'add',
     component: BrandFormComponent,
-    canActivate: [UnauthorizedGuard]
+    canActivate: [AdminAuthGuard]
   },
   {
     path: 'edit/:brandId',
     component: BrandFormComponent,
-    canActivate: [UnauthorizedGuard]
+    canActivate: [AdminAuthGuard]
   }];
 
 @NgModule({
