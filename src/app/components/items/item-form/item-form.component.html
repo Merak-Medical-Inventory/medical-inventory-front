@@ -90,6 +90,10 @@
                     <div *ngIf="submitted && f.category.errors" class="invalid-feedback">
                       <div *ngIf="f.category.errors.required">La Categoría es Requerida</div>
                     </div>
+                    <a (click) = "addCategory()"
+                      class="btn btn-sm btn-outline-warning">
+                      <span class="fa fa-plus"></span>
+                    </a>
                   </label>
                 </div>
                 <div class="form-group row align-items-center">
@@ -103,6 +107,10 @@
                     <div *ngIf="submitted && f.brand.errors" class="invalid-feedback">
                       <div *ngIf="f.brand.errors.required">La Marca es Requerida</div>
                     </div>
+                    <a (click) = "addBrand()"
+                       class="btn btn-sm btn-outline-warning">
+                      <span class="fa fa-plus"></span>
+                    </a>
                   </label>
                 </div>
                 <div class="form-group row align-items-center">
@@ -116,6 +124,10 @@
                     <div *ngIf="submitted && f.presentation.errors" class="invalid-feedback">
                       <div *ngIf="f.presentation.errors.required">La Presentación es Requerida</div>
                     </div>
+                    <a (click) = "addPresentation()"
+                       class="btn btn-sm btn-outline-warning">
+                      <span class="fa fa-plus"></span>
+                    </a>
                   </label>
                 </div>
               </div>

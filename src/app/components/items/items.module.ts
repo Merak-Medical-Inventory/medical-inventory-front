@@ -12,6 +12,13 @@ import {CategoryService} from '../../services/category/category.service';
 import {BrandService} from '../../services/brand/brand.service';
 import {PresentationService} from '../../services/presentation/presentation.service';
 import {NgSelect2Module} from 'ng-select2';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {CategoriesModule} from '../categories/categories.module';
+import {CategoryFormComponent} from '../categories/category-form/category-form.component';
+import {BrandFormComponent} from '../brands/brand-form/brand-form.component';
+import {PresentationFormComponent} from '../presentations/presentation-form/presentation-form.component';
+import {BrandsModule} from '../brands/brands.module';
+import {PresentationsModule} from '../presentations/presentations.module';
 
 
 @NgModule({
@@ -24,8 +31,13 @@ import {NgSelect2Module} from 'ng-select2';
     MatProgressSpinnerModule,
     MatPaginatorModule,
     ReactiveFormsModule,
-    NgSelect2Module
+    NgSelect2Module,
+    CategoriesModule,
+    BrandsModule,
+    PresentationsModule,
+    NgbModule
   ],
-  providers: [ItemService, CategoryService, BrandService, PresentationService]
+  providers: [ItemService, CategoryService, BrandService, PresentationService],
+  entryComponents: [CategoryFormComponent, BrandFormComponent, PresentationFormComponent]
 })
 export class ItemsModule { }

@@ -19,7 +19,8 @@ import {CategoryService} from '../../services/category/category.service';
     MatProgressSpinnerModule,
     MatPaginatorModule,
     LayoutModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+
   ],
   providers: [CategoryService]
 })

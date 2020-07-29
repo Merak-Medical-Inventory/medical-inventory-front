@@ -4,6 +4,7 @@ import {PresentationService} from '../../../services/presentation/presentation.s
 import {ActivatedRoute, Router} from '@angular/router';
 import Swal from 'sweetalert2';
 import {Presentation, PostPresentation} from '../../../entities/presentation';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-presentation-form',
@@ -23,9 +24,13 @@ export class PresentationFormComponent implements OnInit {
   submitted = false;
   buttonDisabled = false;
   isLoading = true;
-  constructor(private service: PresentationService, private router: Router, private route: ActivatedRoute) { }
+  modal = false;
+
+  constructor(private service: PresentationService, private modalService: NgbModal,
+              private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.modal = Boolean(localStorage.getItem('modal'));
     this.route.params.subscribe(params => {
       this.presentationId = parseInt(params.presentationId, 0);
     });
@@ -62,15 +67,27 @@ export class PresentationFormComponent implements OnInit {
     if (!this.presentationId) {
       this.service.postPresentation(body)
         .subscribe(response => {
-          this.router.navigate(['/presentations']).then(result =>
+          if (!this.modal) {
+            this.router.navigate(['/presentations']).then(result =>
+              Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'La Presentación se ha Agregado Exitosamente',
+                showConfirmButton: false,
+                timer: 1500
+              })
+            );
+          } else {
+            localStorage.removeItem('modal');
+            this.modalService.dismissAll();
             Swal.fire({
               position: 'top-end',
               icon: 'success',
               title: 'La Presentación se ha Agregado Exitosamente',
               showConfirmButton: false,
               timer: 1500
-            })
-          );
+            });
+          }
         }, error => {
           Swal.fire({
             icon: 'error',

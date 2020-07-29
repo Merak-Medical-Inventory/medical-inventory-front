@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import Swal from 'sweetalert2';
+import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {Options} from 'select2';
 import {Select2OptionData} from 'ng-select2';
 import {Item, PostItem} from '../../../entities/item';
@@ -12,6 +13,9 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Category} from '../../../entities/category';
 import {Brand} from '../../../entities/brand';
 import {Presentation} from '../../../entities/presentation';
+import {CategoryFormComponent} from '../../categories/category-form/category-form.component';
+import {BrandFormComponent} from '../../brands/brand-form/brand-form.component';
+import {PresentationFormComponent} from '../../presentations/presentation-form/presentation-form.component';
 
 @Component({
   selector: 'app-item-form',
@@ -44,7 +48,8 @@ export class ItemFormComponent implements OnInit {
   item: Item;
 
   constructor(private service: ItemService, private categoryService: CategoryService, private brandService: BrandService,
-              private presentationService: PresentationService, private router: Router, private route: ActivatedRoute) { }
+              private presentationService: PresentationService, private modalService: NgbModal,
+              private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.categoryOptions = {
@@ -147,6 +152,48 @@ export class ItemFormComponent implements OnInit {
 
   presentationChanged(data: { value: string }) {
     this.f.presentation.setValue(data.value);
+  }
+
+  addCategory() {
+    localStorage.setItem('modal', 'true');
+    const modalRef: NgbModalRef = this.modalService.open(CategoryFormComponent, { centered: true });
+    modalRef.componentInstance.isClient = true;
+    modalRef.result.then(() => {
+      localStorage.removeItem('modal');
+    }, () => {
+      this.isLoading = true;
+      this.getSelectCategories().then(() => {
+        this.isLoading = false;
+      });
+    });
+  }
+
+  addBrand() {
+    localStorage.setItem('modal', 'true');
+    const modalRef: NgbModalRef = this.modalService.open(BrandFormComponent, { centered: true });
+    modalRef.componentInstance.isClient = true;
+    modalRef.result.then(() => {
+      localStorage.removeItem('modal');
+    }, () => {
+      this.isLoading = true;
+      this.getSelectBrands().then(() => {
+        this.isLoading = false;
+      });
+    });
+  }
+
+  addPresentation() {
+    localStorage.setItem('modal', 'true');
+    const modalRef: NgbModalRef = this.modalService.open(PresentationFormComponent, { centered: true });
+    modalRef.componentInstance.isClient = true;
+    modalRef.result.then(() => {
+      localStorage.removeItem('modal');
+    }, () => {
+      this.isLoading = true;
+      this.getSelectPresentations().then(() => {
+        this.isLoading = false;
+      });
+    });
   }
 
   onSubmit() {

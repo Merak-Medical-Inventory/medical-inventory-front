@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 import {Category, PostCategory} from '../../../entities/category';
 import {CategoryService} from '../../../services/category/category.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-category-form',
@@ -21,10 +22,13 @@ export class CategoryFormComponent implements OnInit {
   buttonDisabled = false;
   isLoading = true;
   category: Category;
+  modal = false;
 
-  constructor(private service: CategoryService, private router: Router, private route: ActivatedRoute) { }
+  constructor(private service: CategoryService, private modalService: NgbModal,
+              private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.modal = Boolean(localStorage.getItem('modal'));
     this.route.params.subscribe(params => {
       this.categoryId = parseInt(params.categoryId, 0);
     });
@@ -57,15 +61,27 @@ export class CategoryFormComponent implements OnInit {
     if (!this.categoryId) {
       this.service.postCategory(body)
         .subscribe(response => {
-          this.router.navigate(['/categories']).then(result =>
+          if (!this.modal) {
+            this.router.navigate(['/categories']).then(result =>
+              Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'La Categoría se ha Agregado Exitosamente',
+                showConfirmButton: false,
+                timer: 1500
+              })
+            );
+          } else {
             Swal.fire({
               position: 'top-end',
               icon: 'success',
               title: 'La Categoría se ha Agregado Exitosamente',
               showConfirmButton: false,
               timer: 1500
-            })
-          );
+            });
+            localStorage.removeItem('modal');
+            this.modalService.dismissAll();
+          }
         }, error => {
           this.buttonDisabled = false;
           Swal.fire({
