@@ -10,10 +10,10 @@
             <li class="breadcrumb-item">
               <a routerLink="/users">Usuarios</a>
             </li>
-            <li *ngIf="!this.UserId" class="breadcrumb-item active">
+            <li *ngIf="!this.userId" class="breadcrumb-item active">
               <strong>Agregar</strong>
             </li>
-            <li *ngIf="this.UserId" class="breadcrumb-item active">
+            <li *ngIf="this.userId" class="breadcrumb-item active">
               <strong>Editar</strong>
             </li>
           </ol>
@@ -73,7 +73,8 @@
                              placeholder="Email"
                              [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
                       <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
-                        <div *ngIf="f.email.errors.required; else maxLength">El Número de Catálogo es Requerido</div>
+                        <div *ngIf="f.email.errors.required; else email">El Email es Requerido</div>
+                        <ng-template #email>El Email no Tiene una Dirección Válida</ng-template>
                       </div>
                     </label>
                   </div>
@@ -85,7 +86,8 @@
                              placeholder="Contraseña"
                              [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
                       <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-                        <div *ngIf="f.password.errors.required; else maxLength">La Contraseña es Requerido</div>
+                        <div *ngIf="f.password.errors.required; else maxLength">La Contraseña es Requerida</div>
+                        <ng-template #maxLength>La Contraseña no Debe Exceder a 20 Caracteres</ng-template>
                       </div>
                     </label>
                   </div>
