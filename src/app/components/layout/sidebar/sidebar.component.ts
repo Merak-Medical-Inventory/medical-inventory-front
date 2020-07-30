@@ -3,6 +3,7 @@ import 'metismenu';
 import {Router} from '@angular/router';
 import {User} from '../../../entities/user';
 import {Rol} from '../../../entities/rol';
+import { roles} from 'src/app/constants/rolConstants';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,6 +11,8 @@ import {Rol} from '../../../entities/rol';
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent implements OnInit {
+
+  roles = roles;
 
   public ariaExpanded =  {
     items: false,
