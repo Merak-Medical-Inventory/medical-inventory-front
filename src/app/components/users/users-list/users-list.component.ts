@@ -40,4 +40,39 @@ export class UsersListComponent implements OnInit {
       this.router.navigate([currentUrl]);
     });
   }
+
+  onDelete(id: number) {
+    Swal.fire({
+      title: 'Desea Eliminar el usuario?',
+      // text: 'You won\'t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.value) {
+        this.service.deleteuser(id)
+          .subscribe(response => {
+            this.reloadCurrentRoute();
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'El Insumo se ha Eliminado Exitosamente',
+              showConfirmButton: false,
+              timer: 1500
+            });
+          }, error => {
+            console.log(error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Error al Eliminar el Insumo',
+              text: 'Intente Nuevamente',
+              confirmButtonColor: '#1ab394'
+            });
+          });
+      }
+    });
+  }
 }

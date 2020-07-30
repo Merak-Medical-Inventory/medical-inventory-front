@@ -29,4 +29,8 @@ export class UserService {
   putUser(id: number,user: PostUser) {
     return this.http.put(`${environment.authServiceUrl}user/${id}`,user,{observe : 'response'});
   }
+
+  deleteuser(id: number) {
+    return this.http.delete(`${environment.authServiceUrl}user/${id}`);
+  }
 }
