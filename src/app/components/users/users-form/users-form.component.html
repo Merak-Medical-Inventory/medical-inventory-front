@@ -78,7 +78,7 @@
                       </div>
                     </label>
                   </div>
-                  <div class="form-group row align-items-center">
+                  <div *ngIf="!userId" class="form-group row align-items-center">
                     <label class="col-sm-12 col-form-label">Contraseña
                       <input type="password"
                              formControlName="password"

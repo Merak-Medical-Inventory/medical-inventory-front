@@ -49,6 +49,16 @@
                       <td>{{ user.name + " " + user.last_name }}</td>
                       <td>{{ user.username }}</td>
                       <td>{{ user.email }}</td>
+                      <td>
+                        <a [routerLink]="['/users/edit', user.id]"
+                           class="btn btn-sm btn-outline-warning">
+                          <span class="fa fa-pencil"></span>
+                        </a>
+                        <a (click)="onDelete(user.id)"
+                           class="btn btn-sm btn-outline-warning">
+                          <span class="fa fa-trash"></span>
+                        </a>
+                      </td>
                     </tr>
                     </tbody>
                   </table>

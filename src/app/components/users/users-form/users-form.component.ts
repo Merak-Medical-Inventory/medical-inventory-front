@@ -7,7 +7,7 @@ import { Rol } from "src/app/entities/rol";
 import { ActivatedRoute, Router } from "@angular/router";
 import { UserService } from "src/app/services/user/user.service";
 import { RolService } from "src/app/services/rol/rol.service";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
 @Component({
   selector: "app-users-form",
@@ -57,19 +57,19 @@ export class UsersFormComponent implements OnInit {
       width: "100%",
       placeholder: { id: "", text: "Seleccione un Rol..." },
     };
-    this.route.params.subscribe(params => {
+    this.route.params.subscribe((params) => {
       this.userId = parseInt(params.userId, 0);
     });
     this.getSelectRols().then(() => {
       if (this.userId) {
-        this.service.getUserById(this.userId).subscribe((response) => {
+          this.service.getUserById(this.userId).subscribe((response) => {
           this.user = response.body["data"];
-          console.log(response);
+          this.f.password.disable()
           this.f.username.setValue(this.user.username);
           this.f.email.setValue(this.user.email);
           this.f.name.setValue(this.user.name);
           this.f.last_name.setValue(this.user.last_name);
-          this.f.rol.setValue(this.user.rol);
+          this.f.rol.setValue(this.user.rol.id);
         });
       }
     });
@@ -107,57 +107,69 @@ export class UsersFormComponent implements OnInit {
       return;
     }
     this.buttonDisabled = true;
-    const body: PostUser = {
-      username: this.userForm.value.username,
-      email: this.userForm.value.email,
-      name: this.userForm.value.name,
-      last_name: this.userForm.value.last_name,
-      password: this.userForm.value.password,
-      rol: Number(this.userForm.value.rol),
-    };
+    const body: any = this.userId
+      ? {
+          username: this.userForm.value.username,
+          email: this.userForm.value.email,
+          name: this.userForm.value.name,
+          last_name: this.userForm.value.last_name,
+          rol: Number(this.userForm.value.rol),
+        }
+      : {
+          username: this.userForm.value.username,
+          email: this.userForm.value.email,
+          name: this.userForm.value.name,
+          last_name: this.userForm.value.last_name,
+          password: this.userForm.value.password,
+          rol: Number(this.userForm.value.rol),
+        };
     console.log(body);
     if (!this.userId) {
-      this.service.postUser(body)
-        .subscribe(response => {
-          this.router.navigate(['/users']).then(result =>
+      this.service.postUser(body).subscribe(
+        (response) => {
+          this.router.navigate(["/users"]).then((result) =>
             Swal.fire({
-              position: 'top-end',
-              icon: 'success',
-              title: 'El usuario ha sido creado Exitosamente',
+              position: "top-end",
+              icon: "success",
+              title: "El usuario ha sido creado Exitosamente",
               showConfirmButton: false,
-              timer: 1500
+              timer: 1500,
             })
           );
-        }, error => {
+        },
+        (error) => {
           this.buttonDisabled = false;
           Swal.fire({
-            icon: 'error',
-            title: 'Error al crear el usuario',
-            text: 'Intente Nuevamente',
-            confirmButtonColor: '#1ab394'
+            icon: "error",
+            title: "Error al crear el usuario",
+            text: "Intente Nuevamente",
+            confirmButtonColor: "#1ab394",
           });
-        });
+        }
+      );
     } else {
-      this.service.putUser(this.userId,body)
-        .subscribe(response => {
-          this.router.navigate(['/users']).then(result =>
+      this.service.putUser(this.userId, body).subscribe(
+        (response) => {
+          this.router.navigate(["/users"]).then((result) =>
             Swal.fire({
-              position: 'top-end',
-              icon: 'success',
-              title: 'El usuario se ha Editado Exitosamente',
+              position: "top-end",
+              icon: "success",
+              title: "El usuario se ha Editado Exitosamente",
               showConfirmButton: false,
-              timer: 1500
+              timer: 1500,
             })
           );
-        }, error => {
+        },
+        (error) => {
           this.buttonDisabled = false;
           Swal.fire({
-            icon: 'error',
-            title: 'Error al Editar el Usuario',
-            text: 'Intente Nuevamente',
-            confirmButtonColor: '#1ab394'
+            icon: "error",
+            title: "Error al Editar el Usuario",
+            text: "Intente Nuevamente",
+            confirmButtonColor: "#1ab394",
           });
-        });
+        }
+      );
     }
   }
 }

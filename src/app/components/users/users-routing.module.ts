@@ -14,6 +14,11 @@ const routes: Routes = [
     path: 'create',
     component: UsersFormComponent,
     canActivate: [SuperuserAuthGuard]
+  },
+  {
+    path: 'edit/:userId',
+    component: UsersFormComponent,
+    canActivate: [SuperuserAuthGuard]
   }
 ];
 
