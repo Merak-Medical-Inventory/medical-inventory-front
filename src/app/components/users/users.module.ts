@@ -10,10 +10,11 @@ import { UserService } from 'src/app/services/user/user.service';
 import { NgSelect2Module } from 'ng-select2';
 import { RolService } from 'src/app/services/rol/rol.service';
 import { UsersFormComponent } from './users-form/users-form.component';
+import {DepartmentService} from '../../services/department/department.service';
 
 
 @NgModule({
-  declarations: [UsersListComponent,UsersFormComponent],
+  declarations: [UsersListComponent, UsersFormComponent],
   imports: [
     CommonModule,
     UsersRoutingModule,
@@ -25,6 +26,6 @@ import { UsersFormComponent } from './users-form/users-form.component';
     ReactiveFormsModule,
     NgSelect2Module
   ],
-  providers: [UserService,RolService]
+  providers: [UserService, RolService, DepartmentService]
 })
 export class UsersModule { }

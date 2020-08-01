@@ -1,4 +1,5 @@
 import {Rol} from './rol';
+import {Department} from './department';
 
 export interface UserLogin {
   username: string;
@@ -13,6 +14,7 @@ export interface User {
   name: string;
   last_name: string;
   rol: Rol;
+  department: Department;
 }
 
 export interface PostUser {
@@ -22,4 +24,5 @@ export interface PostUser {
   name: string;
   last_name: string;
   rol: any;
+  department: any;
 }

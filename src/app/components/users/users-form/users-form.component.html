@@ -24,11 +24,14 @@
       <div class="wrapper wrapper-content animated fadeInRight">
         <div class="ibox">
           <div class="ibox-content">
+            <div *ngIf="isLoading === true" class=" row align-items-center">
+              <mat-spinner class="mat-spinner" style="margin: 0 auto"></mat-spinner>
+            </div>
             <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group row align-items-center">
-                    <label class="col-sm-12 col-form-label">Nombre de usuario
+                    <label class="col-sm-12 col-form-label">Username
                       <input type="text"
                              formControlName="username"
                              class="form-control"
@@ -101,6 +104,19 @@
                       </ng-select2>
                       <div *ngIf="submitted && f.rol.errors" class="invalid-feedback">
                         <div *ngIf="f.rol.errors.required">El rol es Requerido</div>
+                      </div>
+                    </label>
+                  </div>
+                  <div *ngIf="f.rol.value === '3' || f.rol.value === '4'" class="form-group row align-items-center">
+                    <label class="col-sm-12 col-form-label">Departamento
+                      <ng-select2 formControlName="department" width="100%"
+                                  [ngClass]="{'is-invalid': submitted && f.department.errors }"
+                                  [data]="departments"
+                                  [options]="departmentOptions"
+                                  (valueChanged)="departmentChanged($event)">
+                      </ng-select2>
+                      <div *ngIf="submitted && f.department.errors" class="invalid-feedback">
+                        <div *ngIf="f.department.errors.required">El Departamento es Requerido</div>
                       </div>
                     </label>
                   </div>

@@ -20,7 +20,7 @@ export class UsersListComponent implements OnInit {
     this.service.getAllUsers()
       .subscribe(response => {
         this.isLoading = false;
-        console.log(response)
+        console.log(response);
         this.users = response.body['data'];
       }, error => {
         this.isLoading = false;
@@ -31,7 +31,7 @@ export class UsersListComponent implements OnInit {
           text: 'Intente más Tarde',
           confirmButtonColor: '#1ab394'
         });
-      })
+      });
   }
 
   reloadCurrentRoute() {

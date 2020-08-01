@@ -40,8 +40,10 @@
                     <thead>
                     <tr>
                       <th>Nombre</th>
-                      <th>Nombre de usuario</th>
+                      <th>Username</th>
                       <th>Email</th>
+                      <th>Rol</th>
+                      <th>Departamento</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -49,6 +51,11 @@
                       <td>{{ user.name + " " + user.last_name }}</td>
                       <td>{{ user.username }}</td>
                       <td>{{ user.email }}</td>
+                      <td>{{ user.rol.name }}</td>
+                      <td *ngIf="user.department !== null; else noDep">{{ user.department.name }}</td>
+                      <ng-template #noDep>
+                        <td>{{ "NA" }}</td>
+                      </ng-template>
                       <td>
                         <a [routerLink]="['/users/edit', user.id]"
                            class="btn btn-sm btn-outline-warning">
@@ -73,4 +80,3 @@
       </div>
     </ng-container>
   </app-sidebar>
-  

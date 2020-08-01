@@ -8,6 +8,8 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { UserService } from "src/app/services/user/user.service";
 import { RolService } from "src/app/services/rol/rol.service";
 import Swal from "sweetalert2";
+import {Department} from '../../../entities/department';
+import {DepartmentService} from '../../../services/department/department.service';
 
 @Component({
   selector: "app-users-form",
@@ -35,10 +37,14 @@ export class UsersFormComponent implements OnInit {
       Validators.maxLength(20),
     ]),
     rol: new FormControl("", [Validators.required]),
+    department: new FormControl("", [Validators.required])
   });
   rolOptions: Options;
   rols: Select2OptionData[] = [];
   rolsData: Rol[] = [];
+  departmentOptions: Options;
+  departments: Select2OptionData[] = [];
+  departmentsData: Department[] = [];
   userId: number;
   submitted = false;
   buttonDisabled = false;
@@ -48,11 +54,16 @@ export class UsersFormComponent implements OnInit {
   constructor(
     private service: UserService,
     private rolService: RolService,
+    private departmentService: DepartmentService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
+    this.departmentOptions = {
+      width: "100%",
+      placeholder: { id: "", text: "Seleccione un Departamento..." },
+    };
     this.rolOptions = {
       width: "100%",
       placeholder: { id: "", text: "Seleccione un Rol..." },
@@ -61,17 +72,25 @@ export class UsersFormComponent implements OnInit {
       this.userId = parseInt(params.userId, 0);
     });
     this.getSelectRols().then(() => {
-      if (this.userId) {
+      this.getSelectDepartments().then(() => {
+        this.f.department.disable();
+        if (this.userId) {
           this.service.getUserById(this.userId).subscribe((response) => {
-          this.user = response.body["data"];
-          this.f.password.disable()
-          this.f.username.setValue(this.user.username);
-          this.f.email.setValue(this.user.email);
-          this.f.name.setValue(this.user.name);
-          this.f.last_name.setValue(this.user.last_name);
-          this.f.rol.setValue(this.user.rol.id);
-        });
-      }
+            this.user = response.body["data"];
+            this.f.password.disable();
+            this.f.username.setValue(this.user.username);
+            this.f.email.setValue(this.user.email);
+            this.f.name.setValue(this.user.name);
+            this.f.last_name.setValue(this.user.last_name);
+            this.f.rol.setValue(String(this.user.rol.id));
+            if (this.f.rol.value === '3' || this.f.rol.value === '4') {
+              this.f.department.setValue(this.user.department.id);
+              this.f.department.enable();
+            }
+          });
+        }
+        this.isLoading = false;
+      });
     });
   }
 
@@ -97,8 +116,35 @@ export class UsersFormComponent implements OnInit {
       });
   }
 
+  async getSelectDepartments() {
+    this.departments = await this.departmentService
+      .getDepartments()
+      .toPromise()
+      .then((value) => {
+        this.departmentsData = value.body["data"];
+        const array: Select2OptionData[] = [];
+        for (const dep of this.departmentsData) {
+          const data: Select2OptionData = {
+            id: dep.id.toString(),
+            text: dep.name,
+          };
+          array.push(data);
+        }
+        return array;
+      });
+  }
+
   rolChanged(data: { value: string }) {
     this.f.rol.setValue(data.value);
+    if (String(data) === '3' || String(data) === '4') {
+      this.f.department.enable();
+    } else {
+      this.f.department.disable();
+    }
+  }
+
+  departmentChanged(data: { value: string }) {
+    this.f.department.setValue(data.value);
   }
 
   onSubmit() {
@@ -106,16 +152,38 @@ export class UsersFormComponent implements OnInit {
     if (this.userForm.invalid) {
       return;
     }
+    this.isLoading = true;
     this.buttonDisabled = true;
-    const body: any = this.userId
-      ? {
+    let body: any;
+    if (this.userForm.value.rol === '3' || this.userForm.value.rol === '4') {
+      body = this.userId
+        ? {
+          username: this.userForm.value.username,
+          email: this.userForm.value.email,
+          name: this.userForm.value.name,
+          last_name: this.userForm.value.last_name,
+          rol: Number(this.userForm.value.rol),
+          department: Number(this.userForm.value.department)
+        }
+        : {
+          username: this.userForm.value.username,
+          email: this.userForm.value.email,
+          name: this.userForm.value.name,
+          last_name: this.userForm.value.last_name,
+          password: this.userForm.value.password,
+          rol: Number(this.userForm.value.rol),
+          department: Number(this.userForm.value.department)
+        };
+    } else {
+      body = this.userId
+        ? {
           username: this.userForm.value.username,
           email: this.userForm.value.email,
           name: this.userForm.value.name,
           last_name: this.userForm.value.last_name,
           rol: Number(this.userForm.value.rol),
         }
-      : {
+        : {
           username: this.userForm.value.username,
           email: this.userForm.value.email,
           name: this.userForm.value.name,
@@ -123,6 +191,7 @@ export class UsersFormComponent implements OnInit {
           password: this.userForm.value.password,
           rol: Number(this.userForm.value.rol),
         };
+    }
     console.log(body);
     if (!this.userId) {
       this.service.postUser(body).subscribe(
@@ -139,6 +208,7 @@ export class UsersFormComponent implements OnInit {
         },
         (error) => {
           this.buttonDisabled = false;
+          this.isLoading = false;
           Swal.fire({
             icon: "error",
             title: "Error al crear el usuario",
@@ -162,6 +232,7 @@ export class UsersFormComponent implements OnInit {
         },
         (error) => {
           this.buttonDisabled = false;
+          this.isLoading = false;
           Swal.fire({
             icon: "error",
             title: "Error al Editar el Usuario",
