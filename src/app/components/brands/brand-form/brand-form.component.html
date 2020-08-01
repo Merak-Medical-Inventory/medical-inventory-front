@@ -73,6 +73,9 @@
     <div class="wrapper wrapper-content animated fadeInRight">
       <div class="ibox">
         <div class="ibox-content">
+          <div *ngIf="isLoading === true" class=" row align-items-center">
+            <mat-spinner class="mat-spinner" style="margin: 0 auto"></mat-spinner>
+          </div>
           <form [formGroup]="brandForm" (ngSubmit)="onSubmit()">
             <div class="row">
               <div class="col-md-6">

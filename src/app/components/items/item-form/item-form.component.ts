@@ -201,6 +201,7 @@ export class ItemFormComponent implements OnInit {
     if (this.itemForm.invalid) {
       return;
     }
+    this.isLoading = true;
     this.buttonDisabled = true;
     const body: PostItem = {
       code: this.itemForm.value.code,
@@ -225,6 +226,7 @@ export class ItemFormComponent implements OnInit {
             })
           );
         }, error => {
+          this.isLoading = false;
           this.buttonDisabled = false;
           Swal.fire({
             icon: 'error',
@@ -246,6 +248,7 @@ export class ItemFormComponent implements OnInit {
             })
           );
         }, error => {
+          this.isLoading = false;
           this.buttonDisabled = false;
           Swal.fire({
             icon: 'error',

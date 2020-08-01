@@ -52,6 +52,7 @@ export class CategoryFormComponent implements OnInit {
     if (this.categoryForm.invalid) {
       return;
     }
+    this.isLoading = true;
     this.buttonDisabled = true;
     const body: PostCategory = {
       name: this.categoryForm.value.name,
@@ -83,6 +84,7 @@ export class CategoryFormComponent implements OnInit {
             this.modalService.dismissAll();
           }
         }, error => {
+          this.isLoading = false;
           this.buttonDisabled = false;
           Swal.fire({
             icon: 'error',
@@ -104,6 +106,7 @@ export class CategoryFormComponent implements OnInit {
             })
           );
         }, error => {
+          this.isLoading = false;
           this.buttonDisabled = false;
           Swal.fire({
             icon: 'error',

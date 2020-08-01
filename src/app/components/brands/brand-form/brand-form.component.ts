@@ -52,6 +52,7 @@ export class BrandFormComponent implements OnInit {
     if (this.brandForm.invalid) {
       return;
     }
+    this.isLoading = true;
     this.buttonDisabled = true;
     const body: PostBrand = {
       name: this.brandForm.value.name,
@@ -83,6 +84,7 @@ export class BrandFormComponent implements OnInit {
             });
           }
         }, error => {
+          this.isLoading = false;
           this.buttonDisabled = false;
           Swal.fire({
             icon: 'error',
@@ -104,6 +106,7 @@ export class BrandFormComponent implements OnInit {
             })
           );
         }, error => {
+          this.isLoading = false;
           this.buttonDisabled = false;
           Swal.fire({
             icon: 'error',

@@ -49,6 +49,7 @@ export class DepartmentFormComponent implements OnInit {
     if (this.departmentForm.invalid) {
       return;
     }
+    this.isLoading = true;
     this.buttonDisabled = true;
     const body: PostDepartment = {
       code: this.departmentForm.value.code,
@@ -69,6 +70,8 @@ export class DepartmentFormComponent implements OnInit {
             })
           );
         }, error => {
+          this.isLoading = false;
+          this.buttonDisabled = false;
           Swal.fire({
             icon: 'error',
             title: 'Error al Agregar el Departamento',
@@ -89,6 +92,7 @@ export class DepartmentFormComponent implements OnInit {
             })
           );
         }, error => {
+          this.isLoading = false;
           this.buttonDisabled = false;
           Swal.fire({
             icon: 'error',

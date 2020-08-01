@@ -56,6 +56,7 @@ export class PresentationFormComponent implements OnInit {
     if (this.presentationForm.invalid) {
       return;
     }
+    this.isLoading = true;
     this.buttonDisabled = true;
     const body: PostPresentation = {
       name: this.presentationForm.value.name,
@@ -89,6 +90,8 @@ export class PresentationFormComponent implements OnInit {
             });
           }
         }, error => {
+          this.isLoading = false;
+          this.buttonDisabled = false;
           Swal.fire({
             icon: 'error',
             title: 'Error al Agregar la Presentación',
@@ -109,6 +112,7 @@ export class PresentationFormComponent implements OnInit {
             })
           );
         }, error => {
+          this.isLoading = false;
           this.buttonDisabled = false;
           Swal.fire({
             icon: 'error',
