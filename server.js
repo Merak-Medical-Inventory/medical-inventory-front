@@ -1,7 +1,5 @@
 //Install express server
 const express = require('express');
-const http = require('http')
-const path = require('path');
 
 const app = express();
 
@@ -15,5 +13,3 @@ app.get('/*', function (req, res) {
 
 // Start the app by listening on the default Heroku port
 app.listen(process.env.PORT || 8080);
-const server = http.createServer(app);
-server.listen(process.env.PORT, () => console.log('running'));
