@@ -39,6 +39,7 @@ export class LoginComponent implements OnInit {
     };
     this.loginService.postLogin(body)
       .subscribe(response => {
+        console.log(response);
         localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('token', response.body['data']['token']);
         localStorage.setItem('User', JSON.stringify(response.body['data']['response']));

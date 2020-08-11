@@ -52,8 +52,10 @@ export class DepartmentListComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
+        this.isLoading = false;
         this.service.deleteDepartment(id)
           .subscribe(response => {
+            this.isLoading = true;
             this.reloadCurrentRoute();
             Swal.fire({
               position: 'top-end',

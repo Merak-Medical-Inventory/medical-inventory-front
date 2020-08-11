@@ -52,8 +52,10 @@ export class CategoryListComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.value) {
+        this.isLoading = true;
         this.service.deleteCategory(id)
           .subscribe(response => {
+            this.isLoading = false;
             this.reloadCurrentRoute();
             Swal.fire({
               position: 'top-end',
