@@ -9,7 +9,7 @@ app.use(express.static(__dirname + '/dist/merak-medical-inventory'));
 
 app.get('/*', function(req,res) {
 
-  res.sendFile(__dirname + '/src/index.html');
+  res.sendfile('./src/index.html');
 });
 
 // Start the app by listening on the default Heroku port
