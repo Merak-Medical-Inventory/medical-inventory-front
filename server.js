@@ -8,7 +8,7 @@ const path = require('path');
 app.use(express.static(__dirname + '/dist/merak-medical-inventory'));
 
 app.get('/*', function(req,res) {
-  res.sendFile(path.join(__dirname + '/dist/merak-medical-inventory/src/index.html'));
+  res.sendFile(path.join(__dirname + '/src/index.html'));
 });
 
 // Start the app by listening on the default Heroku port
