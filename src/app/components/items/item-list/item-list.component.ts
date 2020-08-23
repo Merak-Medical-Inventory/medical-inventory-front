@@ -3,6 +3,7 @@ import {Item} from '../../../entities/item';
 import {ItemService} from '../../../services/item/item.service';
 import Swal from 'sweetalert2';
 import {Router} from '@angular/router';
+import {AlertService} from '../../../services/alert/alert.service';
 
 @Component({
   selector: 'app-item-list',
@@ -14,7 +15,7 @@ export class ItemListComponent implements OnInit {
   search = '';
   isLoading = true;
 
-  constructor(private service: ItemService, private router: Router) { }
+  constructor(private service: ItemService, private router: Router, private alertService: AlertService) { }
 
   ngOnInit() {
     this.service.getItems()
@@ -24,12 +25,7 @@ export class ItemListComponent implements OnInit {
       }, error => {
         this.isLoading = false;
         console.log(error.error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Error al Obtener los Insumos',
-          text: 'Intente más Tarde',
-          confirmButtonColor: '#1ab394'
-        });
+        this.alertService.error('Error al Obtener los Insumos', false);
       });
   }
 
@@ -41,6 +37,7 @@ export class ItemListComponent implements OnInit {
   }
 
   onDelete(id: number) {
+    this.alertService.clear();
     Swal.fire({
       title: 'Desea Eliminar el Insumo?',
       // text: 'You won\'t be able to revert this!',
@@ -66,12 +63,7 @@ export class ItemListComponent implements OnInit {
             });
           }, error => {
             console.log(error);
-            Swal.fire({
-              icon: 'error',
-              title: 'Error al Eliminar el Insumo',
-              text: 'Intente Nuevamente',
-              confirmButtonColor: '#1ab394'
-            });
+            this.alertService.error('Error al Eliminar el Insumo', false);
           });
       }
     });

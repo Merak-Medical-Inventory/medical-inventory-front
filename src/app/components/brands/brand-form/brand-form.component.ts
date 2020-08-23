@@ -5,6 +5,7 @@ import {Brand, PostBrand} from '../../../entities/brand';
 import {BrandService} from '../../../services/brand/brand.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {AlertService} from '../../../services/alert/alert.service';
 
 @Component({
   selector: 'app-brand-form',
@@ -25,7 +26,7 @@ export class BrandFormComponent implements OnInit {
   modal = false;
 
   constructor(private service: BrandService, private modalService: NgbModal,
-              private router: Router, private route: ActivatedRoute) { }
+              private router: Router, private route: ActivatedRoute, private alertService: AlertService) { }
 
   ngOnInit() {
     this.modal = Boolean(localStorage.getItem('modal'));
@@ -53,6 +54,7 @@ export class BrandFormComponent implements OnInit {
       return;
     }
     this.isLoading = true;
+    this.alertService.clear();
     this.buttonDisabled = true;
     const body: PostBrand = {
       name: this.brandForm.value.name,
@@ -86,12 +88,7 @@ export class BrandFormComponent implements OnInit {
         }, error => {
           this.isLoading = false;
           this.buttonDisabled = false;
-          Swal.fire({
-            icon: 'error',
-            title: 'Error al Agregar la Marca',
-            text: 'Intente Nuevamente',
-            confirmButtonColor: '#1ab394'
-          });
+          this.alertService.error('Error al Agregar la Marca', false);
         });
     } else {
       this.service.updateBrand(body, this.brandId)
@@ -100,7 +97,7 @@ export class BrandFormComponent implements OnInit {
             Swal.fire({
               position: 'top-end',
               icon: 'success',
-              title: 'La Marca se ha Editado Exitosamente',
+              title: 'La Marca se ha Agregado Exitosamente',
               showConfirmButton: false,
               timer: 1500
             })
@@ -108,12 +105,7 @@ export class BrandFormComponent implements OnInit {
         }, error => {
           this.isLoading = false;
           this.buttonDisabled = false;
-          Swal.fire({
-            icon: 'error',
-            title: 'Error al Editar la Marca',
-            text: 'Intente Nuevamente',
-            confirmButtonColor: '#1ab394'
-          });
+          this.alertService.error('Error al Editar la Marca', false);
         });
     }
   }

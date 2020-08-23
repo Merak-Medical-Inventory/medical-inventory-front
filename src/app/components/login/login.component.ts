@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {FormGroup, FormControl, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {UserService} from '../../services/user/user.service';
+import {AlertService} from '../../services/alert/alert.service';
 import {UserLogin} from '../../entities/user';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
     password: new FormControl('', [Validators.required])
   });
 
-  constructor(private router: Router, private loginService: UserService) { }
+  constructor(private router: Router, private loginService: UserService, private alertService: AlertService) { }
 
   ngOnInit() {
   }
@@ -31,6 +31,7 @@ export class LoginComponent implements OnInit {
     if (this.LoginForm.invalid) {
       return;
     }
+    this.alertService.clear();
     this.submitted = true;
     this.isLoading = true;
     const body: UserLogin = {
@@ -47,13 +48,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/']).then();
       }, error => {
         this.isLoading = false;
-        Swal.fire({
-          icon: 'error',
-          title: 'Error al Iniciar Sesión',
-          text: 'Intente Nuevamente',
-          confirmButtonColor: '#1ab394'
-        });
-        this.LoginForm.reset();
+        this.alertService.error('Error al Iniciar Sesión', false);
       });
   }
 

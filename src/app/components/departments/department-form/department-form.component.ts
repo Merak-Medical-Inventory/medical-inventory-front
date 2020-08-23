@@ -4,6 +4,7 @@ import {DepartmentService} from '../../../services/department/department.service
 import {ActivatedRoute, Router} from '@angular/router';
 import Swal from 'sweetalert2';
 import {Department, PostDepartment} from '../../../entities/department';
+import {AlertService} from '../../../services/alert/alert.service';
 
 @Component({
   selector: 'app-department-form',
@@ -22,7 +23,8 @@ export class DepartmentFormComponent implements OnInit {
   submitted = false;
   buttonDisabled = false;
   isLoading = true;
-  constructor(private service: DepartmentService, private router: Router, private route: ActivatedRoute) { }
+  constructor(private service: DepartmentService, private router: Router, private route: ActivatedRoute,
+              private alertService: AlertService) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -50,6 +52,7 @@ export class DepartmentFormComponent implements OnInit {
       return;
     }
     this.isLoading = true;
+    this.alertService.clear();
     this.buttonDisabled = true;
     const body: PostDepartment = {
       code: this.departmentForm.value.code,
@@ -72,12 +75,7 @@ export class DepartmentFormComponent implements OnInit {
         }, error => {
           this.isLoading = false;
           this.buttonDisabled = false;
-          Swal.fire({
-            icon: 'error',
-            title: 'Error al Agregar el Departamento',
-            text: 'Intente Nuevamente',
-            confirmButtonColor: '#1ab394'
-          });
+          this.alertService.error('Error al Agregar el Departamento', false);
         });
     } else {
       this.service.updateDepartment(body, this.departmentId)
@@ -94,12 +92,7 @@ export class DepartmentFormComponent implements OnInit {
         }, error => {
           this.isLoading = false;
           this.buttonDisabled = false;
-          Swal.fire({
-            icon: 'error',
-            title: 'Error al Editar el Departamento',
-            text: 'Intente Nuevamente',
-            confirmButtonColor: '#1ab394'
-          });
+          this.alertService.error('Error al Editar el Departamento', false);
         });
     }
   }

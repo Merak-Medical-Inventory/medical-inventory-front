@@ -16,6 +16,7 @@ import {Presentation} from '../../../entities/presentation';
 import {CategoryFormComponent} from '../../categories/category-form/category-form.component';
 import {BrandFormComponent} from '../../brands/brand-form/brand-form.component';
 import {PresentationFormComponent} from '../../presentations/presentation-form/presentation-form.component';
+import {AlertService} from '../../../services/alert/alert.service';
 
 @Component({
   selector: 'app-item-form',
@@ -48,7 +49,7 @@ export class ItemFormComponent implements OnInit {
   item: Item;
 
   constructor(private service: ItemService, private categoryService: CategoryService, private brandService: BrandService,
-              private presentationService: PresentationService, private modalService: NgbModal,
+              private presentationService: PresentationService, private alertService: AlertService, private modalService: NgbModal,
               private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
@@ -97,9 +98,10 @@ export class ItemFormComponent implements OnInit {
   }
 
   async getSelectCategories() {
+    this.alertService.clear();
+    const array: Select2OptionData[] = [];
     this.categories = await this.categoryService.getCategories().toPromise().then(value => {
       this.categoriesData = value.body['data'];
-      const array: Select2OptionData[] = [];
       for (const category of this.categoriesData) {
         const data: Select2OptionData = {
           id: category.id.toString(),
@@ -108,7 +110,11 @@ export class ItemFormComponent implements OnInit {
         array.push(data);
       }
       return array;
-    });
+    })
+      .catch( error => {
+        this.alertService.error('Error al Obtener las Categorías', false);
+        return array;
+      });
   }
 
   categoryChanged(data: { value: string }) {
@@ -116,9 +122,10 @@ export class ItemFormComponent implements OnInit {
   }
 
   async getSelectBrands() {
+    this.alertService.clear();
+    const array: Select2OptionData[] = [];
     this.brands = await this.brandService.getBrands().toPromise().then(value => {
       this.brandsData = value.body['data'];
-      const array: Select2OptionData[] = [];
       for (const brand of this.brandsData) {
         const data: Select2OptionData = {
           id: brand.id.toString(),
@@ -127,7 +134,11 @@ export class ItemFormComponent implements OnInit {
         array.push(data);
       }
       return array;
-    });
+    })
+      .catch( error => {
+        this.alertService.error('Error al Obtener las Marcas', false);
+        return array;
+      });
   }
 
   brandChanged(data: { value: string }) {
@@ -135,9 +146,10 @@ export class ItemFormComponent implements OnInit {
   }
 
   async getSelectPresentations() {
+    this.alertService.clear();
+    const array: Select2OptionData[] = [];
     this.presentations = await this.presentationService.getPresentations().toPromise().then(value => {
       this.presentationsData = value.body['data'];
-      const array: Select2OptionData[] = [];
       for (const presentation of this.presentationsData) {
         const data: Select2OptionData = {
           id: presentation.id.toString(),
@@ -147,7 +159,11 @@ export class ItemFormComponent implements OnInit {
         array.push(data);
       }
       return array;
-    });
+    })
+      .catch( error => {
+        this.alertService.error('Error al Obtener las Presentaciones', false);
+        return array;
+      });
   }
 
   presentationChanged(data: { value: string }) {
@@ -202,6 +218,7 @@ export class ItemFormComponent implements OnInit {
       return;
     }
     this.isLoading = true;
+    this.alertService.clear();
     this.buttonDisabled = true;
     const body: PostItem = {
       code: this.itemForm.value.code,
@@ -228,12 +245,7 @@ export class ItemFormComponent implements OnInit {
         }, error => {
           this.isLoading = false;
           this.buttonDisabled = false;
-          Swal.fire({
-            icon: 'error',
-            title: 'Error al Agregar el Insumo',
-            text: 'Intente Nuevamente',
-            confirmButtonColor: '#1ab394'
-          });
+          this.alertService.error('Error al Agregar el Insumo', false);
         });
     } else {
       this.service.updateItem(body, this.itemId)
@@ -250,12 +262,7 @@ export class ItemFormComponent implements OnInit {
         }, error => {
           this.isLoading = false;
           this.buttonDisabled = false;
-          Swal.fire({
-            icon: 'error',
-            title: 'Error al Editar el Insumo',
-            text: 'Intente Nuevamente',
-            confirmButtonColor: '#1ab394'
-          });
+          this.alertService.error('Error al Editar el Insumo', false);
         });
     }
   }

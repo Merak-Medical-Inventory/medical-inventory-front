@@ -5,6 +5,7 @@ import {Category, PostCategory} from '../../../entities/category';
 import {CategoryService} from '../../../services/category/category.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {AlertService} from '../../../services/alert/alert.service';
 
 @Component({
   selector: 'app-category-form',
@@ -25,7 +26,7 @@ export class CategoryFormComponent implements OnInit {
   modal = false;
 
   constructor(private service: CategoryService, private modalService: NgbModal,
-              private router: Router, private route: ActivatedRoute) { }
+              private router: Router, private route: ActivatedRoute, private alertService: AlertService) { }
 
   ngOnInit() {
     this.modal = Boolean(localStorage.getItem('modal'));
@@ -53,6 +54,7 @@ export class CategoryFormComponent implements OnInit {
       return;
     }
     this.isLoading = true;
+    this.alertService.clear();
     this.buttonDisabled = true;
     const body: PostCategory = {
       name: this.categoryForm.value.name,
@@ -86,12 +88,7 @@ export class CategoryFormComponent implements OnInit {
         }, error => {
           this.isLoading = false;
           this.buttonDisabled = false;
-          Swal.fire({
-            icon: 'error',
-            title: 'Error al Agregar Categoría',
-            text: 'Intente Nuevamente',
-            confirmButtonColor: '#1ab394'
-          });
+          this.alertService.error('Error al Agregar la Categoría', false);
         });
     } else {
       this.service.updateCategory(body, this.categoryId)
@@ -108,12 +105,7 @@ export class CategoryFormComponent implements OnInit {
         }, error => {
           this.isLoading = false;
           this.buttonDisabled = false;
-          Swal.fire({
-            icon: 'error',
-            title: 'Error al Editar la Categoría',
-            text: 'Intente Nuevamente',
-            confirmButtonColor: '#1ab394'
-          });
+          this.alertService.error('Error al Editar la Categoría', false);
         });
     }
   }

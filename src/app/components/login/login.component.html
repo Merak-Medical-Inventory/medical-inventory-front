@@ -1,4 +1,5 @@
 <body class="gray-bg">
+  <app-alert></app-alert>
   <h1 class="text-center logo-name animated fadeInLeft">Merak</h1>
   <div class="middle-box text-center loginscreen   animated fadeInDown">
     <div>
@@ -23,7 +24,9 @@
           </label>
         </div>
         <div *ngIf="isLoading === true" class=" row align-items-center">
-          <mat-spinner class="mat-spinner" style="margin: 0 auto"></mat-spinner>
+          <div class="spiner-example">
+            <div class="sk-spinner sk-spinner-rotating-plane"></div>
+          </div>
         </div>
         <button type="submit" (click)="login()" class="btn btn-primary block full-width m-b">Iniciar Sesion</button>
       </form>

@@ -3,6 +3,7 @@ import { User } from 'src/app/entities/user';
 import { UserService } from 'src/app/services/user/user.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import {AlertService} from '../../../services/alert/alert.service';
 
 @Component({
   selector: 'app-users-list',
@@ -14,7 +15,7 @@ export class UsersListComponent implements OnInit {
   search = '';
   isLoading = true;
 
-  constructor(private service: UserService, private router: Router) { }
+  constructor(private service: UserService, private router: Router, private alertService: AlertService) { }
 
   ngOnInit() {
     this.service.getAllUsers()
@@ -25,12 +26,7 @@ export class UsersListComponent implements OnInit {
       }, error => {
         this.isLoading = false;
         console.log(error.error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Error al Obtener la Información de los usuarios',
-          text: 'Intente más Tarde',
-          confirmButtonColor: '#1ab394'
-        });
+        this.alertService.error('Error al Obtener los Usuarios', false);
       });
   }
 
@@ -67,12 +63,7 @@ export class UsersListComponent implements OnInit {
             });
           }, error => {
             console.log(error);
-            Swal.fire({
-              icon: 'error',
-              title: 'Error al Eliminar el Insumo',
-              text: 'Intente Nuevamente',
-              confirmButtonColor: '#1ab394'
-            });
+            this.alertService.error('Error al Eliminar el Usuario', false);
           });
       }
     });

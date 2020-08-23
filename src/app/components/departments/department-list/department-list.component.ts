@@ -3,6 +3,7 @@ import { Department } from '../../../entities/department';
 import { DepartmentService} from '../../../services/department/department.service';
 import Swal from 'sweetalert2';
 import {Router} from '@angular/router';
+import {AlertService} from '../../../services/alert/alert.service';
 
 @Component({
   selector: 'app-department-list',
@@ -14,7 +15,7 @@ export class DepartmentListComponent implements OnInit {
   search = '';
   isLoading = true;
 
-  constructor(private service: DepartmentService, private router: Router) { }
+  constructor(private service: DepartmentService, private router: Router, private alertService: AlertService) { }
 
   ngOnInit() {
     this.service.getDepartments()
@@ -24,12 +25,7 @@ export class DepartmentListComponent implements OnInit {
       }, error => {
         this.isLoading = false;
         console.log(error.error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Error al Obtener la Información de los Departamentos',
-          text: 'Intente más Tarde',
-          confirmButtonColor: '#1ab394'
-        });
+        this.alertService.error('Error al Obtener la Información de los Departamentos', false);
       });
   }
 
@@ -41,6 +37,7 @@ export class DepartmentListComponent implements OnInit {
   }
 
   onDelete(id: number) {
+    this.alertService.clear();
     Swal.fire({
       title: 'Desea Eliminar el Departamento?',
       // text: 'You won\'t be able to revert this!',
@@ -66,12 +63,7 @@ export class DepartmentListComponent implements OnInit {
             });
           }, error => {
             console.log(error);
-            Swal.fire({
-              icon: 'error',
-              title: 'Error al Eliminar el Departamento',
-              text: 'Intente Nuevamente',
-              confirmButtonColor: '#1ab394'
-            });
+            this.alertService.error('Error al Eliminar el Departamento', false);
           });
       }
     });

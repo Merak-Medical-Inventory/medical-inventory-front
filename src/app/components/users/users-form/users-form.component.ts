@@ -10,6 +10,7 @@ import { RolService } from "src/app/services/rol/rol.service";
 import Swal from "sweetalert2";
 import {Department} from '../../../entities/department';
 import {DepartmentService} from '../../../services/department/department.service';
+import {AlertService} from '../../../services/alert/alert.service';
 
 @Component({
   selector: "app-users-form",
@@ -56,7 +57,8 @@ export class UsersFormComponent implements OnInit {
     private rolService: RolService,
     private departmentService: DepartmentService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private alertService: AlertService
   ) {}
 
   ngOnInit() {
@@ -153,6 +155,7 @@ export class UsersFormComponent implements OnInit {
       return;
     }
     this.isLoading = true;
+    this.alertService.clear();
     this.buttonDisabled = true;
     let body: any;
     if (this.userForm.value.rol === '3' || this.userForm.value.rol === '4') {
@@ -196,11 +199,11 @@ export class UsersFormComponent implements OnInit {
     if (!this.userId) {
       this.service.postUser(body).subscribe(
         (response) => {
-          this.router.navigate(["/users"]).then((result) =>
+          this.router.navigate(['/users']).then((result) =>
             Swal.fire({
-              position: "top-end",
-              icon: "success",
-              title: "El usuario ha sido creado Exitosamente",
+              position: 'top-end',
+              icon: 'success',
+              title: 'El usuario ha sido creado Exitosamente',
               showConfirmButton: false,
               timer: 1500,
             })
@@ -209,22 +212,17 @@ export class UsersFormComponent implements OnInit {
         (error) => {
           this.buttonDisabled = false;
           this.isLoading = false;
-          Swal.fire({
-            icon: "error",
-            title: "Error al crear el usuario",
-            text: "Intente Nuevamente",
-            confirmButtonColor: "#1ab394",
-          });
+          this.alertService.error('Error al Crear el Usuario', false);
         }
       );
     } else {
       this.service.putUser(this.userId, body).subscribe(
         (response) => {
-          this.router.navigate(["/users"]).then((result) =>
+          this.router.navigate(['/users']).then((result) =>
             Swal.fire({
-              position: "top-end",
-              icon: "success",
-              title: "El usuario se ha Editado Exitosamente",
+              position: 'top-end',
+              icon: 'success',
+              title: 'El usuario se ha Editado Exitosamente',
               showConfirmButton: false,
               timer: 1500,
             })
@@ -233,12 +231,7 @@ export class UsersFormComponent implements OnInit {
         (error) => {
           this.buttonDisabled = false;
           this.isLoading = false;
-          Swal.fire({
-            icon: "error",
-            title: "Error al Editar el Usuario",
-            text: "Intente Nuevamente",
-            confirmButtonColor: "#1ab394",
-          });
+          this.alertService.error('Error al Editar el Usuario', false);
         }
       );
     }

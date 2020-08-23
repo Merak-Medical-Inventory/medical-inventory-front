@@ -3,6 +3,7 @@ import {Category} from '../../../entities/category';
 import {CategoryService} from '../../../services/category/category.service';
 import Swal from 'sweetalert2';
 import {Router} from '@angular/router';
+import {AlertService} from '../../../services/alert/alert.service';
 
 @Component({
   selector: 'app-category-list',
@@ -14,7 +15,7 @@ export class CategoryListComponent implements OnInit {
   search = '';
   isLoading = true;
 
-  constructor(private service: CategoryService, private router: Router) { }
+  constructor(private service: CategoryService, private router: Router, private alertService: AlertService) { }
 
   ngOnInit() {
     this.service.getCategories()
@@ -24,12 +25,7 @@ export class CategoryListComponent implements OnInit {
       }, error => {
         this.isLoading = false;
         console.log(error.error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Error al Obtener las Categorías',
-          text: 'Intente más Tarde',
-          confirmButtonColor: '#1ab394'
-        });
+        this.alertService.error('Error al Obtener las Categorías', false);
       });
   }
 
@@ -41,6 +37,7 @@ export class CategoryListComponent implements OnInit {
   }
 
   onDelete(id: number) {
+    this.alertService.clear();
     Swal.fire({
       title: 'Desea Eliminar la Categoría?',
       // text: 'You won\'t be able to revert this!',
@@ -66,12 +63,7 @@ export class CategoryListComponent implements OnInit {
             });
           }, error => {
             console.log(error);
-            Swal.fire({
-              icon: 'error',
-              title: 'Error al Eliminar la Categoría',
-              text: 'Intente Nuevamente',
-              confirmButtonColor: '#1ab394'
-            });
+            this.alertService.error('Error al Eliminar la Categorías', false);
           });
       }
     });

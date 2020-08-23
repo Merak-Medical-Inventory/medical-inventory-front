@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import Swal from 'sweetalert2';
 import {Presentation, PostPresentation} from '../../../entities/presentation';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {AlertService} from '../../../services/alert/alert.service';
 
 @Component({
   selector: 'app-presentation-form',
@@ -26,7 +27,7 @@ export class PresentationFormComponent implements OnInit {
   isLoading = true;
   modal = false;
 
-  constructor(private service: PresentationService, private modalService: NgbModal,
+  constructor(private service: PresentationService, private alertService: AlertService, private modalService: NgbModal,
               private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
@@ -56,6 +57,7 @@ export class PresentationFormComponent implements OnInit {
     if (this.presentationForm.invalid) {
       return;
     }
+    this.alertService.clear();
     this.isLoading = true;
     this.buttonDisabled = true;
     const body: PostPresentation = {
@@ -92,12 +94,7 @@ export class PresentationFormComponent implements OnInit {
         }, error => {
           this.isLoading = false;
           this.buttonDisabled = false;
-          Swal.fire({
-            icon: 'error',
-            title: 'Error al Agregar la Presentación',
-            text: 'Intente Nuevamente',
-            confirmButtonColor: '#1ab394'
-          });
+          this.alertService.error('Error al Agregar la Presentación', false);
         });
     } else {
       this.service.updatePresentation(body, this.presentationId)
@@ -114,12 +111,7 @@ export class PresentationFormComponent implements OnInit {
         }, error => {
           this.isLoading = false;
           this.buttonDisabled = false;
-          Swal.fire({
-            icon: 'error',
-            title: 'Error al Editar la Presentación',
-            text: 'Intente Nuevamente',
-            confirmButtonColor: '#1ab394'
-          });
+          this.alertService.error('Error al Editar la Presentación', false);
         });
     }
   }

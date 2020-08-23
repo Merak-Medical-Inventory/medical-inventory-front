@@ -1,5 +1,6 @@
 <app-sidebar>
   <ng-container class="body">
+    <app-alert></app-alert>
     <div class="row wrapper border-bottom white-bg page-heading">
       <div class="col-lg-10">
         <h2>Departamentos</h2>
@@ -26,12 +27,14 @@
                 </div>
                 <div class="align-items-end col-sm-4">
                   <label class="col-sm-12 col-form-label">
-                    <input class="form-control" type ="search" placeholder="Busqueda..." [(ngModel)]="search">
+                    <input class="form-control" type ="search" placeholder="Búsqueda..." [(ngModel)]="search">
                   </label>
                 </div>
               </div>
               <div *ngIf="isLoading === true" class=" row align-items-center">
-                <mat-spinner class="mat-spinner" style="margin: 0 auto"></mat-spinner>
+                <div class="spiner-example">
+                  <div class="sk-spinner sk-spinner-rotating-plane"></div>
+                </div>
               </div>
               <p *ngIf="isLoading === false && (departments | filterTable:search).length == 0"
                  style="margin-top: 2.5%">No hay datos disponibles.</p>

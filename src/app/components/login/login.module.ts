@@ -6,19 +6,21 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {MatProgressSpinnerModule} from '@angular/material';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {UserService} from '../../services/user/user.service';
+import {LayoutModule} from '../layout/layout.module';
 
 
 @NgModule({
   declarations: [
     LoginComponent
   ],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    LoginRoutingModule,
-    MatProgressSpinnerModule,
-    HttpClientModule
-  ],
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        LoginRoutingModule,
+        MatProgressSpinnerModule,
+        HttpClientModule,
+        LayoutModule
+    ],
   providers : [UserService]
 })
 export class LoginModule { }

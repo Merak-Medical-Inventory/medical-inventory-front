@@ -1,5 +1,6 @@
 <app-sidebar *ngIf="!this.modal; else modalForm">
   <ng-container class="body">
+    <app-alert></app-alert>
     <div class="row wrapper border-bottom white-bg page-heading">
       <div class="col-lg-10">
         <h2>Marcas</h2>
@@ -70,11 +71,14 @@
 </app-sidebar>
 <ng-template #modalForm>
   <ng-container class="body">
+    <app-alert></app-alert>
     <div class="wrapper wrapper-content animated fadeInRight">
       <div class="ibox">
         <div class="ibox-content">
           <div *ngIf="isLoading === true" class=" row align-items-center">
-            <mat-spinner class="mat-spinner" style="margin: 0 auto"></mat-spinner>
+            <div class="spiner-example">
+              <div class="sk-spinner sk-spinner-rotating-plane"></div>
+            </div>
           </div>
           <form [formGroup]="brandForm" (ngSubmit)="onSubmit()">
             <div class="row">

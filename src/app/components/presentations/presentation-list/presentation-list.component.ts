@@ -3,6 +3,7 @@ import { Presentation } from '../../../entities/presentation';
 import { PresentationService} from '../../../services/presentation/presentation.service';
 import Swal from 'sweetalert2';
 import {Router} from '@angular/router';
+import {AlertService} from '../../../services/alert/alert.service';
 
 @Component({
   selector: 'app-presentation-list',
@@ -14,7 +15,7 @@ export class PresentationListComponent implements OnInit {
   search = '';
   isLoading = true;
 
-  constructor(private service: PresentationService, private router: Router) { }
+  constructor(private service: PresentationService, private alertService: AlertService, private router: Router) { }
 
   ngOnInit() {
     this.service.getPresentations()
@@ -24,12 +25,7 @@ export class PresentationListComponent implements OnInit {
       }, error => {
         this.isLoading = false;
         console.log(error.error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Error al Obtener la Información de las Presentaciones',
-          text: 'Intente más Tarde',
-          confirmButtonColor: '#1ab394'
-        });
+        this.alertService.error('Error al Obtener la Información de las Presentaciones', false);
       });
   }
 
@@ -41,6 +37,7 @@ export class PresentationListComponent implements OnInit {
   }
 
   onDelete(id: number) {
+    this.alertService.clear();
     Swal.fire({
       title: 'Desea Eliminar el Presentación?',
       // text: 'You won\'t be able to revert this!',
@@ -66,12 +63,7 @@ export class PresentationListComponent implements OnInit {
             });
           }, error => {
             console.log(error);
-            Swal.fire({
-              icon: 'error',
-              title: 'Error al Eliminar la Presentación',
-              text: 'Intente Nuevamente',
-              confirmButtonColor: '#1ab394'
-            });
+            this.alertService.error('Error al Eliminar la Presentación', false);
           });
       }
     });
