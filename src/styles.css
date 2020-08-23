@@ -5214,6 +5214,8 @@ a.close-canvas-menu:hover {
   z-index: 2050 !important;
 }
 .spiner-example {
+  width: 50%;
+  margin: 0 auto;
   height: 200px;
   padding-top: 70px;
 }
