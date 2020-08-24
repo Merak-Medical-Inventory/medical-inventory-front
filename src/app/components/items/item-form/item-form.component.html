@@ -47,32 +47,6 @@
                   </label>
                 </div>
                 <div class="form-group row align-items-center">
-                  <label class="col-sm-12 col-form-label">Nombre
-                    <input type="text"
-                           formControlName="name"
-                           class="form-control"
-                           placeholder="Nombre"
-                           [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
-                    <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
-                      <div *ngIf="f.name.errors.required; else maxLength">El Nombre es Requerido</div>
-                      <ng-template #maxLength>El Nombre no Debe Exceder a 20 Caracteres</ng-template>
-                    </div>
-                  </label>
-                </div>
-                <div class="form-group row align-items-center">
-                  <label class="col-sm-12 col-form-label">Descripción
-                    <input type="text"
-                           formControlName="description"
-                           class="form-control"
-                           placeholder="Descripción"
-                           [ngClass]="{ 'is-invalid': submitted && f.description.errors }">
-                    <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
-                      <div *ngIf="f.description.errors.required; else maxLength">La Descripción es Requerida</div>
-                      <ng-template #maxLength>La Descripción no Debe Exceder a 40 Caracteres</ng-template>
-                    </div>
-                  </label>
-                </div>
-                <div class="form-group row align-items-center">
                   <label class="col-sm-12 col-form-label">Número de Catálogo
                     <input type="text"
                            formControlName="brand_code"
@@ -83,6 +57,23 @@
                       <div *ngIf="f.brand_code.errors.required; else maxLength">El Número de Catálogo es Requerido</div>
                       <ng-template #maxLength>El Número de Catálogo no Debe Exceder a 20 Caracteres</ng-template>
                     </div>
+                  </label>
+                </div>
+                <div class="form-group row align-items-center">
+                  <label class="col-sm-12 col-form-label">Insumo General
+                    <ng-select2 formControlName="generalItem" width="100%"
+                                [ngClass]="{'is-invalid': submitted && f.generalItem.errors }"
+                                [data]="generalItems"
+                                [options]="generalItemOptions"
+                                (valueChanged)="generalItemChanged($event)">
+                    </ng-select2>
+                    <div *ngIf="submitted && f.generalItem.errors" class="invalid-feedback">
+                      <div *ngIf="f.generalItem.errors.required">El Insumo General es Requerido</div>
+                    </div>
+                    <a (click) = "addGeneralItem()"
+                       class="btn btn-sm btn-outline-warning">
+                      <span class="fa fa-plus"></span>
+                    </a>
                   </label>
                 </div>
                 <div class="form-group row align-items-center">

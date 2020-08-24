@@ -19,6 +19,9 @@ import {BrandFormComponent} from '../brands/brand-form/brand-form.component';
 import {PresentationFormComponent} from '../presentations/presentation-form/presentation-form.component';
 import {BrandsModule} from '../brands/brands.module';
 import {PresentationsModule} from '../presentations/presentations.module';
+import {GeneralItemService} from '../../services/generalItem/general-item.service';
+import {GeneralItemFormComponent} from '../generalItems/general-item-form/general-item-form.component';
+import {GeneralItemsModule} from '../generalItems/general-items.module';
 
 
 @NgModule({
@@ -32,12 +35,13 @@ import {PresentationsModule} from '../presentations/presentations.module';
     MatPaginatorModule,
     ReactiveFormsModule,
     NgSelect2Module,
+    GeneralItemsModule,
     CategoriesModule,
     BrandsModule,
     PresentationsModule,
     NgbModule
   ],
-  providers: [ItemService, CategoryService, BrandService, PresentationService],
-  entryComponents: [CategoryFormComponent, BrandFormComponent, PresentationFormComponent]
+  providers: [ItemService, GeneralItemService, CategoryService, BrandService, PresentationService],
+  entryComponents: [GeneralItemFormComponent, CategoryFormComponent, BrandFormComponent, PresentationFormComponent]
 })
 export class ItemsModule { }

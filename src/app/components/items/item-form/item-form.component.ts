@@ -17,6 +17,9 @@ import {CategoryFormComponent} from '../../categories/category-form/category-for
 import {BrandFormComponent} from '../../brands/brand-form/brand-form.component';
 import {PresentationFormComponent} from '../../presentations/presentation-form/presentation-form.component';
 import {AlertService} from '../../../services/alert/alert.service';
+import {GeneralItem} from '../../../entities/generalItem';
+import {GeneralItemService} from '../../../services/generalItem/general-item.service';
+import {GeneralItemFormComponent} from '../../generalItems/general-item-form/general-item-form.component';
 
 @Component({
   selector: 'app-item-form',
@@ -26,13 +29,15 @@ import {AlertService} from '../../../services/alert/alert.service';
 export class ItemFormComponent implements OnInit {
   itemForm = new FormGroup({
     code: new FormControl('', [Validators.required, Validators.maxLength(20)]),
-    name : new FormControl('', [Validators.required, Validators.maxLength(20)]),
-    description : new FormControl('', [Validators.required, Validators.maxLength(40)]),
     brand_code:  new FormControl('', [Validators.required, Validators.maxLength(20)]),
+    generalItem: new FormControl('', [Validators.required]),
     category: new FormControl('', [Validators.required]),
     brand: new FormControl('', [Validators.required]),
     presentation: new FormControl('', [Validators.required])
   });
+  generalItemOptions: Options;
+  generalItems: Select2OptionData[] = [];
+  generalItemsData: GeneralItem[] = [];
   categoryOptions: Options;
   categories: Select2OptionData[] = [];
   categoriesData: Category[] = [];
@@ -48,11 +53,16 @@ export class ItemFormComponent implements OnInit {
   isLoading = true;
   item: Item;
 
-  constructor(private service: ItemService, private categoryService: CategoryService, private brandService: BrandService,
+  constructor(private service: ItemService, private generalItemService: GeneralItemService,
+              private categoryService: CategoryService, private brandService: BrandService,
               private presentationService: PresentationService, private alertService: AlertService, private modalService: NgbModal,
               private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.generalItemOptions = {
+      width: '100%',
+      placeholder: {id: '', text: 'Seleccione el Insumo General...'}
+    };
     this.categoryOptions = {
       width: '100%',
       placeholder: {id: '', text: 'Seleccione la Categoría...'}
@@ -68,26 +78,27 @@ export class ItemFormComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.itemId = parseInt(params.itemId, 0);
     });
-    this.getSelectCategories().then(() => {
-      this.getSelectBrands().then(() => {
-        this.getSelectPresentations().then(() => {
-          if (this.itemId) {
-            this.service.getItemById(this.itemId).subscribe(response => {
-              this.item = response.body['data'];
-              console.log(response);
-              this.f.code.setValue(this.item.code);
-              this.f.name.setValue(this.item.name);
-              this.f.description.setValue(this.item.description);
-              this.f.brand_code.setValue(this.item.brand_code);
-              this.f.category.setValue(this.item.category.id);
-              this.f.brand.setValue(this.item.brand.id);
-              this.f.presentation.setValue(this.item.presentation.id);
-            });
-          }
-          this.isLoading = false;
-          console.log(this.categories);
-          console.log(this.brands);
-          console.log(this.presentations);
+    this.getSelectGeneralItem().then(() => {
+      this.getSelectCategories().then(() => {
+        this.getSelectBrands().then(() => {
+          this.getSelectPresentations().then(() => {
+            if (this.itemId) {
+              this.service.getItemById(this.itemId).subscribe(response => {
+                this.item = response.body['data'];
+                console.log(response);
+                this.f.code.setValue(this.item.code);
+                this.f.brand_code.setValue(this.item.brand_code);
+                this.f.generalItem.setValue(this.item.generalItem.id);
+                this.f.category.setValue(this.item.category.id);
+                this.f.brand.setValue(this.item.brand.id);
+                this.f.presentation.setValue(this.item.presentation.id);
+              });
+            }
+            this.isLoading = false;
+            console.log(this.categories);
+            console.log(this.brands);
+            console.log(this.presentations);
+          });
         });
       });
     });
@@ -95,6 +106,30 @@ export class ItemFormComponent implements OnInit {
 
   get f() {
     return this.itemForm.controls;
+  }
+
+  async getSelectGeneralItem() {
+    this.alertService.clear();
+    const array: Select2OptionData[] = [];
+    this.generalItems = await this.generalItemService.getGeneralItems().toPromise().then(value => {
+      this.generalItemsData = value.body['data'];
+      for (const generalItem of this.generalItemsData) {
+        const data: Select2OptionData = {
+          id: generalItem.id.toString(),
+          text: generalItem.name
+        };
+        array.push(data);
+      }
+      return array;
+    })
+      .catch( error => {
+        this.alertService.error('Error al Obtener los Insumos Generales', false);
+        return array;
+      });
+  }
+
+  generalItemChanged(data: { value: string }) {
+    this.f.generalItem.setValue(data.value);
   }
 
   async getSelectCategories() {
@@ -170,6 +205,20 @@ export class ItemFormComponent implements OnInit {
     this.f.presentation.setValue(data.value);
   }
 
+  addGeneralItem() {
+    localStorage.setItem('modal', 'true');
+    const modalRef: NgbModalRef = this.modalService.open(GeneralItemFormComponent, { centered: true });
+    modalRef.componentInstance.isClient = true;
+    modalRef.result.then(() => {
+      localStorage.removeItem('modal');
+    }, () => {
+      this.isLoading = true;
+      this.getSelectGeneralItem().then(() => {
+        this.isLoading = false;
+      });
+    });
+  }
+
   addCategory() {
     localStorage.setItem('modal', 'true');
     const modalRef: NgbModalRef = this.modalService.open(CategoryFormComponent, { centered: true });
@@ -222,9 +271,8 @@ export class ItemFormComponent implements OnInit {
     this.buttonDisabled = true;
     const body: PostItem = {
       code: this.itemForm.value.code,
-      name: this.itemForm.value.name,
-      description: this.itemForm.value.description,
       brand_code: this.itemForm.value.brand_code,
+      generalItem: Number(this.itemForm.value.generalItem),
       category: Number(this.itemForm.value.category),
       brand: Number(this.itemForm.value.brand),
       presentation: Number(this.itemForm.value.presentation)

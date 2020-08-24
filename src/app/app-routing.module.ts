@@ -42,6 +42,11 @@ const routes: Routes = [
     canActivate: [AdminAuthGuard]
   },
   {
+    path: 'generalItems',
+    loadChildren: './components/generalItems/general-items.module#GeneralItemsModule',
+    canActivate: [AdminAuthGuard]
+  },
+  {
     path: 'items',
     loadChildren: './components/items/items.module#ItemsModule',
     canActivate: [AdminAuthGuard]

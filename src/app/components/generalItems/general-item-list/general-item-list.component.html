@@ -3,13 +3,13 @@
     <app-alert></app-alert>
     <div class="row wrapper border-bottom white-bg page-heading">
       <div class="col-lg-10">
-        <h2>Insumos</h2>
+        <h2>Insumos Generales</h2>
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
             <a href="">Home</a>
           </li>
           <li class="breadcrumb-item active">
-            <strong><a href=""> Insumos</a></strong>
+            <strong><a href="">Insumos Generales</a></strong>
           </li>
         </ol>
       </div>
@@ -36,35 +36,26 @@
                   <div class="sk-spinner sk-spinner-rotating-plane"></div>
                 </div>
               </div>
-              <p *ngIf="isLoading === false && (items | filterTable:search).length == 0"
+              <p *ngIf="isLoading === false && (generalItems | filterTable:search).length == 0"
                  style="margin-top: 2.5%">No hay datos disponibles.</p>
-              <div *ngIf="isLoading === false && (items | filterTable:search).length != 0" class="table-responsive">
+              <div *ngIf="isLoading === false && (generalItems | filterTable:search).length != 0" class="table-responsive">
                 <table class="table table-striped">
                   <thead>
                   <tr>
-                    <th>Código</th>
                     <th>Nombre</th>
-                    <th>Número de Catálogo</th>
-                    <th>Categoría</th>
-                    <th>Marca</th>
-                    <th>Presentación</th>
+                    <th>Descripción</th>
                   </tr>
                   </thead>
                   <tbody>
-                  <tr *ngFor="let item of (items | filterTable:search)">
-                    <td>{{ item.code }}</td>
-                    <td>{{ item.generalItem.name }}</td>
-                    <td>{{ item.brand_code }}</td>
-                    <td>{{ item.category.name }}</td>
-                    <td>{{ item.brand.name }}</td>
-                    <td>{{ item.presentation.quantity + ' ' + item.presentation.name + ' ' +
-                      item.presentation.measure_value + ' ' + item.presentation.measure}}</td>
+                  <tr *ngFor="let generalItem of (generalItems | filterTable:search)">
+                    <td>{{ generalItem.name }}</td>
+                    <td>{{ generalItem.description }}</td>
                     <td>
-                      <a [routerLink]="['/items/edit', item.id]"
+                      <a [routerLink]="['/generalItems/edit', generalItem.id]"
                          class="btn btn-sm btn-outline-warning">
                         <span class="fa fa-pencil"></span>
                       </a>
-                      <a (click)="onDelete(item.id)"
+                      <a (click)="onDelete(generalItem.id)"
                          class="btn btn-sm btn-outline-warning">
                         <span class="fa fa-trash"></span>
                       </a>
