@@ -50,6 +50,17 @@
             <li><a [routerLink]="'/presentations'">Presentaciones</a></li>
           </ul>
         </li>
+        <li [ngClass]="{'mm-active border-left-green':ariaExpanded.orders}"
+            (click)="changeAriaExpanded('orders')">
+          <a aria-expanded="ariaExpanded.orders"><i class="fa fa-th-large"></i> <span
+            class="nav-label">Pedidos</span> <span
+            class="fa arrow"></span></a>
+          <ul class="nav nav-second-level mm-collapse">
+            <li *ngIf="rol.name === roles.admin || rol.name === roles.superUser">
+              <a [routerLink]="'/providers'">Proveedores</a>
+            </li>
+          </ul>
+        </li>
         <li [ngClass]="{'mm-active border-left-green':ariaExpanded.departments}"
             (click)="changeAriaExpanded('departments')"
             *ngIf="rol.name === roles.superUser">

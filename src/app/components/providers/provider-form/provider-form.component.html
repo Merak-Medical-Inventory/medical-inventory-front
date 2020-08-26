@@ -1,0 +1,116 @@
+<app-sidebar>
+  <ng-container class="body">
+    <app-alert></app-alert>
+    <div class="row wrapper border-bottom white-bg page-heading">
+      <div class="col-lg-10">
+        <h2>Proveedores</h2>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="">Home</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a routerLink="/providers">Proveedores</a>
+          </li>
+          <li *ngIf="!this.providerId" class="breadcrumb-item active">
+            <strong>Agregar</strong>
+          </li>
+          <li *ngIf="this.providerId" class="breadcrumb-item active">
+            <strong>Editar</strong>
+          </li>
+        </ol>
+      </div>
+      <div class="col-lg-2">
+      </div>
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight">
+      <div class="ibox">
+        <div class="ibox-content">
+          <div *ngIf="isLoading === true" class=" row align-items-center">
+            <div class="spiner-example">
+              <div class="sk-spinner sk-spinner-rotating-plane"></div>
+            </div>
+          </div>
+          <form [formGroup]="providerForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group row align-items-center">
+                  <label class="col-sm-12 col-form-label">Nombre
+                    <input type="text"
+                           formControlName="name"
+                           class="form-control"
+                           placeholder="Nombre"
+                           [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
+                    <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                      <div *ngIf="f.name.errors.required; else maxLength">El Nombre es Requerido</div>
+                      <ng-template #maxLength>El Nombre no Debe Exceder a 20 Caracteres</ng-template>
+                    </div>
+                  </label>
+                </div>
+                <div class="form-group row align-items-center">
+                  <label class="col-sm-12 col-form-label">Apellido
+                    <input type="text"
+                           formControlName="last_name"
+                           class="form-control"
+                           placeholder="Apellido"
+                           [ngClass]="{ 'is-invalid': submitted && f.last_name.errors }">
+                    <div *ngIf="submitted && f.last_name.errors" class="invalid-feedback">
+                      <div *ngIf="f.last_name.errors.required; else maxLength">El Apellido es Requerido</div>
+                      <ng-template #maxLength>El Apellido no Debe Exceder a 20 Caracteres</ng-template>
+                    </div>
+                  </label>
+                </div>
+                <div class="form-group row align-items-center">
+                  <label class="col-sm-12 col-form-label">Compañía
+                    <input type="text"
+                           formControlName="company"
+                           class="form-control"
+                           placeholder="Compañía"
+                           [ngClass]="{ 'is-invalid': submitted && f.company.errors }">
+                    <div *ngIf="submitted && f.company.errors" class="invalid-feedback">
+                      <div *ngIf="f.company.errors.required; else maxLength">La Compañía es Requerido</div>
+                      <ng-template #maxLength>La Compañía no Debe Exceder a 20 Caracteres</ng-template>
+                    </div>
+                  </label>
+                </div>
+                <div class="form-group row align-items-center">
+                  <label class="col-sm-12 col-form-label">Número de Teléfono
+                    <input type="tel"
+                           formControlName="phone_number"
+                           class="form-control"
+                           placeholder="Formato: 212-123-4567"
+                           [ngClass]="{ 'is-invalid': submitted && f.phone_number.errors }">
+                    <div *ngIf="submitted && f.phone_number.errors" class="invalid-feedback">
+                      <div *ngIf="f.phone_number.errors.required; else pattern">El Número de Teléfono es Requerido</div>
+                      <ng-template #pattern>El Número de Teléfono no Cumple con el Formato Adecuado (Ejemplo: 212-123-4567)</ng-template>
+                    </div>
+                  </label>
+                </div>
+                <div class="form-group row align-items-center">
+                  <label class="col-sm-12 col-form-label">Insumos
+                    <ng-select2 formControlName="items" width="100%"
+                                id="items"
+                                [ngClass]="{'is-invalid': submitted && f.items.errors }"
+                                [data]="items"
+                                [options]="itemOptions"
+                                (valueChanged)="itemsChanged($event)">
+                    </ng-select2>
+                    <div *ngIf="submitted && f.items.errors" class="invalid-feedback">
+                      <div *ngIf="f.items.errors.required">Al Menos un Insumo es Requerido</div>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group row">
+              <div class="col-sm-11"></div>
+              <div class="form-group">
+                <button class="btn btn-primary btn-sm" [disabled]="buttonDisabled" type="submit">Guardar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</app-sidebar>

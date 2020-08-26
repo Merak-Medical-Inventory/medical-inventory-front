@@ -50,6 +50,11 @@ const routes: Routes = [
     path: 'items',
     loadChildren: './components/items/items.module#ItemsModule',
     canActivate: [AdminAuthGuard]
+  },
+  {
+    path: 'providers',
+    loadChildren: './components/providers/providers.module#ProvidersModule',
+    canActivate: [AdminAuthGuard]
   }
 ];
 
