@@ -19,8 +19,13 @@ export class ProviderFormComponent implements OnInit {
   providerForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.maxLength(20)]),
     last_name:  new FormControl('', [Validators.required, Validators.maxLength(20)]),
+    email: new FormControl("", [Validators.required, Validators.email, Validators.maxLength(20)]),
+    description: new FormControl('', [Validators.required, Validators.maxLength(40)]),
     company:  new FormControl('', [Validators.required, Validators.maxLength(20)]),
-    phone_number:  new FormControl('', [Validators.required, Validators.pattern('[0-9]{3}-[0-9]{3}-[0-9]{4}')]),
+    country: new FormControl('', [Validators.required, Validators.maxLength(20)]),
+    city: new FormControl('', [Validators.required, Validators.maxLength(20)]),
+    address: new FormControl('', [Validators.required, Validators.maxLength(40)]),
+    phone_number:  new FormControl('', [Validators.required, Validators.pattern('[0-9]{2}-[0-9]{3}-[0-9]{3}-[0-9]{4}')]),
     items: new FormControl('', [Validators.required])
   });
   itemOptions: Options;
@@ -51,7 +56,12 @@ export class ProviderFormComponent implements OnInit {
           console.log(response);
           this.f.name.setValue(this.provider.name);
           this.f.last_name.setValue(this.provider.last_name);
+          this.f.email.setValue(this.provider.email);
+          this.f.description.setValue(this.provider.description);
           this.f.company.setValue(this.provider.company);
+          this.f.country.setValue(this.provider.country);
+          this.f.city.setValue(this.provider.city);
+          this.f.address.setValue(this.provider.address);
           this.f.phone_number.setValue(this.provider.phone_number);
           console.log(this.provider.items.map(i => i.id));
           this.f.items.setValue(this.provider.items.map(i => i.id).map(value => value.toString()));
@@ -101,7 +111,12 @@ export class ProviderFormComponent implements OnInit {
     const body: PostProvider = {
       name: this.providerForm.value.name,
       last_name: this.providerForm.value.last_name,
+      email: this.providerForm.value.email,
+      description: this.providerForm.value.description,
       company: this.providerForm.value.company,
+      country: this.providerForm.value.country,
+      city: this.providerForm.value.city,
+      address: this.providerForm.value.address,
       phone_number: this.providerForm.value.phone_number,
       items: this.providerForm.value.items.map(Number)
     };

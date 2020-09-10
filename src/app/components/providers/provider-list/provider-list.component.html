@@ -42,18 +42,22 @@
                 <table class="table table-striped">
                   <tr>
                     <th>Nombre</th>
-                    <th>Apellido</th>
+                    <th>Email</th>
+                    <th>Descripción</th>
                     <th>Compañía</th>
+                    <th>Localidad</th>
+                    <th>Dirección</th>
                     <th>Número de Teléfono</th>
-                    <th>Insumos</th>
                   </tr>
                   <tbody>
                   <tr *ngFor="let provider of (providers | filterTable:search)">
-                    <td>{{ provider.name }}</td>
-                    <td>{{ provider.last_name }}</td>
+                    <td>{{ provider.name + ' ' +  provider.last_name }}</td>
+                    <td>{{ provider.email }}</td>
+                    <td>{{ provider.description }}</td>
                     <td>{{ provider.company }}</td>
-                    <td>{{ provider.phone_number }}</td>
-                    <td>{{ showItems(provider)}}</td>
+                    <td>{{ provider.city + ' ' +  provider.country }}</td>
+                    <td>{{ provider.address }}</td>
+                    <td>{{ provider.phone_number }}</td> 
                     <td>
                       <a [routerLink]="['/providers/edit', provider.id]"
                          class="btn btn-sm btn-outline-warning">

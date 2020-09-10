@@ -60,6 +60,32 @@
                   </label>
                 </div>
                 <div class="form-group row align-items-center">
+                  <label class="col-sm-12 col-form-label">Email
+                    <input type="email"
+                           formControlName="email"
+                           class="form-control"
+                           placeholder="Email"
+                           [ngClass]="{ 'is-invalid': submitted && f.email.errors }">
+                    <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                      <div *ngIf="f.email.errors.required; else email">El Email es Requerido</div>
+                      <ng-template #email>El Email no Tiene una Dirección Válida</ng-template>
+                    </div>
+                  </label>
+                </div>
+                <div class="form-group row align-items-center">
+                  <label class="col-sm-12 col-form-label">Descripción
+                    <input type="text"
+                           formControlName="description"
+                           class="form-control"
+                           placeholder="Descripción"
+                           [ngClass]="{ 'is-invalid': submitted && f.description.errors }">
+                    <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+                      <div *ngIf="f.description.errors.required; else maxLength">La Descripción es Requerida</div>
+                      <ng-template #maxLength>La Descripción no Debe Exceder a 40 Caracteres</ng-template>
+                    </div>
+                  </label>
+                </div>
+                <div class="form-group row align-items-center">
                   <label class="col-sm-12 col-form-label">Compañía
                     <input type="text"
                            formControlName="company"
@@ -73,15 +99,54 @@
                   </label>
                 </div>
                 <div class="form-group row align-items-center">
+                  <label class="col-sm-12 col-form-label">País
+                    <input type="text"
+                           formControlName="country"
+                           class="form-control"
+                           placeholder="País"
+                           [ngClass]="{ 'is-invalid': submitted && f.country.errors }">
+                    <div *ngIf="submitted && f.country.errors" class="invalid-feedback">
+                      <div *ngIf="f.country.errors.required; else maxLength">El País es Requerido</div>
+                      <ng-template #maxLength>El País no Debe Exceder a 20 Caracteres</ng-template>
+                    </div>
+                  </label>
+                </div>
+                <div class="form-group row align-items-center">
+                  <label class="col-sm-12 col-form-label">Ciudad
+                    <input type="text"
+                           formControlName="city"
+                           class="form-control"
+                           placeholder="Ciudad"
+                           [ngClass]="{ 'is-invalid': submitted && f.city.errors }">
+                    <div *ngIf="submitted && f.city.errors" class="invalid-feedback">
+                      <div *ngIf="f.city.errors.required; else maxLength">La Ciudad es Requerida</div>
+                      <ng-template #maxLength>La Ciudad no Debe Exceder a 20 Caracteres</ng-template>
+                    </div>
+                  </label>
+                </div>
+                <div class="form-group row align-items-center">
+                  <label class="col-sm-12 col-form-label">Dirección
+                    <input type="text"
+                           formControlName="address"
+                           class="form-control"
+                           placeholder="Dirección"
+                           [ngClass]="{ 'is-invalid': submitted && f.address.errors }">
+                    <div *ngIf="submitted && f.address.errors" class="invalid-feedback">
+                      <div *ngIf="f.address.errors.required; else maxLength">La Dirección es Requerida</div>
+                      <ng-template #maxLength>La Dirección no Debe Exceder a 40 Caracteres</ng-template>
+                    </div>
+                  </label>
+                </div>
+                <div class="form-group row align-items-center">
                   <label class="col-sm-12 col-form-label">Número de Teléfono
                     <input type="tel"
                            formControlName="phone_number"
                            class="form-control"
-                           placeholder="Formato: 212-123-4567"
+                           placeholder="Formato: 58(Codigo País)-212-123-4567"
                            [ngClass]="{ 'is-invalid': submitted && f.phone_number.errors }">
                     <div *ngIf="submitted && f.phone_number.errors" class="invalid-feedback">
                       <div *ngIf="f.phone_number.errors.required; else pattern">El Número de Teléfono es Requerido</div>
-                      <ng-template #pattern>El Número de Teléfono no Cumple con el Formato Adecuado (Ejemplo: 212-123-4567)</ng-template>
+                      <ng-template #pattern>El Número de Teléfono no Cumple con el Formato Adecuado (Ejemplo: 58(Codigo País)-212-123-4567)</ng-template>
                     </div>
                   </label>
                 </div>

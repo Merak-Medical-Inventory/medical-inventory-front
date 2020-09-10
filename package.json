@@ -42,6 +42,7 @@
     "ngb-modal": "^2.0.3",
     "path": "^0.12.7",
     "popper.js": "^1.16.1",
+    "primeng": "^10.0.0",
     "rxjs": "^6.4.0",
     "select2": "^4.0.13",
     "slimscroll": "^0.9.1",
