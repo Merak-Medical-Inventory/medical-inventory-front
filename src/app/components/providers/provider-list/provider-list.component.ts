@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Provider} from '../../../entities/provider';
+import {Item} from '../../../entities/item';
 import {ProviderService} from '../../../services/provider/provider.service';
 import Swal from 'sweetalert2';
 import {Router} from '@angular/router';
@@ -22,7 +23,7 @@ export class ProviderListComponent implements OnInit {
       .subscribe(response => {
         this.isLoading = false;
         this.providers = response.body['data'];
-        console.log(response.body['data']);
+        console.log(this.providers);
       }, error => {
         this.isLoading = false;
         console.log(error.error);
@@ -30,14 +31,13 @@ export class ProviderListComponent implements OnInit {
       });
   }
 
-  showItems(provider: Provider): string {
-    let itemsDisplay = '';
-    for (const item of provider.items) {
-      itemsDisplay = itemsDisplay + item.generalItem.name + ' ' +  item.brand.name + ' ' + item.presentation.quantity + ' '
-        + item.presentation.name + ' ' + item.presentation.measure_value + ' ' + item.presentation.measure + ', ';
-    }
-    itemsDisplay = itemsDisplay.slice(0, -2);
-    return itemsDisplay;
+  showItem(item: Item): string {
+    let itemDisplay = '';
+    itemDisplay = itemDisplay + item.generalItem.name + ' ' +  
+        item.brand.name + ' ' + item.presentation.quantity + ' '
+        + item.presentation.name + ' ' + item.presentation.measure_value
+        + ' ' + item.presentation.measure
+    return itemDisplay;
   }
 
   reloadCurrentRoute() {

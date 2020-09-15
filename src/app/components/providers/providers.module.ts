@@ -26,8 +26,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     ReactiveFormsModule,
     NgSelect2Module,
     ItemsModule,
-    NgbModule,
-
+    NgbModule
   ],
   providers: [ProviderService, ItemService]
 })

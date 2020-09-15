@@ -41,6 +41,7 @@
               <div *ngIf="isLoading === false && (providers | filterTable:search).length != 0" class="table-responsive">
                 <table class="table table-striped">
                   <tr>
+                    <th> </th>
                     <th>Nombre</th>
                     <th>Email</th>
                     <th>Descripción</th>
@@ -49,27 +50,45 @@
                     <th>Dirección</th>
                     <th>Número de Teléfono</th>
                   </tr>
-                  <tbody>
-                  <tr *ngFor="let provider of (providers | filterTable:search)">
-                    <td>{{ provider.name + ' ' +  provider.last_name }}</td>
-                    <td>{{ provider.email }}</td>
-                    <td>{{ provider.description }}</td>
-                    <td>{{ provider.company }}</td>
-                    <td>{{ provider.city + ' ' +  provider.country }}</td>
-                    <td>{{ provider.address }}</td>
-                    <td>{{ provider.phone_number }}</td> 
-                    <td>
-                      <a [routerLink]="['/providers/edit', provider.id]"
-                         class="btn btn-sm btn-outline-warning">
-                        <span class="fa fa-pencil"></span>
-                      </a>
-                      <a (click)="onDelete(provider.id)"
-                         class="btn btn-sm btn-outline-warning">
-                        <span class="fa fa-trash"></span>
-                      </a>
-                    </td>
-                  </tr>
-                  </tbody>
+                  <ng-container *ngFor="let provider of (providers | filterTable:search); index as i">
+                    <tbody>
+                    <tr>
+                      <td>
+                        <button class="btn btn-outline-primary btn-block" type="button" 
+                        data-toggle="collapse" [attr.data-target]="'#collapse-' + i" 
+                        [attr.aria-expanded]="false" [attr.aria-controls] = "'collapse-' + i">
+                        Insumos
+                        </button>
+                      </td>
+                      <td>{{ provider.name + ' ' +  provider.last_name }}</td>
+                      <td>{{ provider.email }}</td>
+                      <td>{{ provider.description }}</td>
+                      <td>{{ provider.company }}</td>
+                      <td>{{ provider.city + ' ' +  provider.country }}</td>
+                      <td>{{ provider.address }}</td>
+                      <td>{{ provider.phone_number }}</td> 
+                      <td>
+                        <a [routerLink]="['/providers/edit', provider.id]"
+                          class="btn btn-sm btn-outline-warning">
+                          <span class="fa fa-pencil"></span>
+                        </a>
+                        <a (click)="onDelete(provider.id)"
+                          class="btn btn-sm btn-outline-warning">
+                          <span class="fa fa-trash"></span>
+                        </a>
+                      </td>
+                    </tr>
+                    <tr>  
+                      <td colspan="4" class="collapse-row">
+                        <div [attr.id]="'collapse-' + i" class="container collapse out">
+                            <div class="row" *ngFor="let item of provider.items">
+                                <div class="col">{{ showItem(item) }}</div> 
+                            </div>
+                        </div>
+                      </td>  
+                    </tr>
+                    </tbody>
+                  </ng-container>  
                 </table>
                 <div class="pagination float-right">
                   <mat-paginator hidePageSize="true" showFirstLastButtons="true"></mat-paginator>
