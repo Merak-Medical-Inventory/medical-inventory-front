@@ -1,0 +1,77 @@
+<app-sidebar>
+    <ng-container class="body">
+      <app-alert></app-alert>
+      <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-10">
+          <h2>Pedidos</h2>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a routerLink="/orders">Pedidos</a>
+            </li>
+            <li class="breadcrumb-item active">
+              <strong>Agregar</strong>
+            </li>
+          </ol>
+        </div>
+        <div class="col-lg-2">
+        </div>
+      </div>
+      <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="ibox">
+          <div class="ibox-content">
+            <div *ngIf="isLoading === true" class=" row align-items-center">
+              <div class="spiner-example">
+                <div class="sk-spinner sk-spinner-rotating-plane"></div>
+              </div>
+            </div>
+            <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group row align-items-center">
+                    <label class="col-sm-12 col-form-label">Proveedor
+                      <ng-select2 formControlName="provider" width="100%"
+                                  [ngClass]="{'is-invalid': submitted && f.provider.errors }"
+                                  [data]="providers"
+                                  [options]="providerOptions"
+                                  (valueChanged)="providerChanged($event)">
+                      </ng-select2>
+                      <div *ngIf="submitted && f.provider.errors" class="invalid-feedback">
+                        <div *ngIf="f.provider.errors.required">El Proveedor es Requerido</div>
+                      </div>
+                    </label>
+                  </div>  
+                  <div *ngIf="itemsData.length > 0" class="form-group row align-items-center">
+                    <label class="col-sm-12 col-form-label">Insumos
+                      <ngx-select formControlName="items" width="100%"
+                                  id="items"
+                                  [ngClass]="{'is-invalid': submitted && f.items.errors }"
+                                  [multiple]="true"
+                                  [items]="itemsData"
+                                  (select)="itemAdd($event)"
+                                  (remove)="itemRemoved($event)"
+                                  placeholder="Seleccione los Insumos...">
+                      </ngx-select>
+                      <div *ngIf="submitted && f.items.errors" class="invalid-feedback">
+                        <div *ngIf="f.items.errors.required">Al Menos un Insumo es Requerido</div>
+                      </div>
+                    </label>
+                  </div>
+                </div>    
+              </div>
+              <div class="hr-line-dashed"></div>
+              <div class="form-group row">
+                <div class="col-sm-11"></div>
+                <div class="form-group">
+                  <button class="btn btn-primary btn-sm" [disabled]="buttonDisabled" type="submit">Guardar</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </app-sidebar>
+  

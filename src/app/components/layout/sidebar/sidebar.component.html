@@ -57,6 +57,11 @@
             class="fa arrow"></span></a>
           <ul class="nav nav-second-level mm-collapse">
             <li *ngIf="rol.name === roles.admin || rol.name === roles.superUser">
+              <a [routerLink]="'/orders'">Lista de Pedidos</a>
+            </li>
+          </ul>  
+          <ul class="nav nav-second-level mm-collapse">
+            <li *ngIf="rol.name === roles.admin || rol.name === roles.superUser">
               <a [routerLink]="'/providers'">Proveedores</a>
             </li>
           </ul>

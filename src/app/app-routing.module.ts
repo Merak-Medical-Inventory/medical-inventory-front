@@ -55,7 +55,13 @@ const routes: Routes = [
     path: 'providers',
     loadChildren: './components/providers/providers.module#ProvidersModule',
     canActivate: [AdminAuthGuard]
+  },
+  {
+    path: 'orders',
+    loadChildren: './components/orders/orders.module#OrdersModule',
+    canActivate: [AdminAuthGuard]
   }
+  
 ];
 
 @NgModule({

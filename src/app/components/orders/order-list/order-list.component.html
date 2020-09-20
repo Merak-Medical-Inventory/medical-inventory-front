@@ -1,0 +1,69 @@
+<app-sidebar>
+    <ng-container class="body">
+      <app-alert></app-alert>
+      <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-10">
+          <h2>Pedidos</h2>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="">Home</a>
+            </li>
+            <li class="breadcrumb-item active">
+              <strong><a href="">Pedidos</a></strong>
+            </li>
+          </ol>
+        </div>
+        <div class="col-lg-2">
+        </div>
+      </div>
+      <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="ibox ">
+              <div class="ibox-content">
+                <div class="row border-bottom">
+                  <div class="col-sm-5 m-b-xs">
+                    <a routerLink="add" href="" class="btn btn-primary">Agregar</a>
+                  </div>
+                  <div class="align-items-end col-sm-4">
+                    <label class="col-sm-12 col-form-label">
+                      <input class="form-control" type ="search" placeholder="Búsqueda..." [(ngModel)]="search">
+                    </label>
+                  </div>
+                </div>
+                <div *ngIf="isLoading === true" class=" row align-items-center">
+                  <div class="spiner-example">
+                    <div class="sk-spinner sk-spinner-rotating-plane"></div>
+                  </div>
+                </div>
+                <p *ngIf="isLoading === false && (orders | filterTable:search).length == 0"
+                   style="margin-top: 2.5%">No hay datos disponibles.</p>
+                <div *ngIf="isLoading === false && (orders | filterTable:search).length != 0" class="table-responsive">
+                  <table class="table table-striped">
+                    <tr>
+                      <th>Fecha</th>
+                      <th>Proveedor</th>
+                      <th>Status</th>
+                    </tr>
+                    <ng-container *ngFor="let order of (orders | filterTable:search); index as i">
+                      <tbody>
+                      <tr>
+                        <td>{{ order.date }}</td>
+                        <td>{{ order.provider.name + ' ' +  order.provider.last_name }}</td>
+                        <td>{{ order.status }}</td>
+                      </tr>
+                      </tbody>
+                    </ng-container>  
+                  </table>
+                  <div class="pagination float-right">
+                    <mat-paginator hidePageSize="true" showFirstLastButtons="true"></mat-paginator>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </app-sidebar>
+  

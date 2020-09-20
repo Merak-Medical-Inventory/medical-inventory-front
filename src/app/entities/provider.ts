@@ -1,6 +1,6 @@
 import {Item} from './item';
 
-export class Provider {
+export interface Provider {
   id: number;
   name: string;
   last_name: string;
