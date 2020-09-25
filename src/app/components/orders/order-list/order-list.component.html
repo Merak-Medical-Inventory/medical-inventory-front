@@ -41,6 +41,7 @@
                 <div *ngIf="isLoading === false && (orders | filterTable:search).length != 0" class="table-responsive">
                   <table class="table table-striped">
                     <tr>
+                      <th> </th>
                       <th>Fecha</th>
                       <th>Proveedor</th>
                       <th>Status</th>
@@ -48,9 +49,25 @@
                     <ng-container *ngFor="let order of (orders | filterTable:search); index as i">
                       <tbody>
                       <tr>
+                        <td>
+                          <button class="btn btn-outline-primary btn-block" type="button" 
+                          data-toggle="collapse" [attr.data-target]="'#collapse-' + i" 
+                          [attr.aria-expanded]="false" [attr.aria-controls] = "'collapse-' + i">
+                          Insumos
+                          </button>
+                        </td>
                         <td>{{ order.date }}</td>
                         <td>{{ order.provider.name + ' ' +  order.provider.last_name }}</td>
                         <td>{{ order.status }}</td>
+                      </tr>
+                      <tr>  
+                        <td colspan="4" class="collapse-row">
+                          <div [attr.id]="'collapse-' + i" class="container collapse out">
+                              <div class="row" *ngFor="let orderToItem of order.orderToItem">
+                                  <div class="col">{{ showItem(orderToItem) }}</div> 
+                              </div>
+                          </div>
+                        </td>  
                       </tr>
                       </tbody>
                     </ng-container>  
