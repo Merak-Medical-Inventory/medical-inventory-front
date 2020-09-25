@@ -27,3 +27,7 @@ export interface Order {
     provider: Provider;
     orderToItem: OrderToItem[];
 }
+
+export interface UpdateOrder {
+    status: string;
+}

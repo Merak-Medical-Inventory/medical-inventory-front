@@ -59,6 +59,11 @@
                         <td>{{ order.date }}</td>
                         <td>{{ order.provider.name + ' ' +  order.provider.last_name }}</td>
                         <td>{{ order.status }}</td>
+                        <td *ngIf="order.status == 'solicitado'">
+                          <a (click) = "approveOrder(order.id)"
+                            class="btn btn-sm btn-outline-warning" style="color: green">
+                              <span class="fa fa-check" style="color: green"></span>
+                          </a>
                       </tr>
                       <tr>  
                         <td colspan="4" class="collapse-row">
