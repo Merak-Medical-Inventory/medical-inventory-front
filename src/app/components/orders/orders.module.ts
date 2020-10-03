@@ -12,11 +12,12 @@ import {ProviderService} from '../../services/provider/provider.service';
 import {OrderService} from '../../services/order/order.service';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { NgxSelectModule } from 'ngx-select-ex';
+import { LotFormComponent } from './lot-form/lot-form.component';
 
 
 
 @NgModule({
-  declarations: [OrderListComponent, OrderFormComponent],
+  declarations: [OrderListComponent, OrderFormComponent, LotFormComponent],
   imports: [
     CommonModule,
     OrdersRoutingModule,
@@ -30,6 +31,7 @@ import { NgxSelectModule } from 'ngx-select-ex';
     NgbModule,
     NgxSelectModule
   ],
-  providers: [OrderService, ProviderService]
+  providers: [OrderService, ProviderService],
+  entryComponents: [ LotFormComponent ]
 })
 export class OrdersModule { }

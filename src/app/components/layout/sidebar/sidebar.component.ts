@@ -42,7 +42,7 @@ export class SidebarComponent implements OnInit {
         this.ariaExpanded.users = false;
         this.ariaExpanded.orders = false;
         break;
-      case 'items':
+      case 'orders':
         this.ariaExpanded.orders = !this.ariaExpanded.orders,
         this.ariaExpanded.items = false;
         this.ariaExpanded.departments = false;

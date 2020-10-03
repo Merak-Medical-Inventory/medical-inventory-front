@@ -60,7 +60,7 @@
                         <td>{{ order.provider.name + ' ' +  order.provider.last_name }}</td>
                         <td>{{ order.status }}</td>
                         <td *ngIf="order.status == 'solicitado'">
-                          <a (click) = "approveOrder(order.id)"
+                          <a (click) = "addLot(order.id, order.orderToItem)"
                             class="btn btn-sm btn-outline-warning" style="color: green">
                               <span class="fa fa-check" style="color: green"></span>
                           </a>
