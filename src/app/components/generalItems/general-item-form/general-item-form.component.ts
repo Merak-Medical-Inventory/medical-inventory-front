@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import Swal from 'sweetalert2';
-import {GeneralItem, PostGeneralItem} from '../../../entities/GeneralItem';
+import {GeneralItem, PostGeneralItem} from '../../../entities/generalItem';
 import {GeneralItemService} from '../../../services/generalItem/general-item.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';

@@ -4,7 +4,7 @@ import Swal from 'sweetalert2';
 import {Options} from 'select2';
 import {Select2OptionData} from 'ng-select2';
 import {SelectComponent} from 'ng2-select';
-import {PostOrder, PostItemOrder} from '../../../entities/Order';
+import {PostOrder, PostItemOrder} from '../../../entities/order';
 import {OrderService} from '../../../services/order/order.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AlertService} from '../../../services/alert/alert.service';
