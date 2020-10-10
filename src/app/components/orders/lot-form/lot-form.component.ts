@@ -2,7 +2,6 @@ import { Component, OnInit, Input } from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import { getDateString } from 'src/app/util';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {AlertService} from '../../../services/alert/alert.service';
 
 @Component({
   selector: 'app-lot-form',
@@ -10,7 +9,7 @@ import {AlertService} from '../../../services/alert/alert.service';
   styleUrls: ['./lot-form.component.css']
 })
 export class LotFormComponent implements OnInit {
-  lotForm = new FormGroup({ 
+  lotForm = new FormGroup({
     date: new FormControl('')
   });
   @Input() item: any = '';
@@ -35,7 +34,7 @@ export class LotFormComponent implements OnInit {
   }
 
   onSubmit() {
-    this.date = this.lotForm.value.date
+    this.date = this.lotForm.value.date;
     this.activeModal.close(this.date);
   }
 
