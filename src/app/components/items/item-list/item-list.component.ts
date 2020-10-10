@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import {Item} from '../../../entities/item';
 import {ItemService} from '../../../services/item/item.service';
 import Swal from 'sweetalert2';
 import {Router} from '@angular/router';
 import {AlertService} from '../../../services/alert/alert.service';
+import {OrderToItem} from '../../../entities/order';
 
 @Component({
   selector: 'app-item-list',
@@ -11,6 +12,8 @@ import {AlertService} from '../../../services/alert/alert.service';
   styleUrls: ['./item-list.component.css']
 })
 export class ItemListComponent implements OnInit {
+  @Input() providerItems: Item[];
+  @Input() orderItems: OrderToItem[];
   items: Item[] = [];
   search = '';
   isLoading = true;
@@ -18,15 +21,24 @@ export class ItemListComponent implements OnInit {
   constructor(private service: ItemService, private router: Router, private alertService: AlertService) { }
 
   ngOnInit() {
-    this.service.getItems()
-      .subscribe(response => {
-        this.isLoading = false;
-        this.items = response.body['data'];
-      }, error => {
-        this.isLoading = false;
-        console.log(error.error);
-        this.alertService.error('Error al Obtener los Insumos', false);
-      });
+    if (this.providerItems) {
+      this.isLoading = false;
+      this.items = this.providerItems;
+    } else
+    if (this.orderItems) {
+      console.log(this.orderItems);
+      this.isLoading = false;
+    } else {
+      this.service.getItems()
+        .subscribe(response => {
+          this.isLoading = false;
+          this.items = response.body['data'];
+        }, error => {
+          this.isLoading = false;
+          console.log(error.error);
+          this.alertService.error('Error al Obtener los Insumos', false);
+        });
+    }
   }
 
   reloadCurrentRoute() {

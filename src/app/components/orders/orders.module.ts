@@ -13,6 +13,8 @@ import {OrderService} from '../../services/order/order.service';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { NgxSelectModule } from 'ngx-select-ex';
 import { LotFormComponent } from './lot-form/lot-form.component';
+import {ItemListComponent} from '../items/item-list/item-list.component';
+import {ItemsModule} from '../items/items.module';
 
 
 
@@ -29,9 +31,10 @@ import { LotFormComponent } from './lot-form/lot-form.component';
     NgSelect2Module,
     SelectModule,
     NgbModule,
+    ItemsModule,
     NgxSelectModule
   ],
   providers: [OrderService, ProviderService],
-  entryComponents: [ LotFormComponent ]
+  entryComponents: [ ItemListComponent, LotFormComponent ]
 })
 export class OrdersModule { }

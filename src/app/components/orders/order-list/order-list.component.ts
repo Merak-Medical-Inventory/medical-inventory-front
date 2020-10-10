@@ -9,7 +9,7 @@ import { Item } from 'src/app/entities/item';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import { LotFormComponent } from '../lot-form/lot-form.component';
 import {ItemLot, PostLot} from '../../../entities/lot';
-import { data } from 'jquery';
+import {ItemListComponent} from '../../items/item-list/item-list.component';
 
 @Component({
   selector: 'app-order-list',
@@ -36,7 +36,7 @@ export class OrderListComponent implements OnInit {
   isLoading = true;
 
   constructor(private service: OrderService, private modalService: NgbModal,
-    private router: Router, private lotService: LotService, private alertService: AlertService) { }
+              private router: Router, private lotService: LotService, private alertService: AlertService) { }
 
   ngOnInit() {
     this.service.getOrders()
@@ -57,13 +57,19 @@ export class OrderListComponent implements OnInit {
       });
   }
 
+  showItems(orderItems: OrderToItem[]) {
+    const modalRef: NgbModalRef = this.modalService.open(ItemListComponent, { centered: true } );
+    modalRef.componentInstance.orderItems = orderItems;
+    modalRef.componentInstance.isClient = true;
+  }
+
   showItem(orderItem: OrderToItem): string {
     let itemDisplay = '';
     const item: Item = orderItem.item;
     itemDisplay = itemDisplay + orderItem.amount + ' unidades de ' +
         item.generalItem.name + ' ' +  item.brand.name + ' '
-        + item.presentation.quantity + ' '+ item.presentation.name + ' '
-        + item.presentation.measure_value+ ' ' + item.presentation.measure
+        + item.presentation.quantity + ' ' + item.presentation.name + ' '
+        + item.presentation.measure_value + ' ' + item.presentation.measure;
     return itemDisplay;
   }
 
@@ -74,7 +80,7 @@ export class OrderListComponent implements OnInit {
     });
   }
 
-  addLot(id: number, orderItems: OrderToItem[]){
+  addLot(id: number, orderItems: OrderToItem[]) {
     this.alertService.clear();
     Swal.fire({
       title: 'Desea Aprobar el Pedido?',
@@ -88,8 +94,8 @@ export class OrderListComponent implements OnInit {
     }).then(async (result) => {
       if (result.value) {
         this.isLoading = true;
-        let postItemsLot : ItemLot[] = [];
-        orderItems.forEach(async (item, index) => {
+        const postItemsLot: ItemLot[] = [];
+        orderItems.forEach(async (item) => {
           const modalRef: NgbModalRef = this.modalService.open(LotFormComponent, { centered: true } );
           modalRef.componentInstance.item = this.showItem(item);
           modalRef.componentInstance.isClient = true;
@@ -98,27 +104,29 @@ export class OrderListComponent implements OnInit {
             const itemLot: any = {
               id: item.item.id,
               amount: item.amount
-            }
-            if (date != "")
+            };
+            if (date !== '') {
               itemLot.dueDate = date;
+            }
             postItemsLot.push(itemLot);
             console.log(postItemsLot);
-            if (postItemsLot.length == orderItems.length)
+            if (postItemsLot.length == orderItems.length) {
               this.approveOrder(id, postItemsLot);
-          });    
+            }
+          });
         });
       }
-    });  
+    });
   }
 
   async approveOrder(id: number, postItemsLot: ItemLot[]) {
-    const update : UpdateOrder = {
-      status: "aprobado"
-    }
+    const update: UpdateOrder = {
+      status: 'aprobado'
+    };
     const postLot: PostLot = {
       order: id,
       items: postItemsLot
-    }
+    };
     this.lotService.postLot(postLot).subscribe(response => {
       this.service.updateOrder(update, id)
       .subscribe(response => {
@@ -140,6 +148,6 @@ export class OrderListComponent implements OnInit {
       this.isLoading = false;
       console.log(error);
       this.alertService.error('Error al Registrar los Lotes', false);
-    });  
+    });
   }
 }

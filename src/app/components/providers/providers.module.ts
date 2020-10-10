@@ -12,6 +12,7 @@ import {NgSelect2Module} from 'ng-select2';
 import {ItemsModule} from '../items/items.module';
 import {ItemService} from '../../services/item/item.service';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {ItemListComponent} from '../items/item-list/item-list.component';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     ItemsModule,
     NgbModule
   ],
-  providers: [ProviderService, ItemService]
+  providers: [ProviderService, ItemService],
+  entryComponents: [ItemListComponent]
 })
 export class ProvidersModule { }

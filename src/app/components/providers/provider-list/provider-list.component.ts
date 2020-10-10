@@ -5,6 +5,8 @@ import {ProviderService} from '../../../services/provider/provider.service';
 import Swal from 'sweetalert2';
 import {Router} from '@angular/router';
 import {AlertService} from '../../../services/alert/alert.service';
+import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import {ItemListComponent} from '../../items/item-list/item-list.component';
 
 @Component({
   selector: 'app-provider-list',
@@ -16,7 +18,8 @@ export class ProviderListComponent implements OnInit {
   search = '';
   isLoading = true;
 
-  constructor(private service: ProviderService, private router: Router, private alertService: AlertService) { }
+  constructor(private service: ProviderService, private router: Router, private alertService: AlertService,
+              private modalService: NgbModal) { }
 
   ngOnInit() {
     this.service.getProviders()
@@ -31,20 +34,17 @@ export class ProviderListComponent implements OnInit {
       });
   }
 
-  showItem(item: Item): string {
-    let itemDisplay = '';
-    itemDisplay = itemDisplay + item.generalItem.name + ' ' +  
-        item.brand.name + ' ' + item.presentation.quantity + ' '
-        + item.presentation.name + ' ' + item.presentation.measure_value
-        + ' ' + item.presentation.measure
-    return itemDisplay;
-  }
-
   reloadCurrentRoute() {
     const currentUrl = this.router.url;
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
       this.router.navigate([currentUrl]);
     });
+  }
+
+  showItems(items: Item[]) {
+    const modalRef: NgbModalRef = this.modalService.open(ItemListComponent, { centered: true } );
+    modalRef.componentInstance.providerItems = items;
+    modalRef.componentInstance.isClient = true;
   }
 
   onDelete(id: number) {
