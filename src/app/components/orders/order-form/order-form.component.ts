@@ -66,8 +66,9 @@ export class OrderFormComponent implements OnInit {
       for (const provider of this.providersData) {
         const data: Select2OptionData = {
           id: provider.id.toString(),
-          text: provider.name + ' ' + provider.last_name 
+          text: provider.name + ' ' + provider.last_name
         };
+        console.log(data);
         array.push(data);
       }
       return array;
@@ -80,18 +81,18 @@ export class OrderFormComponent implements OnInit {
   }
 
   providerChanged(data: { value: string }){
-    if (data[0] != null){
+    if (data != null) {
       this.isLoading = true;
-      this.providerService.getProviderById(Number(data[0]))
+      this.providerService.getProviderById(Number(data))
       .subscribe(response => {
         const prov: Provider = response.body['data'];
         this.getSelectItem(prov.items).then(() => {
           console.log(this.itemsData);
           this.isLoading = false;
-        });  
-      }); 
+        });
+      });
     }
-    this.f.provider.setValue(data.value);   
+    this.f.provider.setValue(data.value);
   }
 
   async getSelectItem(items: Item[]) {
@@ -127,10 +128,10 @@ export class OrderFormComponent implements OnInit {
       id: Number(value),
       amount: Number(units)
     }
-    this.itemsOrder.push(itemOrder); 
+    this.itemsOrder.push(itemOrder);
     this.f.items.setValue(this.itemsOrder.map(i => i.id)
     .map(value => value.toString()));
-   } 
+   }
   }
 
   itemRemoved(value: any) {
