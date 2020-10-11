@@ -1,17 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import {Order, OrderToItem, UpdateOrder} from '../../../entities/order';
+import {Order, OrderTable, OrderToItem, UpdateOrder} from '../../../entities/order';
 import {OrderService} from '../../../services/order/order.service';
 import Swal from 'sweetalert2';
 import {Router} from '@angular/router';
 import {AlertService} from '../../../services/alert/alert.service';
 import { LotService } from '../../../services/lot/lot.service';
-import { Item } from 'src/app/entities/item';
+import {Item, ItemTable} from 'src/app/entities/item';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import { LotFormComponent } from '../lot-form/lot-form.component';
 import {ItemLot, PostLot} from '../../../entities/lot';
 import {ItemListComponent} from '../../items/item-list/item-list.component';
 import {filterTable, paginateObject} from '../../../util';
 import {PageEvent} from '@angular/material';
+import {User} from '../../../entities/user';
+import {Provider} from '../../../entities/provider';
 
 @Component({
   selector: 'app-order-list',
@@ -20,8 +22,9 @@ import {PageEvent} from '@angular/material';
 })
 export class OrderListComponent implements OnInit {
   orders: Order[] = [];
-  currentPageOrder: Order[];
-  paginatedOrder: Order[][] = [];
+  ordersTable: OrderTable[] = [];
+  currentPageOrder: OrderTable[];
+  paginatedOrder: OrderTable[][] = [];
   search = '';
   isLoading = true;
   pageSize = 10;
@@ -54,7 +57,18 @@ export class OrderListComponent implements OnInit {
           value.date = `${date.getDate()} de ${this.months[date.getMonth()]} de ${date.getFullYear()}`;
           return value;
         });
-        this.paginatedOrder = paginateObject<Order>(this.orders, this.pageSize);
+        this.ordersTable = this.orders.map(item => {
+          const element: OrderTable = {
+            id: item.id,
+            status: item.status,
+            date: item.date,
+            user: item.user,
+            provider: item.provider.name + ' ' +  item.provider.last_name,
+            orderToItem: item.orderToItem,
+          };
+          return element;
+        });
+        this.paginatedOrder = paginateObject<OrderTable>(this.ordersTable, this.pageSize);
         this.currentPageOrder = this.paginatedOrder[0];
         console.log(this.orders);
       }, error => {
@@ -68,7 +82,7 @@ export class OrderListComponent implements OnInit {
   }
 
   searchTyped() {
-    this.paginatedOrder = paginateObject<Order>(filterTable<Order>(this.orders, this.search), this.pageSize);
+    this.paginatedOrder = paginateObject<OrderTable>(filterTable<OrderTable>(this.ordersTable, this.search), this.pageSize);
     this.currentPageOrder = this.paginatedOrder[0];
   }
   showItems(orderItems: OrderToItem[]) {

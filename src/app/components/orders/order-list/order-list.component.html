@@ -49,7 +49,7 @@
                       <tbody>
                       <tr>
                         <td>{{ order.date }}</td>
-                        <td>{{ order.provider.name + ' ' +  order.provider.last_name }}</td>
+                        <td>{{ order.provider }}</td>
                         <td>{{ order.status }}</td>
                         <td>
                           <a (click)="showItems(order.orderToItem)"
