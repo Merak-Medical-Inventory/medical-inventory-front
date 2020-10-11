@@ -54,8 +54,8 @@
                       <td>{{ user.name + " " + user.last_name }}</td>
                       <td>{{ user.username }}</td>
                       <td>{{ user.email }}</td>
-                      <td>{{ user.rol.name }}</td>
-                      <td *ngIf="user.department !== null; else noDep">{{ user.department.name }}</td>
+                      <td>{{ user.rol}}</td>
+                      <td *ngIf="user.department !== null; else noDep">{{ user.department }}</td>
                       <ng-template #noDep>
                         <td>{{ "NA" }}</td>
                       </ng-template>

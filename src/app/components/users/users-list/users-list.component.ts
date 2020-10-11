@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from 'src/app/entities/user';
+import {User, UserTable} from 'src/app/entities/user';
 import { UserService } from 'src/app/services/user/user.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import {AlertService} from '../../../services/alert/alert.service';
 import {filterTable, paginateObject} from '../../../util';
 import {PageEvent} from '@angular/material';
+import {OrderTable} from '../../../entities/order';
 
 @Component({
   selector: 'app-users-list',
@@ -14,8 +15,9 @@ import {PageEvent} from '@angular/material';
 })
 export class UsersListComponent implements OnInit {
   users: User[] = [];
-  currentPageUser: User[];
-  paginatedUser: User[][] = [];
+  usersTable: UserTable[] = [];
+  currentPageUser: UserTable[];
+  paginatedUser: UserTable[][] = [];
   search = '';
   isLoading = true;
   pageSize = 10;
@@ -28,7 +30,32 @@ export class UsersListComponent implements OnInit {
         this.isLoading = false;
         console.log(response);
         this.users = response.body['data'];
-        this.paginatedUser = paginateObject<User>(this.users, this.pageSize);
+        this.usersTable = this.users.map(item => {
+          let element: UserTable;
+          if (item.department) {
+            element = {
+              id: item.id,
+              username: item.username,
+              email: item.email,
+              name: item.name,
+              last_name: item.last_name,
+              rol: item.rol.name,
+              department: item.department.name
+            };
+          } else {
+            element = {
+              id: item.id,
+              username: item.username,
+              email: item.email,
+              name: item.name,
+              last_name: item.last_name,
+              rol: item.rol.name,
+              department: ''
+            };
+          }
+          return element;
+        });
+        this.paginatedUser = paginateObject<UserTable>(this.usersTable, this.pageSize);
         this.currentPageUser = this.paginatedUser[0];
       }, error => {
         this.isLoading = false;
@@ -49,7 +76,7 @@ export class UsersListComponent implements OnInit {
   }
 
   searchTyped() {
-    this.paginatedUser = paginateObject<User>(filterTable<User>(this.users, this.search), this.pageSize);
+    this.paginatedUser = paginateObject<UserTable>(filterTable<UserTable>(this.usersTable, this.search), this.pageSize);
     this.currentPageUser = this.paginatedUser[0];
   }
 
