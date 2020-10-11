@@ -80,8 +80,8 @@ export class OrderFormComponent implements OnInit {
       });
   }
 
-  providerChanged(data: { value: string }){
-    if (data != null) {
+  providerChanged(data: { value: string }) {
+    if (data[0] != null) {
       this.isLoading = true;
       this.providerService.getProviderById(Number(data))
       .subscribe(response => {
@@ -110,9 +110,9 @@ export class OrderFormComponent implements OnInit {
   }
 
   async itemAdd(value: any) {
-    const itemText = this.itemsData.filter(function(item){
+    const itemText = this.itemsData.filter(function(item) {
       return item.id == Number(value);
-    })
+    });
     const {value: units} = await Swal.fire({
       title: 'Cuál es la Cantidad de ' + itemText[0].text + ' a Solicitar?',
       icon: 'question',
@@ -123,15 +123,17 @@ export class OrderFormComponent implements OnInit {
       },
       inputValue: '1'
    });
-   if (units) {
-    const itemOrder: PostItemOrder = {
-      id: Number(value),
-      amount: Number(units)
+    if (units) {
+      const itemOrder: PostItemOrder = {
+        id: Number(value),
+        amount: Number(units)
+      };
+      this.itemsOrder.push(itemOrder);
+      this.f.items.setValue(this.itemsOrder.map(i => i.id)
+      .map(value => value.toString()));
+   } else {
+      this.itemRemoved(value);
     }
-    this.itemsOrder.push(itemOrder);
-    this.f.items.setValue(this.itemsOrder.map(i => i.id)
-    .map(value => value.toString()));
-   }
   }
 
   itemRemoved(value: any) {
