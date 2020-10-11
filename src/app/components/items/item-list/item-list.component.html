@@ -53,12 +53,11 @@
                   <tbody>
                   <tr *ngFor="let item of currentPageItem">
                     <td>{{ item.code }}</td>
-                    <td>{{ item.generalItem.name }}</td>
+                    <td>{{ item.generalItem }}</td>
                     <td>{{ item.brand_code }}</td>
-                    <td>{{ item.category.name }}</td>
-                    <td>{{ item.brand.name }}</td>
-                    <td>{{ item.presentation.quantity + ' ' + item.presentation.name + ' ' +
-                      item.presentation.measure_value + ' ' + item.presentation.measure}}</td>
+                    <td>{{ item.category }}</td>
+                    <td>{{ item.brand }}</td>
+                    <td>{{ item.presentation }}</td>
                     <td>
                       <a [routerLink]="['/items/edit', item.id]"
                          class="btn btn-sm btn-outline-warning">
@@ -121,12 +120,11 @@
                   <tbody>
                   <tr *ngFor="let item of currentPageItem">
                     <td>{{ item.code }}</td>
-                    <td>{{ item.generalItem.name }}</td>
+                    <td>{{ item.generalItem }}</td>
                     <td>{{ item.brand_code }}</td>
-                    <td>{{ item.category.name }}</td>
-                    <td>{{ item.brand.name }}</td>
-                    <td>{{ item.presentation.quantity + ' ' + item.presentation.name + ' ' +
-                    item.presentation.measure_value + ' ' + item.presentation.measure}}</td>
+                    <td>{{ item.category }}</td>
+                    <td>{{ item.brand }}</td>
+                    <td>{{ item.presentation }}</td>
                   </tr>
                   </tbody>
                 </table>
@@ -180,13 +178,12 @@
                   <tbody>
                   <tr *ngFor="let orderItem of currentPageOrderItem">
                     <td>{{ orderItem.amount }}</td>
-                    <td>{{ orderItem.item.code }}</td>
-                    <td>{{ orderItem.item.generalItem.name }}</td>
-                    <td>{{ orderItem.item.brand_code }}</td>
-                    <td>{{ orderItem.item.category.name }}</td>
-                    <td>{{ orderItem.item.brand.name }}</td>
-                    <td>{{ orderItem.item.presentation.quantity + ' ' + orderItem.item.presentation.name + ' ' +
-                    orderItem.item.presentation.measure_value + ' ' + orderItem.item.presentation.measure}}</td>
+                    <td>{{ orderItem.code }}</td>
+                    <td>{{ orderItem.generalItem }}</td>
+                    <td>{{ orderItem.brand_code }}</td>
+                    <td>{{ orderItem.category }}</td>
+                    <td>{{ orderItem.brand }}</td>
+                    <td>{{ orderItem.presentation }}</td>
                   </tr>
                   </tbody>
                 </table>

@@ -1,10 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
-import {Item} from '../../../entities/item';
+import {Item, ItemTable} from '../../../entities/item';
 import {ItemService} from '../../../services/item/item.service';
 import Swal from 'sweetalert2';
 import {Router} from '@angular/router';
 import {AlertService} from '../../../services/alert/alert.service';
-import {OrderToItem} from '../../../entities/order';
+import {OrderToItem, OrderToItemTable} from '../../../entities/order';
 import {filterTable, paginateObject} from '../../../util';
 import {PageEvent} from '@angular/material';
 
@@ -16,11 +16,13 @@ import {PageEvent} from '@angular/material';
 export class ItemListComponent implements OnInit {
   @Input() providerItems: Item[];
   items: Item[] = [];
-  currentPageItem: Item[];
-  paginatedItems: Item[][] = [];
+  itemsTable: ItemTable[] = [];
+  currentPageItem: ItemTable[];
+  paginatedItems: ItemTable[][] = [];
   @Input() orderItems: OrderToItem[];
-  currentPageOrderItem: OrderToItem[];
-  paginatedOrderItems: OrderToItem[][] = [];
+  orderItemsTable: OrderToItemTable[] = [];
+  currentPageOrderItem: OrderToItemTable[];
+  paginatedOrderItems: OrderToItemTable[][] = [];
   search = '';
   isLoading = true;
   pageSize = 10;
@@ -30,21 +32,60 @@ export class ItemListComponent implements OnInit {
   ngOnInit() {
     if (this.providerItems) {
       this.items = this.providerItems;
-      this.paginatedItems = paginateObject<Item>(this.items, this.pageSize);
+      this.itemsTable = this.items.map(item => {
+        const element: ItemTable = {
+          id: item.id,
+          code: item.code,
+          brand_code: item.brand_code,
+          generalItem: item.generalItem.name,
+          category: item.category.name,
+          brand: item.brand.name,
+          presentation: item.presentation.quantity + ' ' + item.presentation.name + ' ' +
+            item.presentation.measure_value + ' ' + item.presentation.measure,
+        };
+        return element;
+      });
+      this.paginatedItems = paginateObject<ItemTable>(this.itemsTable, this.pageSize);
       this.currentPageItem = this.paginatedItems[0];
       this.isLoading = false;
     } else
     if (this.orderItems) {
-      this.paginatedOrderItems = paginateObject<OrderToItem>(this.orderItems, this.pageSize);
+      this.orderItemsTable = this.orderItems.map(item => {
+        const element: OrderToItemTable = {
+          amount: item.amount,
+          code: item.item.code,
+          brand_code: item.item.brand_code,
+          generalItem: item.item.generalItem.name,
+          category: item.item.category.name,
+          brand: item.item.brand.name,
+          presentation: item.item.presentation.quantity + ' ' + item.item.presentation.name + ' ' +
+            item.item.presentation.measure_value + ' ' + item.item.presentation.measure,
+        };
+        return element;
+      });
+      this.paginatedOrderItems = paginateObject<OrderToItemTable>(this.orderItemsTable, this.pageSize);
       this.currentPageOrderItem = this.paginatedOrderItems[0];
       this.isLoading = false;
     } else {
       this.service.getItems()
         .subscribe(response => {
-          this.isLoading = false;
           this.items = response.body['data'];
-          this.paginatedItems = paginateObject<Item>(this.items, this.pageSize);
+          this.itemsTable = this.items.map(item => {
+            const element: ItemTable = {
+              id: item.id,
+              code: item.code,
+              brand_code: item.brand_code,
+              generalItem: item.generalItem.name,
+              category: item.category.name,
+              brand: item.brand.name,
+              presentation: item.presentation.quantity + ' ' + item.presentation.name + ' ' +
+              item.presentation.measure_value + ' ' + item.presentation.measure,
+            };
+            return element;
+          });
+          this.paginatedItems = paginateObject<ItemTable>(this.itemsTable, this.pageSize);
           this.currentPageItem = this.paginatedItems[0];
+          this.isLoading = false;
         }, error => {
           this.isLoading = false;
           console.log(error.error);
@@ -69,12 +110,13 @@ export class ItemListComponent implements OnInit {
   }
 
   searchTypedItems() {
-    this.paginatedItems = paginateObject<Item>(filterTable<Item>(this.items, this.search), this.pageSize);
+    this.paginatedItems = paginateObject<ItemTable>(filterTable<ItemTable>(this.itemsTable, this.search), this.pageSize);
     this.currentPageItem = this.paginatedItems[0];
   }
 
   searchTypedOrderItems() {
-    this.paginatedOrderItems = paginateObject<OrderToItem>(filterTable<OrderToItem>(this.orderItems, this.search), this.pageSize);
+    this.paginatedOrderItems = paginateObject<OrderToItemTable>(filterTable<OrderToItemTable>(this.orderItemsTable, this.search),
+      this.pageSize);
     this.currentPageOrderItem = this.paginatedOrderItems[0];
   }
 

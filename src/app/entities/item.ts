@@ -13,6 +13,16 @@ export interface Item {
   presentation: Presentation;
 }
 
+export  interface ItemTable {
+  id: number;
+  code: string;
+  brand_code: string;
+  generalItem: string;
+  category: string;
+  brand: string;
+  presentation: string;
+}
+
 export interface PostItem {
   code: string;
   brand_code: string;

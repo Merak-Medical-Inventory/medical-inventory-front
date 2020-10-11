@@ -19,6 +19,16 @@ export interface OrderToItem {
     amount: number;
 }
 
+export interface OrderToItemTable {
+  amount: number;
+  code: string;
+  brand_code: string;
+  generalItem: string;
+  category: string;
+  brand: string;
+  presentation: string;
+}
+
 export interface Order {
     id: number;
     status: string;
@@ -26,6 +36,15 @@ export interface Order {
     user: User;
     provider: Provider;
     orderToItem: OrderToItem[];
+}
+
+export interface OrderTable {
+  id: number;
+  status: string;
+  date: Date;
+  user: User;
+  provider: string;
+  orderToItem: OrderToItem[];
 }
 
 export interface UpdateOrder {
