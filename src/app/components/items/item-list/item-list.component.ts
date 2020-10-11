@@ -5,6 +5,8 @@ import Swal from 'sweetalert2';
 import {Router} from '@angular/router';
 import {AlertService} from '../../../services/alert/alert.service';
 import {OrderToItem} from '../../../entities/order';
+import {filterTable, paginateObject} from '../../../util';
+import {PageEvent} from '@angular/material';
 
 @Component({
   selector: 'app-item-list',
@@ -13,26 +15,36 @@ import {OrderToItem} from '../../../entities/order';
 })
 export class ItemListComponent implements OnInit {
   @Input() providerItems: Item[];
-  @Input() orderItems: OrderToItem[];
   items: Item[] = [];
+  currentPageItem: Item[];
+  paginatedItems: Item[][] = [];
+  @Input() orderItems: OrderToItem[];
+  currentPageOrderItem: OrderToItem[];
+  paginatedOrderItems: OrderToItem[][] = [];
   search = '';
   isLoading = true;
+  pageSize = 10;
 
   constructor(private service: ItemService, private router: Router, private alertService: AlertService) { }
 
   ngOnInit() {
     if (this.providerItems) {
-      this.isLoading = false;
       this.items = this.providerItems;
+      this.paginatedItems = paginateObject<Item>(this.items, this.pageSize);
+      this.currentPageItem = this.paginatedItems[0];
+      this.isLoading = false;
     } else
     if (this.orderItems) {
-      console.log(this.orderItems);
+      this.paginatedOrderItems = paginateObject<OrderToItem>(this.orderItems, this.pageSize);
+      this.currentPageOrderItem = this.paginatedOrderItems[0];
       this.isLoading = false;
     } else {
       this.service.getItems()
         .subscribe(response => {
           this.isLoading = false;
           this.items = response.body['data'];
+          this.paginatedItems = paginateObject<Item>(this.items, this.pageSize);
+          this.currentPageItem = this.paginatedItems[0];
         }, error => {
           this.isLoading = false;
           console.log(error.error);
@@ -46,6 +58,24 @@ export class ItemListComponent implements OnInit {
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
       this.router.navigate([currentUrl]);
     });
+  }
+
+  onPageItemChanged(event: PageEvent) {
+    this.currentPageItem = this.paginatedItems[event.pageIndex];
+  }
+
+  onPageOrderItemChanged(event: PageEvent) {
+    this.currentPageOrderItem = this.paginatedOrderItems[event.pageIndex];
+  }
+
+  searchTypedItems() {
+    this.paginatedItems = paginateObject<Item>(filterTable<Item>(this.items, this.search), this.pageSize);
+    this.currentPageItem = this.paginatedItems[0];
+  }
+
+  searchTypedOrderItems() {
+    this.paginatedOrderItems = paginateObject<OrderToItem>(filterTable<OrderToItem>(this.orderItems, this.search), this.pageSize);
+    this.currentPageOrderItem = this.paginatedOrderItems[0];
   }
 
   onDelete(id: number) {

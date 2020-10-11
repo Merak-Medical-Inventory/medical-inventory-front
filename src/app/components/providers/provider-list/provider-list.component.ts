@@ -7,6 +7,8 @@ import {Router} from '@angular/router';
 import {AlertService} from '../../../services/alert/alert.service';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {ItemListComponent} from '../../items/item-list/item-list.component';
+import {filterTable, paginateObject} from '../../../util';
+import {PageEvent} from '@angular/material';
 
 @Component({
   selector: 'app-provider-list',
@@ -15,8 +17,11 @@ import {ItemListComponent} from '../../items/item-list/item-list.component';
 })
 export class ProviderListComponent implements OnInit {
   providers: Provider[] = [];
+  currentPageProvider: Provider[];
+  paginatedProvider: Provider[][] = [];
   search = '';
   isLoading = true;
+  pageSize = 1;
 
   constructor(private service: ProviderService, private router: Router, private alertService: AlertService,
               private modalService: NgbModal) { }
@@ -26,7 +31,8 @@ export class ProviderListComponent implements OnInit {
       .subscribe(response => {
         this.isLoading = false;
         this.providers = response.body['data'];
-        console.log(this.providers);
+        this.paginatedProvider = paginateObject<Provider>(this.providers, this.pageSize);
+        this.currentPageProvider = this.paginatedProvider[0];
       }, error => {
         this.isLoading = false;
         console.log(error.error);
@@ -45,6 +51,15 @@ export class ProviderListComponent implements OnInit {
     const modalRef: NgbModalRef = this.modalService.open(ItemListComponent, { centered: true } );
     modalRef.componentInstance.providerItems = items;
     modalRef.componentInstance.isClient = true;
+  }
+
+  onPageChanged(event: PageEvent) {
+    this.currentPageProvider = this.paginatedProvider[event.pageIndex];
+  }
+
+  searchTyped() {
+    this.paginatedProvider = paginateObject<Provider>(filterTable<Provider>(this.providers, this.search), this.pageSize);
+    this.currentPageProvider = this.paginatedProvider[0];
   }
 
   onDelete(id: number) {

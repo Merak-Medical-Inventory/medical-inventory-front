@@ -10,6 +10,9 @@ import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import { LotFormComponent } from '../lot-form/lot-form.component';
 import {ItemLot, PostLot} from '../../../entities/lot';
 import {ItemListComponent} from '../../items/item-list/item-list.component';
+import {filterTable, paginateObject} from '../../../util';
+import {Provider} from '../../../entities/provider';
+import {PageEvent} from '@angular/material';
 
 @Component({
   selector: 'app-order-list',
@@ -18,7 +21,11 @@ import {ItemListComponent} from '../../items/item-list/item-list.component';
 })
 export class OrderListComponent implements OnInit {
   orders: Order[] = [];
+  currentPageOrder: Order[];
+  paginatedOrder: Order[][] = [];
   search = '';
+  isLoading = true;
+  pageSize = 1;
   months = {
     0: 'Enero',
     1: 'Febrero',
@@ -33,7 +40,6 @@ export class OrderListComponent implements OnInit {
     10: 'Noviembre',
     11: 'Diciembre',
   };
-  isLoading = true;
 
   constructor(private service: OrderService, private modalService: NgbModal,
               private router: Router, private lotService: LotService, private alertService: AlertService) { }
@@ -49,6 +55,8 @@ export class OrderListComponent implements OnInit {
           value.date = `${date.getDate()} de ${this.months[date.getMonth()]} de ${date.getFullYear()}`;
           return value;
         });
+        this.paginatedOrder = paginateObject<Order>(this.orders, this.pageSize);
+        this.currentPageOrder = this.paginatedOrder[0];
         console.log(this.orders);
       }, error => {
         this.isLoading = false;
@@ -56,7 +64,14 @@ export class OrderListComponent implements OnInit {
         this.alertService.error('Error al Obtener los Pedidos', false);
       });
   }
+  onPageChanged(event: PageEvent) {
+    this.currentPageOrder = this.paginatedOrder[event.pageIndex];
+  }
 
+  searchTyped() {
+    this.paginatedOrder = paginateObject<Order>(filterTable<Order>(this.orders, this.search), this.pageSize);
+    this.currentPageOrder = this.paginatedOrder[0];
+  }
   showItems(orderItems: OrderToItem[]) {
     const modalRef: NgbModalRef = this.modalService.open(ItemListComponent, { centered: true } );
     modalRef.componentInstance.orderItems = orderItems;
