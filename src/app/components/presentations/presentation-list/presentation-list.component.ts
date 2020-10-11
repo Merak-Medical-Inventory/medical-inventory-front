@@ -4,6 +4,8 @@ import { PresentationService} from '../../../services/presentation/presentation.
 import Swal from 'sweetalert2';
 import {Router} from '@angular/router';
 import {AlertService} from '../../../services/alert/alert.service';
+import {filterTable, paginateObject} from '../../../util';
+import {PageEvent} from '@angular/material';
 
 @Component({
   selector: 'app-presentation-list',
@@ -12,8 +14,11 @@ import {AlertService} from '../../../services/alert/alert.service';
 })
 export class PresentationListComponent implements OnInit {
   presentations: Presentation[] = [];
+  currentPagePresentation: Presentation[];
+  paginatedPresentation: Presentation[][] = [];
   search = '';
   isLoading = true;
+  pageSize = 10;
 
   constructor(private service: PresentationService, private alertService: AlertService, private router: Router) { }
 
@@ -22,6 +27,8 @@ export class PresentationListComponent implements OnInit {
       .subscribe(response => {
         this.isLoading = false;
         this.presentations = response.body['data'];
+        this.paginatedPresentation = paginateObject<Presentation>(this.presentations, this.pageSize);
+        this.currentPagePresentation = this.paginatedPresentation[0];
       }, error => {
         this.isLoading = false;
         console.log(error.error);
@@ -34,6 +41,15 @@ export class PresentationListComponent implements OnInit {
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
       this.router.navigate([currentUrl]);
     });
+  }
+
+  onPageChanged(event: PageEvent) {
+    this.currentPagePresentation = this.paginatedPresentation[event.pageIndex];
+  }
+
+  searchTyped() {
+    this.paginatedPresentation = paginateObject<Presentation>(filterTable<Presentation>(this.presentations, this.search), this.pageSize);
+    this.currentPagePresentation = this.paginatedPresentation[0];
   }
 
   onDelete(id: number) {

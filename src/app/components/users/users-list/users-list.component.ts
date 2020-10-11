@@ -4,6 +4,8 @@ import { UserService } from 'src/app/services/user/user.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import {AlertService} from '../../../services/alert/alert.service';
+import {filterTable, paginateObject} from '../../../util';
+import {PageEvent} from '@angular/material';
 
 @Component({
   selector: 'app-users-list',
@@ -12,8 +14,11 @@ import {AlertService} from '../../../services/alert/alert.service';
 })
 export class UsersListComponent implements OnInit {
   users: User[] = [];
+  currentPageUser: User[];
+  paginatedUser: User[][] = [];
   search = '';
   isLoading = true;
+  pageSize = 10;
 
   constructor(private service: UserService, private router: Router, private alertService: AlertService) { }
 
@@ -23,6 +28,8 @@ export class UsersListComponent implements OnInit {
         this.isLoading = false;
         console.log(response);
         this.users = response.body['data'];
+        this.paginatedUser = paginateObject<User>(this.users, this.pageSize);
+        this.currentPageUser = this.paginatedUser[0];
       }, error => {
         this.isLoading = false;
         console.log(error.error);
@@ -35,6 +42,15 @@ export class UsersListComponent implements OnInit {
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
       this.router.navigate([currentUrl]);
     });
+  }
+
+  onPageChanged(event: PageEvent) {
+    this.currentPageUser = this.paginatedUser[event.pageIndex];
+  }
+
+  searchTyped() {
+    this.paginatedUser = paginateObject<User>(filterTable<User>(this.users, this.search), this.pageSize);
+    this.currentPageUser = this.paginatedUser[0];
   }
 
   onDelete(id: number) {

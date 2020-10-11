@@ -21,7 +21,7 @@ export class ProviderListComponent implements OnInit {
   paginatedProvider: Provider[][] = [];
   search = '';
   isLoading = true;
-  pageSize = 1;
+  pageSize = 10;
 
   constructor(private service: ProviderService, private router: Router, private alertService: AlertService,
               private modalService: NgbModal) { }

@@ -4,6 +4,8 @@ import {BrandService} from '../../../services/brand/brand.service';
 import Swal from 'sweetalert2';
 import {Router} from '@angular/router';
 import {AlertService} from '../../../services/alert/alert.service';
+import {filterTable, paginateObject} from '../../../util';
+import {PageEvent} from '@angular/material';
 
 @Component({
   selector: 'app-brand-list',
@@ -12,8 +14,11 @@ import {AlertService} from '../../../services/alert/alert.service';
 })
 export class BrandListComponent implements OnInit {
   brands: Brand[] = [];
+  currentPageBrand: Brand[];
+  paginatedBrand: Brand[][] = [];
   search = '';
   isLoading = true;
+  pageSize = 10;
 
   constructor(private service: BrandService, private router: Router, private alertService: AlertService) { }
 
@@ -22,6 +27,8 @@ export class BrandListComponent implements OnInit {
       .subscribe(response => {
         this.isLoading = false;
         this.brands = response.body['data'];
+        this.paginatedBrand = paginateObject<Brand>(this.brands, this.pageSize);
+        this.currentPageBrand = this.paginatedBrand[0];
       }, error => {
         this.isLoading = false;
         console.log(error.error);
@@ -34,6 +41,15 @@ export class BrandListComponent implements OnInit {
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
       this.router.navigate([currentUrl]);
     });
+  }
+
+  onPageChanged(event: PageEvent) {
+    this.currentPageBrand = this.paginatedBrand[event.pageIndex];
+  }
+
+  searchTyped() {
+    this.paginatedBrand = paginateObject<Brand>(filterTable<Brand>(this.brands, this.search), this.pageSize);
+    this.currentPageBrand = this.paginatedBrand[0];
   }
 
   onDelete(id: number) {

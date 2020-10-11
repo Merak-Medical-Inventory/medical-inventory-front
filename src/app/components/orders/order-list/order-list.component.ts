@@ -11,7 +11,6 @@ import { LotFormComponent } from '../lot-form/lot-form.component';
 import {ItemLot, PostLot} from '../../../entities/lot';
 import {ItemListComponent} from '../../items/item-list/item-list.component';
 import {filterTable, paginateObject} from '../../../util';
-import {Provider} from '../../../entities/provider';
 import {PageEvent} from '@angular/material';
 
 @Component({
@@ -25,7 +24,7 @@ export class OrderListComponent implements OnInit {
   paginatedOrder: Order[][] = [];
   search = '';
   isLoading = true;
-  pageSize = 1;
+  pageSize = 10;
   months = {
     0: 'Enero',
     1: 'Febrero',

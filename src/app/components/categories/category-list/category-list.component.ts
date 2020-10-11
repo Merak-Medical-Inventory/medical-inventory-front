@@ -4,6 +4,8 @@ import {CategoryService} from '../../../services/category/category.service';
 import Swal from 'sweetalert2';
 import {Router} from '@angular/router';
 import {AlertService} from '../../../services/alert/alert.service';
+import {filterTable, paginateObject} from '../../../util';
+import {PageEvent} from '@angular/material';
 
 @Component({
   selector: 'app-category-list',
@@ -12,8 +14,11 @@ import {AlertService} from '../../../services/alert/alert.service';
 })
 export class CategoryListComponent implements OnInit {
   categories: Category[] = [];
+  currentPageCategory: Category[];
+  paginatedCategory: Category[][] = [];
   search = '';
   isLoading = true;
+  pageSize = 10;
 
   constructor(private service: CategoryService, private router: Router, private alertService: AlertService) { }
 
@@ -22,6 +27,8 @@ export class CategoryListComponent implements OnInit {
       .subscribe(response => {
         this.isLoading = false;
         this.categories = response.body['data'];
+        this.paginatedCategory = paginateObject<Category>(this.categories, this.pageSize);
+        this.currentPageCategory = this.paginatedCategory[0];
       }, error => {
         this.isLoading = false;
         console.log(error.error);
@@ -34,6 +41,15 @@ export class CategoryListComponent implements OnInit {
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
       this.router.navigate([currentUrl]);
     });
+  }
+
+  onPageChanged(event: PageEvent) {
+    this.currentPageCategory = this.paginatedCategory[event.pageIndex];
+  }
+
+  searchTyped() {
+    this.paginatedCategory = paginateObject<Category>(filterTable<Category>(this.categories, this.search), this.pageSize);
+    this.currentPageCategory = this.paginatedCategory[0];
   }
 
   onDelete(id: number) {

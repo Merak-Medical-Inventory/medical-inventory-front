@@ -27,7 +27,7 @@
                 </div>
                 <div class="align-items-end col-sm-4">
                   <label class="col-sm-12 col-form-label">
-                    <input class="form-control" type ="search" placeholder="Búsqueda..." [(ngModel)]="search">
+                    <input class="form-control" type ="search" placeholder="Búsqueda..." [(ngModel)]="search" (input)="searchTyped()">
                   </label>
                 </div>
               </div>
@@ -36,9 +36,9 @@
                   <div class="sk-spinner sk-spinner-rotating-plane"></div>
                 </div>
               </div>
-              <p *ngIf="isLoading === false && (departments | filterTable:search).length == 0"
+              <p *ngIf="isLoading === false && (!currentPageDepartment || currentPageDepartment.length == 0)"
                  style="margin-top: 2.5%">No hay datos disponibles.</p>
-              <div *ngIf="isLoading === false && (departments | filterTable:search).length != 0" class="table-responsive">
+              <div *ngIf="isLoading === false && currentPageDepartment && currentPageDepartment.length != 0" class="table-responsive">
                 <table class="table table-striped">
                   <thead>
                   <tr>
@@ -48,7 +48,7 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr *ngFor="let department of (departments | filterTable:search)">
+                  <tr *ngFor="let department of currentPageDepartment">
                     <td>{{ department.code }}</td>
                     <td>{{ department.name }}</td>
                     <td>{{ department.description }}</td>
@@ -66,7 +66,7 @@
                   </tbody>
                 </table>
                 <div class="pagination float-right">
-                  <mat-paginator hidePageSize="true" showFirstLastButtons="true"></mat-paginator>
+                  <mat-paginator [pageSize]="1" [length]="paginatedDepartment.length" hidePageSize="true" showFirstLastButtons="true" (page)="onPageChanged($event)"></mat-paginator>
                 </div>
               </div>
             </div>

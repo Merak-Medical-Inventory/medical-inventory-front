@@ -4,6 +4,8 @@ import {GeneralItemService} from '../../../services/generalItem/general-item.ser
 import Swal from 'sweetalert2';
 import {Router} from '@angular/router';
 import {AlertService} from '../../../services/alert/alert.service';
+import {PageEvent} from '@angular/material';
+import {filterTable, paginateObject} from '../../../util';
 
 @Component({
   selector: 'app-general-item-list',
@@ -12,8 +14,11 @@ import {AlertService} from '../../../services/alert/alert.service';
 })
 export class GeneralItemListComponent implements OnInit {
   generalItems: GeneralItem[] = [];
+  currentPageGeneralItem: GeneralItem[];
+  paginatedGeneralItem: GeneralItem[][] = [];
   search = '';
   isLoading = true;
+  pageSize = 10;
 
   constructor(private service: GeneralItemService, private router: Router, private alertService: AlertService) { }
 
@@ -22,6 +27,8 @@ export class GeneralItemListComponent implements OnInit {
       .subscribe(response => {
         this.isLoading = false;
         this.generalItems = response.body['data'];
+        this.paginatedGeneralItem = paginateObject<GeneralItem>(this.generalItems, this.pageSize);
+        this.currentPageGeneralItem = this.paginatedGeneralItem[0];
       }, error => {
         this.isLoading = false;
         console.log(error.error);
@@ -34,6 +41,15 @@ export class GeneralItemListComponent implements OnInit {
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
       this.router.navigate([currentUrl]);
     });
+  }
+
+  onPageChanged(event: PageEvent) {
+    this.currentPageGeneralItem = this.paginatedGeneralItem[event.pageIndex];
+  }
+
+  searchTyped() {
+    this.paginatedGeneralItem = paginateObject<GeneralItem>(filterTable<GeneralItem>(this.generalItems, this.search), this.pageSize);
+    this.currentPageGeneralItem = this.paginatedGeneralItem[0];
   }
 
   onDelete(id: number) {

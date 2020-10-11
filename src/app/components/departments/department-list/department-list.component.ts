@@ -4,6 +4,8 @@ import { DepartmentService} from '../../../services/department/department.servic
 import Swal from 'sweetalert2';
 import {Router} from '@angular/router';
 import {AlertService} from '../../../services/alert/alert.service';
+import {filterTable, paginateObject} from '../../../util';
+import {PageEvent} from '@angular/material';
 
 @Component({
   selector: 'app-department-list',
@@ -12,8 +14,11 @@ import {AlertService} from '../../../services/alert/alert.service';
 })
 export class DepartmentListComponent implements OnInit {
   departments: Department[] = [];
+  currentPageDepartment: Department[];
+  paginatedDepartment: Department[][] = [];
   search = '';
   isLoading = true;
+  pageSize = 10;
 
   constructor(private service: DepartmentService, private router: Router, private alertService: AlertService) { }
 
@@ -22,6 +27,8 @@ export class DepartmentListComponent implements OnInit {
       .subscribe(response => {
         this.isLoading = false;
         this.departments = response.body['data'];
+        this.paginatedDepartment = paginateObject<Department>(this.departments, this.pageSize);
+        this.currentPageDepartment = this.paginatedDepartment[0];
       }, error => {
         this.isLoading = false;
         console.log(error.error);
@@ -34,6 +41,15 @@ export class DepartmentListComponent implements OnInit {
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
       this.router.navigate([currentUrl]);
     });
+  }
+
+  onPageChanged(event: PageEvent) {
+    this.currentPageDepartment = this.paginatedDepartment[event.pageIndex];
+  }
+
+  searchTyped() {
+    this.paginatedDepartment = paginateObject<Department>(filterTable<Department>(this.departments, this.search), this.pageSize);
+    this.currentPageDepartment = this.paginatedDepartment[0];
   }
 
   onDelete(id: number) {
