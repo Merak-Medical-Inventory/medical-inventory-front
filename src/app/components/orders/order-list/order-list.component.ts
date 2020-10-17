@@ -5,15 +5,13 @@ import Swal from 'sweetalert2';
 import {Router} from '@angular/router';
 import {AlertService} from '../../../services/alert/alert.service';
 import { LotService } from '../../../services/lot/lot.service';
-import {Item, ItemTable} from 'src/app/entities/item';
+import { Item } from 'src/app/entities/item';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
-import { LotFormComponent } from '../lot-form/lot-form.component';
-import {ItemLot, PostLot} from '../../../entities/lot';
+import { LotFormComponent } from '../../lot/lot-form/lot-form.component';
+import {PostItemLot, PostLot} from '../../../entities/lot';
 import {ItemListComponent} from '../../items/item-list/item-list.component';
 import {filterTable, paginateObject} from '../../../util';
 import {PageEvent} from '@angular/material';
-import {User} from '../../../entities/user';
-import {Provider} from '../../../entities/provider';
 
 @Component({
   selector: 'app-order-list',
@@ -122,7 +120,7 @@ export class OrderListComponent implements OnInit {
     }).then(async (result) => {
       if (result.value) {
         this.isLoading = true;
-        const postItemsLot: ItemLot[] = [];
+        const postItemsLot: PostItemLot[] = [];
         orderItems.forEach(async (item) => {
           const modalRef: NgbModalRef = this.modalService.open(LotFormComponent, { centered: true } );
           modalRef.componentInstance.item = this.showItem(item);
@@ -147,7 +145,7 @@ export class OrderListComponent implements OnInit {
     });
   }
 
-  async approveOrder(id: number, postItemsLot: ItemLot[]) {
+  async approveOrder(id: number, postItemsLot: PostItemLot[]) {
     const update: UpdateOrder = {
       status: 'aprobado'
     };
@@ -155,9 +153,10 @@ export class OrderListComponent implements OnInit {
       order: id,
       items: postItemsLot
     };
-    this.lotService.postLot(postLot).subscribe(response => {
+    this.lotService.postLot(postLot).subscribe(lotResponse => {
       this.service.updateOrder(update, id)
-      .subscribe(response => {
+      .subscribe(approveResponse => {
+        console.log(lotResponse);
         this.isLoading = false;
         Swal.fire({
           position: 'top-end',
