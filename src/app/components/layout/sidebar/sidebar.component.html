@@ -19,6 +19,15 @@
           </div>
         </li>
         <li [ngClass]="{'mm-active border-left-green':ariaExpanded.users}"
+            (click)="changeAriaExpanded('users')">
+          <a aria-expanded="ariaExpanded.inventory"><i class="fa fa-th-large"></i> <span
+            class="nav-label">Inventario</span> <span
+            class="fa arrow"></span></a>
+          <ul class="nav nav-second-level mm-collapse">
+            <li><a [routerLink]="'/inventory'">Estado del Inventario</a></li>
+          </ul>
+        </li>
+        <li [ngClass]="{'mm-active border-left-green':ariaExpanded.users}"
             (click)="changeAriaExpanded('users')"
             *ngIf="rol.name === roles.superUser">
           <a aria-expanded="ariaExpanded.users"><i class="fa fa-th-large"></i> <span
@@ -59,7 +68,7 @@
             <li *ngIf="rol.name === roles.admin || rol.name === roles.superUser">
               <a [routerLink]="'/orders'">Lista de Pedidos</a>
             </li>
-          </ul>  
+          </ul>
           <ul class="nav nav-second-level mm-collapse">
             <li *ngIf="rol.name === roles.admin || rol.name === roles.superUser">
               <a [routerLink]="'/providers'">Proveedores</a>

@@ -18,7 +18,8 @@ export class SidebarComponent implements OnInit {
     items: false,
     orders: false,
     departments: false,
-    users: false
+    users: false,
+    inventory: false
   };
   public isAuthenticated = false;
   public miniNavBar: boolean;
@@ -41,24 +42,35 @@ export class SidebarComponent implements OnInit {
         this.ariaExpanded.departments = false;
         this.ariaExpanded.users = false;
         this.ariaExpanded.orders = false;
+        this.ariaExpanded.inventory = false;
         break;
       case 'orders':
         this.ariaExpanded.orders = !this.ariaExpanded.orders,
         this.ariaExpanded.items = false;
         this.ariaExpanded.departments = false;
         this.ariaExpanded.users = false;
+        this.ariaExpanded.inventory = false;
         break;
       case 'departments':
         this.ariaExpanded.departments = !this.ariaExpanded.departments;
         this.ariaExpanded.items = false;
         this.ariaExpanded.users = false;
         this.ariaExpanded.orders = false;
+        this.ariaExpanded.inventory = false;
         break;
       case 'users':
         this.ariaExpanded.users = !this.ariaExpanded.users;
         this.ariaExpanded.items = false;
         this.ariaExpanded.departments = false;
         this.ariaExpanded.orders = false;
+        this.ariaExpanded.inventory = false;
+        break;
+      case 'inventory':
+        this.ariaExpanded.inventory = !this.ariaExpanded.inventory;
+        this.ariaExpanded.items = false;
+        this.ariaExpanded.departments = false;
+        this.ariaExpanded.orders = false;
+        this.ariaExpanded.users = false;
         break;
       default: for (let value of Object.values(this.ariaExpanded) ) {
         value = false;
