@@ -119,7 +119,6 @@ export class OrderListComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then(async (result) => {
       if (result.value) {
-        this.isLoading = true;
         const postItemsLot: PostItemLot[] = [];
         orderItems.forEach(async (item) => {
           const modalRef: NgbModalRef = this.modalService.open(LotFormComponent, { centered: true } );
@@ -136,7 +135,7 @@ export class OrderListComponent implements OnInit {
             }
             postItemsLot.push(itemLot);
             console.log(postItemsLot);
-            if (postItemsLot.length == orderItems.length) {
+            if (postItemsLot.length === orderItems.length) {
               this.approveOrder(id, postItemsLot);
             }
           });
@@ -146,6 +145,7 @@ export class OrderListComponent implements OnInit {
   }
 
   async approveOrder(id: number, postItemsLot: PostItemLot[]) {
+    this.isLoading = true;
     const update: UpdateOrder = {
       status: 'aprobado'
     };
