@@ -8,7 +8,12 @@ import {AdminAuthGuard} from './guards/adminAuth/admin-auth.guard';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: './components/layout/layout.module#LayoutModule',
+    loadChildren: './components/inventory/inventory.module#InventoryModule',
+    canActivate: [UnauthorizedGuard]
+  },
+  {
+    path: 'inventory',
+    loadChildren: './components/inventory/inventory.module#InventoryModule',
     canActivate: [UnauthorizedGuard]
   },
   {
@@ -61,7 +66,6 @@ const routes: Routes = [
     loadChildren: './components/orders/orders.module#OrdersModule',
     canActivate: [AdminAuthGuard]
   }
-  
 ];
 
 @NgModule({
