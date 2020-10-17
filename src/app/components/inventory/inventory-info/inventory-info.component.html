@@ -22,9 +22,6 @@
           <div class="ibox ">
             <div class="ibox-content">
               <div class="row bStock-bottom">
-                <div class="col-sm-5 m-b-xs">
-                  <a routerLink="add" href="" class="btn btn-primary">Agregar</a>
-                </div>
                 <div class="align-items-end col-sm-4">
                   <label class="col-sm-12 col-form-label">
                     <input class="form-control" type ="search" placeholder="Búsqueda..." [(ngModel)]="search" (input)="searchTyped()">
@@ -43,6 +40,7 @@
                   <tr>
                     <th>Unidades</th>
                     <th>Unidades Críticas</th>
+                    <th>Status</th>
                     <th>Código</th>
                     <th>Nombre</th>
                     <th>Número de Catálogo</th>
@@ -55,6 +53,9 @@
                     <tr>
                       <td>{{ stock.amount }}</td>
                       <td>{{ stock.criticUnit }}</td>
+                      <td>
+                        <span [ngClass]="checkStatusIcon(stock.amount, stock.criticUnit)">{{ checkStatus(stock.amount, stock.criticUnit) }}</span>
+                      </td>
                       <td>{{ stock.code }}</td>
                       <td>{{ stock.generalItem }}</td>
                       <td>{{ stock.brand_code }}</td>
@@ -62,10 +63,10 @@
                       <td>{{ stock.brand }}</td>
                       <td>{{ stock.presentation }}</td>
                       <td>
-                        <a (click)="showLots(stock.LotToStock)"
-                           class="btn btn-sm btn-outline-warning">
-                          <span class="fa fa-medkit"></span>
-                        </a>
+                        <button (click)="showLots(stock.LotToStock)"
+                           class="btn-white btn btn-xs">
+                          Lotes
+                        </button>
                     </tr>
                     </tbody>
                   </ng-container>

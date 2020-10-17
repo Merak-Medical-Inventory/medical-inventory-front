@@ -34,6 +34,7 @@ export class InventoryInfoComponent implements OnInit {
               private modalService: NgbModal) { }
 
   ngOnInit() {
+    this.alertService.clear();
     const user: User = JSON.parse(localStorage.getItem('User') );
     this.rol = user.rol;
     if (this.rol.name === roles.admin || this.rol.name === roles.superUser) {
@@ -72,6 +73,26 @@ export class InventoryInfoComponent implements OnInit {
           this.alertService.error('Error al Obtener la Información del Inventario Principal', false);
         });
     }
+  }
+
+  checkStatus(amount: number, criticUnit: string): string {
+    if (amount === 0) {
+      return 'No Disponible';
+    }
+    if (Number(criticUnit) > amount) {
+      return 'Stock Bajo';
+    }
+    return 'Disponible';
+  }
+
+  checkStatusIcon(amount: number, criticUnit: string): string {
+    if (amount === 0) {
+      return 'label label-danger';
+    }
+    if (Number(criticUnit) > amount) {
+      return 'label label-warning';
+    }
+    return 'label label-primary';
   }
 
   reloadCurrentRoute() {
