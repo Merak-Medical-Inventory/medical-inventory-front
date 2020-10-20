@@ -19,7 +19,7 @@ export interface Stock {
 export interface StockTable {
   id: number;
   amount: number;
-  criticUnit: string;
+  criticUnit: number;
   LotToStock: LotToStock[];
   code: string;
   brand_code: string;
@@ -27,4 +27,9 @@ export interface StockTable {
   category: string;
   brand: string;
   presentation: string;
+}
+
+export interface UpdateStock {
+  amount: number;
+  criticUnit: number;
 }

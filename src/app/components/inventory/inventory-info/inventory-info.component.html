@@ -39,7 +39,6 @@
                 <table class="table table-striped">
                   <tr>
                     <th>Unidades</th>
-                    <th>Unidades Críticas</th>
                     <th>Status</th>
                     <th>Código</th>
                     <th>Nombre</th>
@@ -52,7 +51,6 @@
                     <tbody>
                     <tr>
                       <td>{{ stock.amount }}</td>
-                      <td>{{ stock.criticUnit }}</td>
                       <td>
                         <span [ngClass]="checkStatusIcon(stock.amount, stock.criticUnit)">{{ checkStatus(stock.amount, stock.criticUnit) }}</span>
                       </td>
@@ -66,6 +64,10 @@
                         <button (click)="showLots(stock.LotToStock)"
                            class="btn-white btn btn-xs">
                           Lotes
+                        </button>
+                        <button (click)="updateCriticUnit(stock)"
+                                class="btn-white btn btn-xs">
+                          Unidad Crítica
                         </button>
                     </tr>
                     </tbody>

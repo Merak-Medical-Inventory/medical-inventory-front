@@ -1,0 +1,38 @@
+<ng-container class="body">
+  <app-alert></app-alert>
+  <div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox">
+      <div class="ibox-content">
+        <div class=" row align-items-center">
+          <div class="col-lg-10">
+            <h2>Unidad Crítica para {{ item }}</h2>
+          </div>
+        </div>
+        <form [formGroup]="criticForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row">
+                <label class="col-sm-12 col-form-label">Unidades Recomendadas Para Volver a Hacer un Pedido
+                  <input type="number"
+                         min="1"
+                         step="any"
+                         formControlName="unit"
+                         class="form-control"
+                         placeholder="Unidad Crítica"
+                         [ngClass]="{'is-invalid': submitted && f.unit.errors }">
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="hr-line-dashed"></div>
+          <div class="form-group row">
+            <div class="col-sm-11"></div>
+            <div class="form-group">
+              <button class="btn btn-primary btn-sm" type="submit">Actualizar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</ng-container>

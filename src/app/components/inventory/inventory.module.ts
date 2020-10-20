@@ -9,10 +9,12 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {LotModule} from '../lot/lot.module';
 import {InventoryService} from '../../services/inventory/inventory.service';
 import {LotListComponent} from '../lot/lot-list/lot-list.component';
+import {StockCriticUnitComponent} from './stock-critic-unit/stock-critic-unit.component';
+import {StockService} from '../../services/stock/stock.service';
 
 
 @NgModule({
-  declarations: [InventoryInfoComponent],
+  declarations: [InventoryInfoComponent, StockCriticUnitComponent],
   imports: [
     CommonModule,
     InventoryRoutingModule,
@@ -24,7 +26,7 @@ import {LotListComponent} from '../lot/lot-list/lot-list.component';
     NgbModule,
     LotModule
   ],
-  providers: [InventoryService],
-  entryComponents: [ LotListComponent ]
+  providers: [InventoryService, StockService],
+  entryComponents: [ LotListComponent, StockCriticUnitComponent]
 })
 export class InventoryModule { }

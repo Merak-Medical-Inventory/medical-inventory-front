@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Inventory, Stock, StockTable} from '../../../entities/inventory';
+import {Inventory, Stock, StockTable, UpdateStock} from '../../../entities/inventory';
 import {InventoryService} from '../../../services/inventory/inventory.service';
 import Swal from 'sweetalert2';
 import {Router} from '@angular/router';
@@ -13,6 +13,8 @@ import {roles} from '../../../constants/rolConstants';
 import {mainInventory} from '../../../constants/inventoryConstans';
 import {LotToStock} from '../../../entities/lot';
 import {LotListComponent} from '../../lot/lot-list/lot-list.component';
+import {StockService} from '../../../services/stock/stock.service';
+import {StockCriticUnitComponent} from '../stock-critic-unit/stock-critic-unit.component';
 
 @Component({
   selector: 'app-inventory-info',
@@ -31,7 +33,7 @@ export class InventoryInfoComponent implements OnInit {
   rol: Rol;
 
   constructor(private service: InventoryService, private router: Router, private alertService: AlertService,
-              private modalService: NgbModal) { }
+              private modalService: NgbModal, private stockService: StockService) { }
 
   ngOnInit() {
     this.alertService.clear();
@@ -43,16 +45,10 @@ export class InventoryInfoComponent implements OnInit {
           this.inventory = response.body['data'];
           this.stocks = this.inventory.stock;
           this.stocksTable = this.stocks.map(stock => {
-            let cu: string;
-            if (stock.criticUnit) {
-              cu = stock.criticUnit.toString();
-            } else {
-              cu = '';
-            }
             const element: StockTable = {
               id: stock.id,
               amount: stock.amount,
-              criticUnit: cu,
+              criticUnit: stock.criticUnit,
               code: stock.item.code,
               brand_code: stock.item.brand_code,
               generalItem: stock.item.generalItem.name,
@@ -100,6 +96,42 @@ export class InventoryInfoComponent implements OnInit {
     this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
       this.router.navigate([currentUrl]);
     });
+  }
+
+  async updateCriticUnit(stock: StockTable) {
+    const modalRef: NgbModalRef = this.modalService.open(StockCriticUnitComponent, {centered: true});
+    modalRef.componentInstance.item = this.showItem(stock);
+    modalRef.componentInstance.unit = stock.criticUnit;
+    modalRef.componentInstance.isClient = true;
+    await modalRef.result.then((unitResult) => {
+      this.isLoading = true;
+      const body: UpdateStock = {
+        amount: stock.amount,
+        criticUnit: unitResult
+      };
+      console.log(body);
+      this.stockService.putStock(body, stock.id).subscribe(response => {
+        console.log(response);
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'La Unidad Crítica se ha Actualizado',
+          showConfirmButton: false,
+          timer: 1500
+        });
+        this.ngOnInit();
+      }, error => {
+        this.isLoading = false;
+        console.log(error);
+        this.alertService.error('Error al Actualizar la Unidad Crítica', false);
+      });
+    });
+  }
+
+  showItem(stock: StockTable): string {
+    let itemDisplay = '';
+    itemDisplay = itemDisplay + stock.generalItem + ' ' + stock.brand + ' ' + stock.presentation;
+    return itemDisplay;
   }
 
   showLots(lots: LotToStock[]) {
