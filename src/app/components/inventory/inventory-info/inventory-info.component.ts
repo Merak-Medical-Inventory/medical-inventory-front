@@ -71,21 +71,21 @@ export class InventoryInfoComponent implements OnInit {
     }
   }
 
-  checkStatus(amount: number, criticUnit: string): string {
+  checkStatus(amount: number, criticUnit: number): string {
     if (amount === 0) {
       return 'No Disponible';
     }
-    if (Number(criticUnit) > amount) {
+    if (criticUnit > amount) {
       return 'Stock Bajo';
     }
     return 'Disponible';
   }
 
-  checkStatusIcon(amount: number, criticUnit: string): string {
+  checkStatusIcon(amount: number, criticUnit: number): string {
     if (amount === 0) {
       return 'label label-danger';
     }
-    if (Number(criticUnit) > amount) {
+    if (criticUnit > amount) {
       return 'label label-warning';
     }
     return 'label label-primary';
