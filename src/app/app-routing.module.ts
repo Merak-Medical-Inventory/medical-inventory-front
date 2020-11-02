@@ -4,6 +4,7 @@ import {UnauthorizedGuard} from './guards/unauthorized/unauthorized.guard';
 import {SessionGuard} from './guards/session/session.guard';
 import {SuperuserAuthGuard} from './guards/superuserAuth/superuser-auth.guard';
 import {AdminAuthGuard} from './guards/adminAuth/admin-auth.guard';
+import {MedicalAuthGuard} from './guards/medicalAuth/medical-auth.guard';
 
 const routes: Routes = [
   {
@@ -64,6 +65,16 @@ const routes: Routes = [
   {
     path: 'orders',
     loadChildren: './components/orders/orders.module#OrdersModule',
+    canActivate: [AdminAuthGuard]
+  },
+  {
+    path: 'orderDepartment',
+    loadChildren: './components/order-department/order-department.module#OrderDepartmentModule',
+    canActivate: [MedicalAuthGuard]
+  },
+  {
+    path: 'orderDepartmentAdmin',
+    loadChildren: './components/order-department-admin/order-department-admin.module#OrderDepartmentAdminModule',
     canActivate: [AdminAuthGuard]
   }
 ];

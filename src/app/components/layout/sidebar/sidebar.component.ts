@@ -19,7 +19,8 @@ export class SidebarComponent implements OnInit {
     orders: false,
     departments: false,
     users: false,
-    inventory: false
+    inventory: false,
+    orderDepartment: false
   };
   public isAuthenticated = false;
   public miniNavBar: boolean;
@@ -43,6 +44,7 @@ export class SidebarComponent implements OnInit {
         this.ariaExpanded.users = false;
         this.ariaExpanded.orders = false;
         this.ariaExpanded.inventory = false;
+        this.ariaExpanded.orderDepartment = false;
         break;
       case 'orders':
         this.ariaExpanded.orders = !this.ariaExpanded.orders,
@@ -50,6 +52,7 @@ export class SidebarComponent implements OnInit {
         this.ariaExpanded.departments = false;
         this.ariaExpanded.users = false;
         this.ariaExpanded.inventory = false;
+        this.ariaExpanded.orderDepartment = false;
         break;
       case 'departments':
         this.ariaExpanded.departments = !this.ariaExpanded.departments;
@@ -57,6 +60,7 @@ export class SidebarComponent implements OnInit {
         this.ariaExpanded.users = false;
         this.ariaExpanded.orders = false;
         this.ariaExpanded.inventory = false;
+        this.ariaExpanded.orderDepartment = false;
         break;
       case 'users':
         this.ariaExpanded.users = !this.ariaExpanded.users;
@@ -64,9 +68,19 @@ export class SidebarComponent implements OnInit {
         this.ariaExpanded.departments = false;
         this.ariaExpanded.orders = false;
         this.ariaExpanded.inventory = false;
+        this.ariaExpanded.orderDepartment = false;
         break;
       case 'inventory':
         this.ariaExpanded.inventory = !this.ariaExpanded.inventory;
+        this.ariaExpanded.items = false;
+        this.ariaExpanded.departments = false;
+        this.ariaExpanded.orders = false;
+        this.ariaExpanded.users = false;
+        this.ariaExpanded.orderDepartment = false;
+        break;
+      case 'orderDepartment':
+        this.ariaExpanded.orderDepartment = !this.ariaExpanded.orderDepartment;
+        this.ariaExpanded.inventory = false;
         this.ariaExpanded.items = false;
         this.ariaExpanded.departments = false;
         this.ariaExpanded.orders = false;
