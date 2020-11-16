@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {OrderToItem} from '../../../entities/order';
-import {OrderDepartment, OrderDepartmentAdminTable} from '../../../entities/orderDepartment';
+import {DeniedOrderDepartment, OrderDepartment, OrderDepartmentAdminTable} from '../../../entities/orderDepartment';
 import Swal from 'sweetalert2';
 import {Router} from '@angular/router';
 import {AlertService} from '../../../services/alert/alert.service';
 import { LotService } from '../../../services/lot/lot.service';
-import { Item } from 'src/app/entities/item';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {ItemListComponent} from '../../items/item-list/item-list.component';
 import {filterTable, paginateObject} from '../../../util';
@@ -107,6 +106,42 @@ export class OrderDepartmentAdminListComponent implements OnInit {
     const modalRef: NgbModalRef = this.modalService.open(ItemListComponent, { centered: true } );
     modalRef.componentInstance.orderItems = orderItems;
     modalRef.componentInstance.isClient = true;
+  }
+
+  async deniedOrder(id: number) {
+    const { value: message } = await Swal.fire({
+      input: 'textarea',
+      inputPlaceholder: 'Inserte el Mensaje de Respuesta al Pedido Negado...',
+      inputAttributes: {
+        'aria-label': 'Inserte el Mensaje'
+      },
+      showCancelButton: true
+    });
+    if (message) {
+      this.isLoading = true;
+      this.user = JSON.parse(localStorage.getItem('User') );
+      const body: DeniedOrderDepartment = {
+        status: 'Negado',
+        sender: this.user.id,
+        response : String(message),
+        dateResponse: new Date()
+      };
+      this.service.deniedOrderDepartment(body, id).subscribe(response => {
+        this.isLoading = false;
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'El Pedido se ha Negado',
+          showConfirmButton: false,
+          timer: 1500
+        });
+        this.reloadCurrentRoute();
+      }, error => {
+        this.isLoading = false;
+        console.log(error);
+        this.alertService.error('Error al Negar el Pedido', false);
+      });
+    }
   }
 
   reloadCurrentRoute() {

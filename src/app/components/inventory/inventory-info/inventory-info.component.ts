@@ -39,8 +39,13 @@ export class InventoryInfoComponent implements OnInit {
     this.alertService.clear();
     const user: User = JSON.parse(localStorage.getItem('User') );
     this.rol = user.rol;
+    let inventoryId: number;
     if (this.rol.name === roles.admin || this.rol.name === roles.superUser) {
-      this.service.getInventoryById(mainInventory.id)
+      inventoryId = mainInventory.id;
+    } else {
+      inventoryId = user.department.inventory.id;
+    }
+    this.service.getInventoryById(inventoryId)
         .subscribe(response => {
           this.inventory = response.body['data'];
           this.stocks = this.inventory.stock;
@@ -68,7 +73,6 @@ export class InventoryInfoComponent implements OnInit {
           console.log(error.error);
           this.alertService.error('Error al Obtener la Información del Inventario Principal', false);
         });
-    }
   }
 
   checkStatus(amount: number, criticUnit: number): string {

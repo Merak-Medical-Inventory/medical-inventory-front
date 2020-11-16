@@ -1,0 +1,98 @@
+<app-sidebar>
+  <ng-container class="body">
+    <app-alert></app-alert>
+    <div class="row wrapper bStock-bottom white-bg page-heading">
+      <div class="col-lg-10">
+        <h2>Aprobar Pedido Interno</h2>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="">Home</a>
+          </li>
+          <li class="breadcrumb-item active">
+            <strong><a href="/orderDepartmentAdmin">Pedidos</a></strong>
+          </li>
+          <li class="breadcrumb-item active">
+            <strong>{{orderId}}</strong>
+          </li>
+        </ol>
+      </div>
+      <div class="col-lg-2">
+      </div>
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="ibox ">
+            <div class="ibox-content">
+              <div class="row bStock-bottom">
+                <div class="align-items-end col-sm-4">
+                  <label class="col-sm-12 col-form-label">
+                    <input class="form-control" type ="search" placeholder="Búsqueda..." [(ngModel)]="search" (input)="searchTyped()">
+                  </label>
+                </div>
+              </div>
+              <div *ngIf="isLoading === true" class=" row align-items-center">
+                <div class="spiner-example">
+                  <div class="sk-spinner sk-spinner-rotating-plane"></div>
+                </div>
+              </div>
+              <p *ngIf="isLoading === false && (!currentPageStockOrder || currentPageStockOrder.length == 0)"
+                 style="margin-top: 2.5%">No hay datos disponibles.</p>
+              <div *ngIf="isLoading === false && currentPageStockOrder && currentPageStockOrder.length != 0" class="table-responsive">
+                <table class="table table-striped">
+                  <tr>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Número de Catálogo</th>
+                    <th>Categoría</th>
+                    <th>Marca</th>
+                    <th>Presentación</th>
+                    <th>Unidades Pedidas</th>
+                    <th>Unidades a Asignar</th>
+                    <th>Unidades Disponibles</th>
+                    <th>Asignación</th>
+                  </tr>
+                  <ng-container *ngFor="let stock of currentPageStockOrder">
+                    <tbody>
+                    <tr>
+                      <td>{{ stock.code }}</td>
+                      <td>{{ stock.generalItem }}</td>
+                      <td>{{ stock.brand_code }}</td>
+                      <td>{{ stock.category }}</td>
+                      <td>{{ stock.brand }}</td>
+                      <td>{{ stock.presentation }}</td>
+                      <td>{{ stock.orderAmount }}</td>
+                      <td>{{ stock.actualAmount }}</td>
+                      <td>{{ stock.availableAmount }}</td>
+                      <td>
+                        <span [ngClass]="checkStatusIcon(stock.availableAmount, stock.orderAmount)">{{ checkStatus(stock.availableAmount, stock.orderAmount) }}</span>
+                      </td>
+                      <td>
+                        <a (click)="onDelete(stock.id)"
+                           class="btn btn-sm btn-outline-warning">
+                          <span class="fa fa-trash"></span>
+                        </a>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </ng-container>
+                </table>
+                <div class="pagination float-right">
+                  <mat-paginator [pageSize]="1" [length]="paginatedStockOrder.length" hidePageSize="true" showFirstLastButtons="true" (page)="onPageChanged($event)"></mat-paginator>
+                </div>
+              </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group row">
+              <div class="col-sm-11"></div>
+              <div class="form-group">
+                <button (click)="onSubmit()" class="btn btn-primary btn-sm" [disabled]="buttonDisabled" type="submit">Aprobar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</app-sidebar>
+

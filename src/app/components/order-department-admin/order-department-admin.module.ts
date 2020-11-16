@@ -12,10 +12,11 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ItemsModule} from '../items/items.module';
 import {OrderDepartmentService} from '../../services/orderDepartment/order-department.service';
 import {ItemListComponent} from '../items/item-list/item-list.component';
+import { AcceptOrderTableComponent } from './accept-order-table/accept-order-table.component';
 
 
 @NgModule({
-  declarations: [OrderDepartmentAdminListComponent],
+  declarations: [OrderDepartmentAdminListComponent, AcceptOrderTableComponent],
   imports: [
     CommonModule,
     OrderDepartmentAdminRoutingModule,

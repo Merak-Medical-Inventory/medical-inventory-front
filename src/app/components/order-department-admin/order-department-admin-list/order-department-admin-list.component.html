@@ -3,7 +3,7 @@
     <app-alert></app-alert>
     <div class="row wrapper border-bottom white-bg page-heading">
       <div class="col-lg-10">
-        <h2>Pedidos</h2>
+        <h2>Pedidos Internos</h2>
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
             <a href="">Home</a>
@@ -56,6 +56,16 @@
                         <a (click)="showItems(order.orderToItem)"
                            class="btn btn-sm btn-outline-warning">
                           <span class="fa fa-medkit"></span>
+                        </a>
+                        <a *ngIf="order.status == 'solicitado'"
+                           [routerLink]="['/orderDepartmentAdmin/accept', order.id]"
+                           class="btn btn-sm btn-outline-warning" style="color: green">
+                          <span class="fa fa-check" style="color: green"></span>
+                        </a>
+                        <a *ngIf="order.status == 'solicitado'"
+                           (click)="deniedOrder(order.id)"
+                           class="btn btn-sm btn-outline-warning" style="color: red">
+                          <span class="fa fa-times" style="color: red"></span>
                         </a>
                       </td>
                     </tr>
