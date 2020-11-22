@@ -110,7 +110,7 @@ export class AcceptOrderTableComponent implements OnInit {
     this.buttonDisabled = true;
     const {value: message} = await Swal.fire({
       input: 'textarea',
-      inputPlaceholder: 'Inserte el Mensaje de Respuesta al Pedido Negado...',
+      inputPlaceholder: 'Inserte el Mensaje de Respuesta al Pedido Aprobado...',
       inputAttributes: {
         'aria-label': 'Inserte el Mensaje'
       },
