@@ -5,7 +5,7 @@ export interface Department {
   code: string;
   name: string;
   description: string;
-  inventory: Inventory;
+  inventory: Inventory[];
 }
 
 export interface PostDepartment {

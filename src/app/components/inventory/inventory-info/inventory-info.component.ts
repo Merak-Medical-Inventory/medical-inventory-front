@@ -43,7 +43,7 @@ export class InventoryInfoComponent implements OnInit {
     if (this.rol.name === roles.admin || this.rol.name === roles.superUser) {
       inventoryId = mainInventory.id;
     } else {
-      inventoryId = user.department.inventory.id;
+      inventoryId = user.department.inventory[0].id;
     }
     this.service.getInventoryById(inventoryId)
         .subscribe(response => {
@@ -71,7 +71,7 @@ export class InventoryInfoComponent implements OnInit {
         }, error => {
           this.isLoading = false;
           console.log(error.error);
-          this.alertService.error('Error al Obtener la Información del Inventario Principal', false);
+          this.alertService.error('Error al Obtener la Información del Inventario', false);
         });
   }
 
