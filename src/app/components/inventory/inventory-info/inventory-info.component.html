@@ -69,6 +69,11 @@
                                 class="btn-white btn btn-xs">
                           Unidad Crítica
                         </button>
+                        <button *ngIf="checkRole(stock)" (click)="outputItemStock(stock)"
+                                class="btn-white btn btn-xs">
+                          Registrar Salida
+                        </button>
+                      </td>
                     </tr>
                     </tbody>
                   </ng-container>

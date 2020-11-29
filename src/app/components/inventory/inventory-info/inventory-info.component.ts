@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Inventory, Stock, StockTable, UpdateStock} from '../../../entities/inventory';
+import {Inventory, OutputItemStock, Stock, StockTable, UpdateStock} from '../../../entities/inventory';
 import {InventoryService} from '../../../services/inventory/inventory.service';
 import Swal from 'sweetalert2';
 import {Router} from '@angular/router';
@@ -15,6 +15,7 @@ import {LotToStock} from '../../../entities/lot';
 import {LotListComponent} from '../../lot/lot-list/lot-list.component';
 import {StockService} from '../../../services/stock/stock.service';
 import {StockCriticUnitComponent} from '../stock-critic-unit/stock-critic-unit.component';
+import {PostItemOrder} from '../../../entities/order';
 
 @Component({
   selector: 'app-inventory-info',
@@ -75,6 +76,15 @@ export class InventoryInfoComponent implements OnInit {
         });
   }
 
+  checkRole(stock: StockTable) {
+    if (this.rol.name === roles.admin || this.rol.name === roles.superUser) {
+      return false;
+    }
+    if (stock.amount !== 0) {
+      return true;
+    }
+  }
+
   checkStatus(amount: number, criticUnit: number): string {
     if (amount === 0) {
       return 'No Disponible';
@@ -110,7 +120,6 @@ export class InventoryInfoComponent implements OnInit {
     await modalRef.result.then((unitResult) => {
       this.isLoading = true;
       const body: UpdateStock = {
-        amount: stock.amount,
         criticUnit: unitResult
       };
       console.log(body);
@@ -130,6 +139,42 @@ export class InventoryInfoComponent implements OnInit {
         this.alertService.error('Error al Actualizar la Unidad Crítica', false);
       });
     });
+  }
+
+  async outputItemStock(stock: StockTable) {
+    const {value: amount} = await Swal.fire({
+      title: 'Cuál es la Cantidad de ' + this.showItem(stock) + ' a Registrar en Salida?',
+      icon: 'question',
+      input: 'range',
+      inputAttributes: {
+        min: '1',
+        max: String(stock.amount),
+        step: '1'
+      },
+      inputValue: '1'
+    });
+    if (amount) {
+      this.isLoading = true;
+      const body: OutputItemStock = {
+        amountOutput: amount
+      };
+      this.stockService.outputItemStock(body, stock.id).subscribe(response => {
+        console.log(response);
+        this.isLoading = false;
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Se Registró la Salida en el Inventario',
+          showConfirmButton: false,
+          timer: 1500
+        });
+        this.ngOnInit();
+      }, error => {
+        this.isLoading = false;
+        console.log(error);
+        this.alertService.error('Error al Registrar la Salida en el Inventario', false);
+      });
+    }
   }
 
   showItem(stock: StockTable): string {

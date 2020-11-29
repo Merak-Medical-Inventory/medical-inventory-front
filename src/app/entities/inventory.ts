@@ -30,6 +30,9 @@ export interface StockTable {
 }
 
 export interface UpdateStock {
-  amount: number;
   criticUnit: number;
+}
+
+export interface OutputItemStock {
+  amountOutput: number;
 }
