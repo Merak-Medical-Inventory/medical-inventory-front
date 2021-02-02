@@ -101,6 +101,16 @@
             <li><a [routerLink]="'/orderDepartment'">Pedidos Internos</a></li>
           </ul>
         </li>
+        <li [ngClass]="{'mm-active border-left-green':ariaExpanded.devices}"
+            (click)="changeAriaExpanded('items')"
+            *ngIf="rol.name === roles.admin || rol.name === roles.superUser ">
+          <a aria-expanded="ariaExpanded.devices"><i class="fa fa-th-large"></i> <span
+            class="nav-label">Equipos Médicos</span> <span
+            class="fa arrow"></span></a>
+          <ul class="nav nav-second-level mm-collapse">
+            <li><a [routerLink]="'/generalDevices'">Equipos Médicos Generales</a></li>
+          </ul>
+        </li>
       </ul>
     </div>
   </nav>

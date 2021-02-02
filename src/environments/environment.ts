@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   authServiceUrl: 'http://localhost:3001/api/',
-  inventoryServiceUrl: 'http://localhost:3002/api/'
+  inventoryServiceUrl: 'http://localhost:3002/api/',
+  deviceServiceUrl: 'http://localhost:3003/api/'
 };
 
 /*
