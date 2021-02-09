@@ -5,7 +5,6 @@ import {SessionGuard} from './guards/session/session.guard';
 import {SuperuserAuthGuard} from './guards/superuserAuth/superuser-auth.guard';
 import {AdminAuthGuard} from './guards/adminAuth/admin-auth.guard';
 import {MedicalAuthGuard} from './guards/medicalAuth/medical-auth.guard';
-import {GeneralDevicesModule} from './components/general-devices/general-devices.module';
 
 const routes: Routes = [
   {
@@ -82,7 +81,13 @@ const routes: Routes = [
     path: 'generalDevices',
     loadChildren: './components/general-devices/general-devices.module#GeneralDevicesModule',
     canActivate: [AdminAuthGuard]
+  },
+  {
+    path: 'makers',
+    loadChildren: './components/makers/makers.module#MakersModule',
+    canActivate: [AdminAuthGuard]
   }
+
 ];
 
 @NgModule({

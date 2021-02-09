@@ -1,0 +1,89 @@
+<app-sidebar>
+  <ng-container class="body">
+    <app-alert></app-alert>
+    <div class="row wrapper border-bottom white-bg page-heading">
+      <div class="col-lg-10">
+        <h2>Fabricantes</h2>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="">Home</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a routerLink="/makers">Fabricantes</a>
+          </li>
+          <li *ngIf="!this.makerId" class="breadcrumb-item active">
+            <strong>Agregar</strong>
+          </li>
+          <li *ngIf="this.makerId" class="breadcrumb-item active">
+            <strong>Editar</strong>
+          </li>
+        </ol>
+      </div>
+      <div class="col-lg-2">
+      </div>
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight">
+      <div class="ibox">
+        <div class="ibox-content">
+          <div *ngIf="isLoading === true" class=" row align-items-center">
+            <div class="spiner-example">
+              <div class="sk-spinner sk-spinner-rotating-plane"></div>
+            </div>
+          </div>
+          <form [formGroup]="makerForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group row align-items-center">
+                  <label class="col-sm-12 col-form-label">Nombre
+                    <input type="text"
+                           formControlName="name"
+                           class="form-control"
+                           placeholder="Nombre"
+                           [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
+                    <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                      <div *ngIf="f.name.errors.required; else maxLength">El Nombre es Requerido</div>
+                      <ng-template #maxLength>El Nombre no Debe Exceder a 20 Caracteres</ng-template>
+                    </div>
+                  </label>
+                </div>
+                <div class="form-group row align-items-center">
+                  <label class="col-sm-12 col-form-label">Dirección
+                    <input type="text"
+                           formControlName="address"
+                           class="form-control"
+                           placeholder="Dirección"
+                           [ngClass]="{ 'is-invalid': submitted && f.address.errors }">
+                    <div *ngIf="submitted && f.address.errors" class="invalid-feedback">
+                      <div *ngIf="f.address.errors.required; else maxLength">La Dirección es Requerida</div>
+                      <ng-template #maxLength>La Dirección no Debe Exceder a 40 Caracteres</ng-template>
+                    </div>
+                  </label>
+                </div>
+                <div class="form-group row align-items-center">
+                  <label class="col-sm-12 col-form-label">Número de Teléfono
+                    <input type="tel"
+                           formControlName="phone_number"
+                           class="form-control"
+                           placeholder="Formato: 58(Codigo País)-212-123-4567"
+                           [ngClass]="{ 'is-invalid': submitted && f.phone_number.errors }">
+                    <div *ngIf="submitted && f.phone_number.errors" class="invalid-feedback">
+                      <div *ngIf="f.phone_number.errors.required; else pattern">El Número de Teléfono es Requerido</div>
+                      <ng-template #pattern>El Número de Teléfono no Cumple con el Formato Adecuado (Ejemplo: 58(Codigo País)-212-123-4567)</ng-template>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group row">
+              <div class="col-sm-11"></div>
+              <div class="form-group">
+                <button class="btn btn-primary btn-sm" [disabled]="buttonDisabled" type="submit">Guardar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</app-sidebar>
