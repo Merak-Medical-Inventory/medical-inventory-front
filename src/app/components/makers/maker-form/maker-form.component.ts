@@ -22,10 +22,12 @@ export class MakerFormComponent implements OnInit {
   buttonDisabled = false;
   isLoading = true;
   maker: Maker;
+  modal = false;
 
   constructor(private service: MakerService, private alertService: AlertService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.modal = Boolean(localStorage.getItem('modal'));
     this.isLoading = false;
     this.route.params.subscribe(params => {
       this.makerId = parseInt(params.makerId, 0);

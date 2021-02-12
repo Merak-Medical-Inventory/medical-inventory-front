@@ -13,4 +13,8 @@ export class InventoryService {
     return this.http.get(`${environment.inventoryServiceUrl}inventory/${id}`, {observe: 'response'});
   }
 
+  getInventories() {
+    return this.http.get(`${environment.inventoryServiceUrl}inventory`, {observe: 'response'});
+  }
+
 }
