@@ -1,1 +1,176 @@
-<p>device-form works!</p>
+<app-sidebar>
+  <ng-container class="body">
+    <app-alert></app-alert>
+    <div class="row wrapper border-bottom white-bg page-heading">
+      <div class="col-lg-10">
+        <h2>Equipos Médicos</h2>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="">Home</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a routerLink="/devices">Equipos Médicos</a>
+          </li>
+          <li *ngIf="!this.deviceId" class="breadcrumb-item active">
+            <strong>Agregar</strong>
+          </li>
+          <li *ngIf="this.deviceId" class="breadcrumb-item active">
+            <strong>Editar</strong>
+          </li>
+        </ol>
+      </div>
+      <div class="col-lg-2">
+      </div>
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight">
+      <div class="ibox">
+        <div class="ibox-content">
+          <div *ngIf="isLoading === true" class=" row align-items-center">
+            <div class="spiner-example">
+              <div class="sk-spinner sk-spinner-rotating-plane"></div>
+            </div>
+          </div>
+          <form [formGroup]="deviceForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group row align-items-center">
+                  <label class="col-sm-12 col-form-label">Código Serial
+                    <input type="text"
+                           formControlName="serial_code"
+                           class="form-control"
+                           placeholder="Código Serial"
+                           [ngClass]="{ 'is-invalid': submitted && f.serial_code.errors }">
+                    <div *ngIf="submitted && f.serial_code.errors" class="invalid-feedback">
+                      <div *ngIf="f.serial_code.errors.required; else maxLength">El Código Serial es Requerido</div>
+                      <ng-template #maxLength>El Código Serial no Debe Exceder a 20 Caracteres</ng-template>
+                    </div>
+                  </label>
+                </div>
+                <div class="form-group row align-items-center">
+                  <label class="col-sm-12 col-form-label">Alimentación Requerida
+                    <input type="text"
+                           formControlName="power_supply"
+                           class="form-control"
+                           placeholder="Alimentación Requerida"
+                           [ngClass]="{ 'is-invalid': submitted && f.power_supply.errors }">
+                    <div *ngIf="submitted && f.power_supply.errors" class="invalid-feedback">
+                      <div *ngIf="f.power_supply.errors.required; else maxLength">La Alimentación de el Equipo es Requerida</div>
+                      <ng-template #maxLength>La Alimentación no Debe Exceder a 20 Caracteres</ng-template>
+                    </div>
+                  </label>
+                </div>
+                <div class="form-group row align-items-center">
+                  <label class="col-sm-12 col-form-label">Fecha de Ingreso
+                    <input type="date"
+                           class="form-control"
+                           formControlName="date"
+                           [ngClass]="{'is-invalid': submitted && f.date.errors }">
+                    <div *ngIf="submitted && f.date.errors" class="invalid-feedback">
+                      <div *ngIf="f.date.errors.required">La Fecha es Requerida</div>
+                    </div>
+                  </label>
+                </div>
+                <div class="form-group row align-items-center">
+                  <label class="col-sm-12 col-form-label">Fecha de Garantía
+                    <input type="date"
+                           class="form-control"
+                           formControlName="warranty_date"
+                           [ngClass]="{'is-invalid': submitted && f.warranty_date.errors }">
+                    <div *ngIf="submitted && f.warranty_date.errors" class="invalid-feedback">
+                      <div *ngIf="f.warranty_date.errors.required">La Fecha de Garantía es Requerida</div>
+                    </div>
+                  </label>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-12 col-form-label">Año de Fabricación
+                    <input type="number"
+                           min="1900"
+                           [max]="getCurrentYear()"
+                           formControlName="production_year"
+                           class="form-control"
+                           placeholder="Año de Fabricación"
+                           [ngClass]="{ 'is-invalid': submitted && f.production_year.errors }">
+                    <div *ngIf="submitted && f.production_year.errors" class="invalid-feedback">
+                      <div *ngIf="f.production_year.errors.required">La Cantidad es Requerida</div>
+                    </div>
+                  </label>
+                </div>
+                <div class="form-group row align-items-center">
+                  <label class="col-sm-12 col-form-label">Insumo General
+                    <ng-select2 formControlName="generalDevice" width="100%"
+                                [ngClass]="{'is-invalid': submitted && f.generalDevice.errors }"
+                                [data]="generalDevices"
+                                [options]="generalDeviceOptions"
+                                (valueChanged)="generalDeviceChanged($event)">
+                    </ng-select2>
+                    <div *ngIf="submitted && f.generalDevice.errors" class="invalid-feedback">
+                      <div *ngIf="f.generalDevice.errors.required">El Equipo Médico General es Requerido</div>
+                    </div>
+                    <a (click) = "addGeneralDevice()"
+                       class="btn btn-sm btn-outline-warning">
+                      <span class="fa fa-plus"></span>
+                    </a>
+                  </label>
+                </div>
+                <div class="form-group row align-items-center">
+                <label class="col-sm-12 col-form-label">Marca
+                  <ng-select2 formControlName="brand" width="100%"
+                              [ngClass]="{'is-invalid': submitted && f.brand.errors }"
+                              [data]="brands"
+                              [options]="brandOptions"
+                              (valueChanged)="brandChanged($event)">
+                  </ng-select2>
+                  <div *ngIf="submitted && f.brand.errors" class="invalid-feedback">
+                    <div *ngIf="f.brand.errors.required">La Marca es Requerida</div>
+                  </div>
+                  <a (click) = "addBrand()"
+                     class="btn btn-sm btn-outline-warning">
+                    <span class="fa fa-plus"></span>
+                  </a>
+                </label>
+              </div>
+                <div class="form-group row align-items-center">
+                  <label class="col-sm-12 col-form-label">Fabricante
+                    <ng-select2 formControlName="maker" width="100%"
+                                [ngClass]="{'is-invalid': submitted && f.maker.errors }"
+                                [data]="makers"
+                                [options]="makerOptions"
+                                (valueChanged)="makerChanged($event)">
+                    </ng-select2>
+                    <div *ngIf="submitted && f.maker.errors" class="invalid-feedback">
+                      <div *ngIf="f.maker.errors.required">El Fabricante es Requerido</div>
+                    </div>
+                    <a (click) = "addMaker()"
+                       class="btn btn-sm btn-outline-warning">
+                      <span class="fa fa-plus"></span>
+                    </a>
+                  </label>
+                </div>
+                <div *ngIf="!this.deviceId" class="form-group row align-items-center">
+                  <label class="col-sm-12 col-form-label">Ubicación
+                    <ng-select2 formControlName="location" width="100%"
+                                [ngClass]="{'is-invalid': submitted && f.location.errors }"
+                                [data]="locations"
+                                [options]="locationOptions"
+                                (valueChanged)="locationChanged($event)">
+                    </ng-select2>
+                    <div *ngIf="submitted && f.location.errors" class="invalid-feedback">
+                      <div *ngIf="f.location.errors.required">El Inventario es Requerido</div>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group row">
+              <div class="col-sm-11"></div>
+              <div class="form-group">
+                <button class="btn btn-primary btn-sm" [disabled]="buttonDisabled" type="submit">Guardar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</app-sidebar>

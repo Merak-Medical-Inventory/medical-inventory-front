@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import Swal from 'sweetalert2';
-import {Maker, PostMaker} from '../../../entities/Maker';
+import {Maker, PostMaker} from '../../../entities/maker';
 import {MakerService} from '../../../services/maker/maker.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AlertService} from '../../../services/alert/alert.service';

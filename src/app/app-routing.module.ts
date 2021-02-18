@@ -86,6 +86,11 @@ const routes: Routes = [
     path: 'makers',
     loadChildren: './components/makers/makers.module#MakersModule',
     canActivate: [AdminAuthGuard]
+  },
+  {
+    path: 'devices',
+    loadChildren: './components/devices/devices.module#DevicesModule',
+    canActivate: [AdminAuthGuard]
   }
 
 ];

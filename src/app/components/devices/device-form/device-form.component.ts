@@ -6,7 +6,7 @@ import {Options} from 'select2';
 import {Select2OptionData} from 'ng-select2';
 import {Device, PostDevice, UpdateDevice} from '../../../entities/device';
 import {DeviceService} from '../../../services/device/device.service';
-import {MakerService} from '../../../services/Maker/Maker.service';
+import {MakerService} from '../../../services/maker/maker.service';
 import {BrandService} from '../../../services/brand/brand.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Brand} from '../../../entities/brand';
@@ -15,15 +15,10 @@ import {Maker} from '../../../entities/maker';
 import {MakerFormComponent} from '../../makers/maker-form/maker-form.component';
 import {AlertService} from '../../../services/alert/alert.service';
 import {GeneralDevice} from '../../../entities/generalDevice';
-import {GeneralDeviceService} from '../../../services/generalDevice/general-Device.service';
+import {GeneralDeviceService} from '../../../services/generalDevice/general-device.service';
 import {GeneralDeviceFormComponent} from '../../general-devices/general-device-form/general-device-form.component';
 import {Inventory} from '../../../entities/inventory';
-import {DeviceTable} from '../../../entities/Device';
-import {filterTable, paginateObject} from '../../../util';
-import {PageEvent} from '@angular/material';
 import {InventoryService} from '../../../services/inventory/inventory.service';
-import {GeneralItemFormComponent} from '../../generalItems/general-item-form/general-item-form.component';
-import {PresentationFormComponent} from '../../presentations/presentation-form/presentation-form.component';
 
 @Component({
   selector: 'app-device-form',
@@ -39,6 +34,7 @@ export class DeviceFormComponent implements OnInit {
     production_year: new FormControl('', [Validators.required]),
     generalDevice: new FormControl('', [Validators.required]),
     brand: new FormControl('', [Validators.required]),
+    maker: new FormControl('', [Validators.required]),
     location: new FormControl('', [Validators.required])
   });
   generalDeviceOptions: Options;
@@ -112,6 +108,10 @@ export class DeviceFormComponent implements OnInit {
 
   get f() {
     return this.deviceForm.controls;
+  }
+
+  getCurrentYear() {
+   return new Date().getFullYear();
   }
 
   async getSelectGeneralDevice() {
@@ -201,7 +201,7 @@ export class DeviceFormComponent implements OnInit {
       return array;
     })
       .catch( error => {
-        this.alertService.error('Error al Obtener las Presentaciones', false);
+        this.alertService.error('Error al Obtener los Inventarios', false);
         return array;
       });
   }
@@ -224,7 +224,7 @@ export class DeviceFormComponent implements OnInit {
     });
   }
 
-  addmaker() {
+  addMaker() {
     localStorage.setItem('modal', 'true');
     const modalRef: NgbModalRef = this.modalService.open(MakerFormComponent, { centered: true });
     modalRef.componentInstance.isClient = true;
@@ -267,11 +267,12 @@ export class DeviceFormComponent implements OnInit {
         date: this.deviceForm.value.date,
         warranty_date: this.deviceForm.value.warranty_date,
         production_year: this.deviceForm.value.production_year,
-        generalDevice: Number(this.deviceForm.value.generaldevice),
+        generalDevice: Number(this.deviceForm.value.generalDevice),
         maker: Number(this.deviceForm.value.maker),
         brand: Number(this.deviceForm.value.brand),
         location: Number(this.deviceForm.value.location)
       };
+      console.log(body);
       this.service.postDevice(body)
         .subscribe(response => {
           this.router.navigate(['/devices']).then(result =>

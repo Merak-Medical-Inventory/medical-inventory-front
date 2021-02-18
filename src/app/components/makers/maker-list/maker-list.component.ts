@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Maker} from '../../../entities/Maker';
+import {Maker} from '../../../entities/maker';
 import {MakerService} from '../../../services/maker/maker.service';
 import Swal from 'sweetalert2';
 import {Router} from '@angular/router';

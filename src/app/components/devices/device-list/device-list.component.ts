@@ -42,6 +42,7 @@ export class DeviceListComponent implements OnInit {
       this.service.getDevices()
         .subscribe(response => {
           this.devices = response.body['data'];
+          console.log(this.devices);
           this.devices = this.devices.map(value => {
             const date = new Date(value.date);
             // @ts-ignore
