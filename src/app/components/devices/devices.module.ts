@@ -19,10 +19,13 @@ import {GeneralDevicesModule} from '../general-devices/general-devices.module';
 import {GeneralDeviceFormComponent} from '../general-devices/general-device-form/general-device-form.component';
 import {MakersModule} from '../makers/makers.module';
 import {MakerFormComponent} from '../makers/maker-form/maker-form.component';
+import {DatePipe} from '@angular/common';
+import { LocationHistoryComponent } from './location-history/location-history.component';
+import { UpdateLocationComponent } from './update-location/update-location.component';
 
 
 @NgModule({
-  declarations: [DeviceListComponent, DeviceFormComponent],
+  declarations: [DeviceListComponent, DeviceFormComponent, LocationHistoryComponent, UpdateLocationComponent],
   imports: [
     CommonModule,
     DevicesRoutingModule,
@@ -37,7 +40,7 @@ import {MakerFormComponent} from '../makers/maker-form/maker-form.component';
     GeneralDevicesModule,
     MakersModule
   ],
-  providers: [DeviceService, GeneralDeviceService, MakerService, BrandService],
-  entryComponents: [GeneralDeviceFormComponent, MakerFormComponent, BrandFormComponent]
+  providers: [DeviceService, GeneralDeviceService, MakerService, BrandService, DatePipe],
+  entryComponents: [GeneralDeviceFormComponent, MakerFormComponent, BrandFormComponent, LocationHistoryComponent, UpdateLocationComponent]
 })
 export class DevicesModule { }

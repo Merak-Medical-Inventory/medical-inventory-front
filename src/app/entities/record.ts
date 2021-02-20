@@ -1,16 +1,15 @@
 import {Inventory} from './inventory';
-import {Device} from './device';
 
 export interface Record {
+  id: number;
   initialDate: Date;
   endDate: Date;
-  device: Device;
   location: Inventory;
 }
 
 export interface RecordTable {
+  id: number;
   initialDate: Date;
   endDate: Date;
-  device: string;
   location: string;
 }

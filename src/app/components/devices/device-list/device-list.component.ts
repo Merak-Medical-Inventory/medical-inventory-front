@@ -1,11 +1,16 @@
 import { Component, OnInit, Input } from '@angular/core';
-import {Device, DeviceTable} from '../../../entities/device';
+import {Device, DeviceTable, UpdateLocationDevice} from '../../../entities/device';
 import {DeviceService} from '../../../services/device/device.service';
 import Swal from 'sweetalert2';
 import {Router} from '@angular/router';
 import {AlertService} from '../../../services/alert/alert.service';
 import {filterTable, paginateObject} from '../../../util';
 import {PageEvent} from '@angular/material';
+import {Record} from '../../../entities/record';
+import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import {LocationHistoryComponent} from '../location-history/location-history.component';
+import {LotFormComponent} from '../../lot/lot-form/lot-form.component';
+import {UpdateLocationComponent} from '../update-location/update-location.component';
 
 @Component({
   selector: 'app-device-list',
@@ -36,7 +41,8 @@ export class DeviceListComponent implements OnInit {
   };
 
 
-  constructor(private service: DeviceService, private router: Router, private alertService: AlertService) { }
+  constructor(private service: DeviceService, private router: Router, private alertService: AlertService,
+              private modalService: NgbModal) { }
 
   ngOnInit() {
       this.service.getDevices()
@@ -67,6 +73,7 @@ export class DeviceListComponent implements OnInit {
               maker: device.maker.name,
               brand: device.brand.name,
               location: device.location.name,
+              locationId: device.location.id,
               Record: device.Record,
               Maintenance: device.Maintenance
             };
@@ -98,37 +105,71 @@ export class DeviceListComponent implements OnInit {
     this.currentPageDevice = this.paginatedDevices[0];
   }
 
-  onDelete(id: number) {
-    this.alertService.clear();
-    Swal.fire({
-      title: 'Desea Eliminar el Equipo Médico?',
-      // text: 'You won\'t be able to revert this!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Sí',
-      cancelButtonText: 'Cancelar'
-    }).then((result) => {
-      if (result.value) {
-        this.isLoading = true;
-        this.service.deleteDevice(id)
-          .subscribe(response => {
-            this.isLoading = false;
-            this.reloadCurrentRoute();
-            Swal.fire({
-              position: 'top-end',
-              icon: 'success',
-              title: 'El Equipo Médico se ha Eliminado Exitosamente',
-              showConfirmButton: false,
-              timer: 1500
-            });
-          }, error => {
-            console.log(error);
-            this.alertService.error('Error al Eliminar el Equipo Médico', false);
+  showRecords(records: Record[]) {
+    const modalRef: NgbModalRef = this.modalService.open(LocationHistoryComponent, { centered: true } );
+    modalRef.componentInstance.records = records;
+    modalRef.componentInstance.isClient = true;
+  }
+
+  async updateLocation(device: DeviceTable) {
+    const modalRef: NgbModalRef = this.modalService.open(UpdateLocationComponent, {centered: true});
+    modalRef.componentInstance.device = device;
+    modalRef.componentInstance.isClient = true;
+    await modalRef.result.then((location) => {
+      console.log(location);
+      const body: UpdateLocationDevice = {
+        idInventory: location
+      };
+      this.isLoading = true;
+      this.service.updateLocation(body, device.id)
+        .subscribe(response => {
+          this.isLoading = false;
+          this.reloadCurrentRoute();
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Se Actualizó la Ubicación del Equipo Médico',
+            showConfirmButton: false,
+            timer: 1500
           });
-      }
+        }, error => {
+          console.log(error);
+          this.alertService.error('Error al Actualizar la Ubicación del Equipo Médico', false);
+        });
     });
   }
 
-}
+    onDelete(id: number) {
+      this.alertService.clear();
+      Swal.fire({
+        title: 'Desea Eliminar el Equipo Médico?',
+        // text: 'You won\'t be able to revert this!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.value) {
+          this.isLoading = true;
+          this.service.deleteDevice(id)
+            .subscribe(response => {
+              this.isLoading = false;
+              this.reloadCurrentRoute();
+              Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'El Equipo Médico se ha Eliminado Exitosamente',
+                showConfirmButton: false,
+                timer: 1500
+              });
+            }, error => {
+              console.log(error);
+              this.alertService.error('Error al Eliminar el Equipo Médico', false);
+            });
+        }
+      });
+    }
+
+  }

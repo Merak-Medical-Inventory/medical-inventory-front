@@ -15,7 +15,6 @@ export interface MaintenanceTable {
 }
 
 export interface PostMaintenance {
-  id: number;
   description: string;
   date: Date;
   device: number;

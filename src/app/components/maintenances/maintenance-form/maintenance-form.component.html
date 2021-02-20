@@ -1,0 +1,87 @@
+<app-sidebar>
+  <ng-container class="body">
+    <app-alert></app-alert>
+    <div class="row wrapper border-bottom white-bg page-heading">
+      <div class="col-lg-10">
+        <h2>Mantenimientos</h2>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="">Home</a>
+          </li>
+          <li class="breadcrumb-item">
+            <a routerLink="/maintenances">Equipos Médicos</a>
+          </li>
+          <li *ngIf="!this.maintenanceId" class="breadcrumb-item active">
+            <strong>Agregar</strong>
+          </li>
+          <li *ngIf="this.maintenanceId" class="breadcrumb-item active">
+            <strong>Editar</strong>
+          </li>
+        </ol>
+      </div>
+      <div class="col-lg-2">
+      </div>
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight">
+      <div class="ibox">
+        <div class="ibox-content">
+          <div *ngIf="isLoading === true" class=" row align-items-center">
+            <div class="spiner-example">
+              <div class="sk-spinner sk-spinner-rotating-plane"></div>
+            </div>
+          </div>
+          <form [formGroup]="maintenanceForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group row align-items-center">
+                  <label class="col-sm-12 col-form-label">Equipo Médico
+                    <ng-select2 formControlName="device" width="100%"
+                                [ngClass]="{'is-invalid': submitted && f.device.errors }"
+                                [data]="devices"
+                                [options]="deviceOptions"
+                                (valueChanged)="deviceChanged($event)">
+                    </ng-select2>
+                    <div *ngIf="submitted && f.device.errors" class="invalid-feedback">
+                      <div *ngIf="f.device.errors.required">El Equipo Médico es Requerido</div>
+                    </div>
+                  </label>
+                </div>
+                <div class="form-group row align-items-center">
+                  <label class="col-sm-12 col-form-label">Descripción
+                    <input type="text"
+                           formControlName="description"
+                           class="form-control"
+                           placeholder="Descripción"
+                           [ngClass]="{ 'is-invalid': submitted && f.description.errors }">
+                    <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
+                      <div *ngIf="f.description.errors.required; else maxLength">La Descripción es Requerida</div>
+                      <ng-template #maxLength>La Descripción no Debe Exceder a 40 Caracteres</ng-template>
+                    </div>
+                  </label>
+                </div>
+                <div class="form-group row align-items-center">
+                  <label class="col-sm-12 col-form-label">Fecha
+                    <input type="date"
+                           class="form-control"
+                           formControlName="date"
+                           [ngClass]="{'is-invalid': submitted && f.date.errors }">
+                    <div *ngIf="submitted && f.date.errors" class="invalid-feedback">
+                      <div *ngIf="f.date.errors.required">La Fecha es Requerida</div>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group row">
+              <div class="col-sm-11"></div>
+              <div class="form-group">
+                <button class="btn btn-primary btn-sm" [disabled]="buttonDisabled" type="submit">Guardar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</app-sidebar>

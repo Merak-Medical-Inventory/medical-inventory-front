@@ -3,13 +3,13 @@
     <app-alert></app-alert>
     <div class="row wrapper border-bottom white-bg page-heading">
       <div class="col-lg-10">
-        <h2>Equipos Médicos</h2>
+        <h2>Mantenimientos</h2>
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
             <a href="">Home</a>
           </li>
           <li class="breadcrumb-item active">
-            <strong><a href=""> Equipos Médicos </a></strong>
+            <strong><a href=""> Mantenimientos </a></strong>
           </li>
         </ol>
       </div>
@@ -36,48 +36,28 @@
                   <div class="sk-spinner sk-spinner-rotating-plane"></div>
                 </div>
               </div>
-              <p *ngIf="isLoading === false && (!currentPageDevice || currentPageDevice.length == 0)"
+              <p *ngIf="isLoading === false && (!currentPageMaintenance || currentPageMaintenance.length == 0)"
                  style="margin-top: 2.5%">No hay datos disponibles.</p>
-              <div *ngIf="isLoading === false && currentPageDevice && currentPageDevice.length != 0" class="table-responsive">
+              <div *ngIf="isLoading === false && currentPageMaintenance && currentPageMaintenance.length != 0" class="table-responsive">
                 <table class="table table-striped">
                   <thead>
                   <tr>
-                    <th>Nombre</th>
-                    <th>Código Serial</th>
-                    <th>Alimentación</th>
-                    <th>Fecha de Ingreso</th>
-                    <th>Fecha de Garantía</th>
-                    <th>Año de Fabricación</th>
-                    <th>Fabricante</th>
-                    <th>Marca</th>
-                    <th>Ubicación</th>
+                    <th>Equipo Médico</th>
+                    <th>Descripción</th>
+                    <th>Fecha</th>
                   </tr>
                   </thead>
                   <tbody>
-                  <tr *ngFor="let device of currentPageDevice">
-                    <td>{{ device.generalDevice }}</td>
-                    <td>{{ device.serial_code }}</td>
-                    <td>{{ device.power_supply }}</td>
-                    <td>{{ device.date }}</td>
-                    <td>{{ device.warranty_date }}</td>
-                    <td>{{ device.production_year }}</td>
-                    <td>{{ device.maker }}</td>
-                    <td>{{ device.brand }}</td>
-                    <td>{{ device.location }}</td>
+                  <tr *ngFor="let maintenance of currentPageMaintenance">
+                    <td>{{ maintenance.device }}</td>
+                    <td>{{ maintenance.description }}</td>
+                    <td>{{ maintenance.date }}</td>
                     <td>
-                      <button (click)="showRecords(device.Record)"
-                              class="btn-white btn btn-xs">
-                        Registros
-                      </button>
-                      <button (click)="updateLocation(device)"
-                              class="btn-white btn btn-xs">
-                        Ubicación
-                      </button>
-                      <a [routerLink]="['/devices/edit', device.id]"
+                      <a [routerLink]="['/maintenances/edit', maintenance.id]"
                          class="btn btn-sm btn-outline-warning">
                         <span class="fa fa-pencil"></span>
                       </a>
-                      <a (click)="onDelete(device.id)"
+                      <a (click)="onDelete(maintenance.id)"
                          class="btn btn-sm btn-outline-warning">
                         <span class="fa fa-trash"></span>
                       </a>
@@ -86,7 +66,7 @@
                   </tbody>
                 </table>
                 <div class="pagination float-right">
-                  <mat-paginator [pageSize]="1" [length]="paginatedDevices.length" hidePageSize="true" showFirstLastButtons="true" (page)="onPageChanged($event)"></mat-paginator>
+                  <mat-paginator [pageSize]="1" [length]="paginatedMaintenances.length" hidePageSize="true" showFirstLastButtons="true" (page)="onPageChanged($event)"></mat-paginator>
                 </div>
               </div>
             </div>

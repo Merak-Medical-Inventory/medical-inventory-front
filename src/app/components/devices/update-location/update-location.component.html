@@ -1,0 +1,40 @@
+<ng-container class="body">
+  <app-alert></app-alert>
+  <div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox">
+      <div class="ibox-content">
+        <div class=" row align-items-center">
+          <div class="col-lg-10">
+            <h2>Actualizar Ubicación para {{ deviceName }}</h2>
+          </div>
+        </div>
+        <form [formGroup]="locationForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group row align-items-center">
+                <label class="col-sm-12 col-form-label">Ubicación
+                  <ng-select2 formControlName="location" width="100%"
+                              [ngClass]="{'is-invalid': submitted && f.location.errors }"
+                              [data]="locations"
+                              [options]="locationOptions"
+                              (valueChanged)="locationChanged($event)">
+                  </ng-select2>
+                  <div *ngIf="submitted && f.location.errors" class="invalid-feedback">
+                    <div *ngIf="f.location.errors.required">El Inventario es Requerido</div>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="hr-line-dashed"></div>
+          <div class="form-group row">
+            <div class="col-sm-11"></div>
+            <div class="form-group">
+              <button class="btn btn-primary btn-sm" type="submit">Actualizar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</ng-container>

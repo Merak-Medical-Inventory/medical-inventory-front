@@ -91,6 +91,11 @@ const routes: Routes = [
     path: 'devices',
     loadChildren: './components/devices/devices.module#DevicesModule',
     canActivate: [AdminAuthGuard]
+  },
+  {
+    path: 'maintenances',
+    loadChildren: './components/maintenances/maintenances.module#MaintenancesModule',
+    canActivate: [AdminAuthGuard]
   }
 
 ];

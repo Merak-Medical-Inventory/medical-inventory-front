@@ -19,6 +19,7 @@ import {GeneralDeviceService} from '../../../services/generalDevice/general-devi
 import {GeneralDeviceFormComponent} from '../../general-devices/general-device-form/general-device-form.component';
 import {Inventory} from '../../../entities/inventory';
 import {InventoryService} from '../../../services/inventory/inventory.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-device-form',
@@ -58,7 +59,7 @@ export class DeviceFormComponent implements OnInit {
   constructor(private service: DeviceService, private generalDeviceService: GeneralDeviceService,
               private makerService: MakerService, private brandService: BrandService,
               private locationService: InventoryService, private alertService: AlertService, private modalService: NgbModal,
-              private router: Router, private route: ActivatedRoute) { }
+              private router: Router, private route: ActivatedRoute, private datePipe: DatePipe) { }
 
   ngOnInit() {
     this.generalDeviceOptions = {
@@ -90,10 +91,10 @@ export class DeviceFormComponent implements OnInit {
                 console.log(response);
                 this.f.serial_code.setValue(this.device.serial_code);
                 this.f.power_supply.setValue(this.device.power_supply);
-                this.f.date.setValue(this.device.date);
-                this.f.warranty_date.setValue(this.device.warranty_date);
+                this.f.date.setValue(this.datePipe.transform(this.device.date, 'yyyy-MM-dd'));
+                this.f.warranty_date.setValue(this.datePipe.transform(this.device.warranty_date, 'yyyy-MM-dd'));
                 this.f.production_year.setValue(this.device.production_year);
-                this.f.generaldevice.setValue(this.device.generalDevice.id);
+                this.f.generalDevice.setValue(this.device.generalDevice.id);
                 this.f.maker.setValue(this.device.maker.id);
                 this.f.brand.setValue(this.device.brand.id);
                 this.f.location.setValue(this.device.location.id);
@@ -129,7 +130,7 @@ export class DeviceFormComponent implements OnInit {
       return array;
     })
       .catch( error => {
-        this.alertService.error('Error al Obtener los Insumos Generales', false);
+        this.alertService.error('Error al Obtener los Equipos Médicos Generales', false);
         return array;
       });
   }
@@ -296,7 +297,7 @@ export class DeviceFormComponent implements OnInit {
         date: this.deviceForm.value.date,
         warranty_date: this.deviceForm.value.warranty_date,
         production_year: this.deviceForm.value.production_year,
-        generalDevice: Number(this.deviceForm.value.generaldevice),
+        generalDevice: Number(this.deviceForm.value.generalDevice),
         maker: Number(this.deviceForm.value.maker),
         brand: Number(this.deviceForm.value.brand)
       };

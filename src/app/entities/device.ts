@@ -32,6 +32,7 @@ export  interface DeviceTable {
   brand: string;
   Maintenance: Maintenance[];
   location: string;
+  locationId: number;
   Record: Record[];
 }
 
