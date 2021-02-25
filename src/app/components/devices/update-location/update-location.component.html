@@ -13,12 +13,12 @@
             <div class="col-md-6">
               <div class="form-group row align-items-center">
                 <label class="col-sm-12 col-form-label">Ubicación
-                  <ng-select2 formControlName="location" width="100%"
+                  <ngx-select formControlName="location" width="100%"
                               [ngClass]="{'is-invalid': submitted && f.location.errors }"
-                              [data]="locations"
-                              [options]="locationOptions"
-                              (valueChanged)="locationChanged($event)">
-                  </ng-select2>
+                              [items]="locations"
+                              (select)="locationChanged($event)"
+                              placeholder="Seleccione el Inventario...">
+                  </ngx-select>
                   <div *ngIf="submitted && f.location.errors" class="invalid-feedback">
                     <div *ngIf="f.location.errors.required">El Inventario es Requerido</div>
                   </div>

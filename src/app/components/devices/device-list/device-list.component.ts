@@ -112,16 +112,18 @@ export class DeviceListComponent implements OnInit {
   }
 
   async updateLocation(device: DeviceTable) {
-    const modalRef: NgbModalRef = this.modalService.open(UpdateLocationComponent, {centered: true});
+    const modalRef: NgbModalRef = this.modalService.open(UpdateLocationComponent, {centered: true, container: 'body'});
     modalRef.componentInstance.device = device;
     modalRef.componentInstance.isClient = true;
     await modalRef.result.then((location) => {
-      console.log(location);
-      const body: UpdateLocationDevice = {
-        idInventory: location
-      };
-      this.isLoading = true;
-      this.service.updateLocation(body, device.id)
+      const idLocation = parseInt(location);
+      console.log(idLocation);
+      if (idLocation !== device.locationId) {
+        const body: UpdateLocationDevice = {
+          idInventory: idLocation
+        };
+        this.isLoading = true;
+        this.service.updateLocation(body, device.id)
         .subscribe(response => {
           this.isLoading = false;
           this.reloadCurrentRoute();
@@ -136,7 +138,8 @@ export class DeviceListComponent implements OnInit {
           console.log(error);
           this.alertService.error('Error al Actualizar la Ubicación del Equipo Médico', false);
         });
-    });
+      }
+  });
   }
 
     onDelete(id: number) {

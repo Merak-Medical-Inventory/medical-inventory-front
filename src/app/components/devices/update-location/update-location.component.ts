@@ -22,7 +22,7 @@ export class UpdateLocationComponent implements OnInit {
   isLoading = true;
   location: number;
   locationOptions: Options;
-  locations: Select2OptionData[] = [];
+  locations: any[] = [];
   locationsData: Inventory[] = [];
 
   constructor(private activeModal: NgbActiveModal, private locationService: InventoryService, private alertService: AlertService) { }
@@ -33,7 +33,7 @@ export class UpdateLocationComponent implements OnInit {
       placeholder: {id: '', text: 'Seleccione la Ubicación...'}
     };
     this.getSelectLocations().then(() => {
-      this.f.location.setValue(this.device.locationId);
+      this.f.location.setValue(String(this.device.locationId));
       console.log(this.locations);
     });
     this.isLoading = false;
@@ -60,7 +60,6 @@ export class UpdateLocationComponent implements OnInit {
         };
         array.push(data);
       }
-      console.log(array);
       return array;
     })
       .catch( error => {
@@ -69,12 +68,13 @@ export class UpdateLocationComponent implements OnInit {
       });
   }
 
-  locationChanged(data: { value: string }) {
-    this.f.location.setValue(data.value);
+  locationChanged(data: any) {
+    console.log(data);
+    this.f.location.setValue(data);
   }
 
   onSubmit() {
-    this.location = this.locationForm.value.date;
+    this.location = this.locationForm.value.location;
     this.activeModal.close(this.location);
   }
 

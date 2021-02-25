@@ -22,6 +22,7 @@ import {MakerFormComponent} from '../makers/maker-form/maker-form.component';
 import {DatePipe} from '@angular/common';
 import { LocationHistoryComponent } from './location-history/location-history.component';
 import { UpdateLocationComponent } from './update-location/update-location.component';
+import {NgxSelectModule} from 'ngx-select-ex';
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import { UpdateLocationComponent } from './update-location/update-location.compo
     MatPaginatorModule,
     ReactiveFormsModule,
     NgSelect2Module,
+    NgxSelectModule,
     NgbModule,
     BrandsModule,
     GeneralDevicesModule,
