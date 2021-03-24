@@ -90,7 +90,7 @@ const routes: Routes = [
   {
     path: 'devices',
     loadChildren: './components/devices/devices.module#DevicesModule',
-    canActivate: [AdminAuthGuard]
+    canActivate: [MedicalAuthGuard]
   },
   {
     path: 'maintenances',

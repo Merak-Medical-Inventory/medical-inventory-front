@@ -14,6 +14,10 @@ export class DeviceService {
     return this.http.get(`${environment.deviceServiceUrl}device`, {observe: 'response'});
   }
 
+  getDevicesInventory(id: number) {
+    return this.http.get(`${environment.deviceServiceUrl}device/inventory/${id}`, {observe: 'response'});
+  }
+
   getDeviceById(id: number) {
     return this.http.get(`${environment.deviceServiceUrl}device/${id}`, {observe: 'response'});
   }

@@ -69,15 +69,15 @@
                               class="btn-white btn btn-xs">
                         Registros
                       </button>
-                      <button (click)="updateLocation(device)"
+                      <button *ngIf="checkRole()" (click)="updateLocation(device)"
                               class="btn-white btn btn-xs">
                         Ubicación
                       </button>
-                      <a [routerLink]="['/devices/edit', device.id]"
+                      <a *ngIf="checkRole()" [routerLink]="['/devices/edit', device.id]"
                          class="btn btn-sm btn-outline-warning">
                         <span class="fa fa-pencil"></span>
                       </a>
-                      <a (click)="onDelete(device.id)"
+                      <a *ngIf="checkRole()" (click)="onDelete(device.id)"
                          class="btn btn-sm btn-outline-warning">
                         <span class="fa fa-trash"></span>
                       </a>
