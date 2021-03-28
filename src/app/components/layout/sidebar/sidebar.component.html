@@ -121,13 +121,23 @@
           </ul>
         </li>
         <li [ngClass]="{'mm-active border-left-green':ariaExpanded.devicesDepartment}"
-            (click)="changeAriaExpanded('devicesDepartment')"
-            *ngIf="rol.name === roles.medico || rol.name === roles.enfermero ">
+                 (click)="changeAriaExpanded('devicesDepartment')"
+                 *ngIf="rol.name === roles.medico || rol.name === roles.enfermero ">
           <a aria-expanded="ariaExpanded.devicesDepartment"><i class="fa fa-th-large"></i> <span
             class="nav-label">Equipos Médicos</span> <span
             class="fa arrow"></span></a>
           <ul class="nav nav-second-level mm-collapse">
             <li><a [routerLink]="'/devices'">Información de los Equipos Médicos</a></li>
+          </ul>
+        </li>
+        <li [ngClass]="{'mm-active border-left-green':ariaExpanded.stats}"
+            (click)="changeAriaExpanded('devicesDepartment')"
+            *ngIf="rol.name === roles.admin || rol.name === roles.superUser">
+          <a aria-expanded="ariaExpanded.stats"><i class="fa fa-th-large"></i> <span
+            class="nav-label">Estadísticas</span> <span
+            class="fa arrow"></span></a>
+          <ul class="nav nav-second-level mm-collapse">
+            <li><a [routerLink]="'/deviceStats'">Estadística de los Equipos Médicos</a></li>
           </ul>
         </li>
       </ul>

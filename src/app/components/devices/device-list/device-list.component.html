@@ -23,7 +23,7 @@
             <div class="ibox-content">
               <div class="row border-bottom">
                 <div class="col-sm-5 m-b-xs">
-                  <a routerLink="add" href="" class="btn btn-primary">Agregar</a>
+                  <a *ngIf="checkRole()" routerLink="add" href="" class="btn btn-primary">Agregar</a>
                 </div>
                 <div class="align-items-end col-sm-4">
                   <label class="col-sm-12 col-form-label">
