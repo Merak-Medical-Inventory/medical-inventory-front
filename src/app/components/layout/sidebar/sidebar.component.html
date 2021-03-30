@@ -129,6 +129,9 @@
           <ul class="nav nav-second-level mm-collapse">
             <li><a [routerLink]="'/devices'">Información de los Equipos Médicos</a></li>
           </ul>
+          <ul class="nav nav-second-level mm-collapse">
+            <li><a [routerLink]="'/maintenances'">Mantenimientos</a></li>
+          </ul>
         </li>
         <li [ngClass]="{'mm-active border-left-green':ariaExpanded.stats}"
             (click)="changeAriaExpanded('devicesDepartment')"

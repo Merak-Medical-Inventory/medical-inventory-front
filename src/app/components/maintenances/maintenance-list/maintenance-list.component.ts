@@ -6,6 +6,9 @@ import {filterTable, paginateObject} from '../../../util';
 import {PageEvent} from '@angular/material';
 import {Maintenance, MaintenanceTable} from '../../../entities/maintenance';
 import {MaintenanceService} from '../../../services/maintenance/maintenance.service';
+import {Rol} from '../../../entities/rol';
+import {User} from '../../../entities/user';
+import {roles} from '../../../constants/rolConstants';
 
 @Component({
   selector: 'app-maintenance-list',
@@ -34,12 +37,43 @@ export class MaintenanceListComponent implements OnInit {
     10: 'Noviembre',
     11: 'Diciembre',
   };
+  rol: Rol;
 
   constructor(private service: MaintenanceService, private router: Router, private alertService: AlertService) { }
 
   ngOnInit() {
-    this.service.getMaintenances()
-      .subscribe(response => {
+    const user: User = JSON.parse(localStorage.getItem('User') );
+    this.rol = user.rol;
+    if (this.rol.name === roles.admin || this.rol.name === roles.superUser) {
+      this.service.getMaintenances()
+        .subscribe(response => {
+          this.maintenances = response.body['data'];
+          console.log(this.maintenances);
+          this.maintenances = this.maintenances.map(value => {
+            const date = new Date(value.date);
+            // @ts-ignore
+            value.date = `${date.getDate()} de ${this.months[date.getMonth()]} de ${date.getFullYear()}`;
+            return value;
+          });
+          this.maintenancesTable = this.maintenances.map(maintenance => {
+            const element: MaintenanceTable = {
+              id: maintenance.id,
+              device: maintenance.device.generalDevice.name + ' ' + maintenance.device.serial_code,
+              date: maintenance.date,
+              description: maintenance.description
+            };
+            return element;
+          });
+          this.paginatedMaintenances = paginateObject<MaintenanceTable>(this.maintenancesTable, this.pageSize);
+          this.currentPageMaintenance = this.paginatedMaintenances[0];
+          this.isLoading = false;
+        }, error => {
+          this.isLoading = false;
+          console.log(error.error);
+          this.alertService.error('Error al Obtener los Mantenimientos', false);
+        });
+    } else {
+      this.service.getMaintenancesInventory(user.department.inventory[0].id).subscribe(response => {
         this.maintenances = response.body['data'];
         console.log(this.maintenances);
         this.maintenances = this.maintenances.map(value => {
@@ -65,6 +99,14 @@ export class MaintenanceListComponent implements OnInit {
         console.log(error.error);
         this.alertService.error('Error al Obtener los Mantenimientos', false);
       });
+    }
+  }
+
+  checkRole() {
+    if (this.rol.name === roles.admin || this.rol.name === roles.superUser) {
+      return true;
+    }
+    return false;
   }
 
   reloadCurrentRoute() {

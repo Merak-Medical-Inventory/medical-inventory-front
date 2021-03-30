@@ -23,7 +23,7 @@
             <div class="ibox-content">
               <div class="row border-bottom">
                 <div class="col-sm-5 m-b-xs">
-                  <a routerLink="add" href="" class="btn btn-primary">Agregar</a>
+                  <a *ngIf="checkRole()" routerLink="add" href="" class="btn btn-primary">Agregar</a>
                 </div>
                 <div class="align-items-end col-sm-4">
                   <label class="col-sm-12 col-form-label">
@@ -53,11 +53,11 @@
                     <td>{{ maintenance.description }}</td>
                     <td>{{ maintenance.date }}</td>
                     <td>
-                      <a [routerLink]="['/maintenances/edit', maintenance.id]"
+                      <a *ngIf="checkRole()" [routerLink]="['/maintenances/edit', maintenance.id]"
                          class="btn btn-sm btn-outline-warning">
                         <span class="fa fa-pencil"></span>
                       </a>
-                      <a (click)="onDelete(maintenance.id)"
+                      <a *ngIf="checkRole()" (click)="onDelete(maintenance.id)"
                          class="btn btn-sm btn-outline-warning">
                         <span class="fa fa-trash"></span>
                       </a>

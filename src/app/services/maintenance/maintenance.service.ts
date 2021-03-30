@@ -14,6 +14,10 @@ export class MaintenanceService {
     return this.http.get(`${environment.deviceServiceUrl}maintenance`, {observe: 'response'});
   }
 
+  getMaintenancesInventory(id: number) {
+    return this.http.get(`${environment.deviceServiceUrl}maintenance/inventory/${id}`, {observe: 'response'});
+  }
+
   getMaintenanceById(id: number) {
     return this.http.get(`${environment.deviceServiceUrl}maintenance/${id}`, {observe: 'response'});
   }

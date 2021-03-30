@@ -96,11 +96,12 @@ const routes: Routes = [
   {
     path: 'maintenances',
     loadChildren: './components/maintenances/maintenances.module#MaintenancesModule',
-    canActivate: [AdminAuthGuard]
+    canActivate: [UnauthorizedGuard]
   },
   {
     path: 'deviceStats',
-    loadChildren: './components/age-devices-stats/age-devices-stats.module#AgeDevicesStatsModule'
+    loadChildren: './components/age-devices-stats/age-devices-stats.module#AgeDevicesStatsModule',
+    canActivate: [AdminAuthGuard]
   }
 
 ];
