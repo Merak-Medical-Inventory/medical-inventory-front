@@ -15,7 +15,11 @@ import {LotToStock} from '../../../entities/lot';
 import {LotListComponent} from '../../lot/lot-list/lot-list.component';
 import {StockService} from '../../../services/stock/stock.service';
 import {StockCriticUnitComponent} from '../stock-critic-unit/stock-critic-unit.component';
-import {PostItemOrder} from '../../../entities/order';
+import {Options} from 'select2';
+import {Select2OptionData} from 'ng-select2';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Department} from '../../../entities/department';
+import {DepartmentService} from '../../../services/department/department.service';
 
 @Component({
   selector: 'app-inventory-info',
@@ -32,6 +36,12 @@ export class InventoryInfoComponent implements OnInit {
   isLoading = true;
   pageSize = 10;
   rol: Rol;
+  inventoryOptions: Options;
+  inventories: Select2OptionData[] = [];
+  inventoriesData: Inventory[] = [];
+  inventoryValueForm = new FormGroup({
+    inventory: new FormControl('', [Validators.required])
+  });
 
   constructor(private service: InventoryService, private router: Router, private alertService: AlertService,
               private modalService: NgbModal, private stockService: StockService) { }
@@ -41,39 +51,81 @@ export class InventoryInfoComponent implements OnInit {
     const user: User = JSON.parse(localStorage.getItem('User') );
     this.rol = user.rol;
     let inventoryId: number;
+    if (this.checkSuperUserRole()) {
+      this.inventoryOptions = {
+        width: '100%',
+        placeholder: { id: '', text: 'Seleccione un Inventario...' },
+      };
+      this.getSelectInventories().then(() => {
+        this.f.inventory.setValue(1);
+      });
+    }
     if (this.rol.name === roles.admin || this.rol.name === roles.superUser) {
       inventoryId = mainInventory.id;
     } else {
       inventoryId = user.department.inventory[0].id;
     }
+    this.getInfo(inventoryId);
+  }
+
+  getInfo(inventoryId: number) {
     this.service.getInventoryById(inventoryId)
-        .subscribe(response => {
-          this.inventory = response.body['data'];
-          this.stocks = this.inventory.stock;
-          this.stocksTable = this.stocks.map(stock => {
-            const element: StockTable = {
-              id: stock.id,
-              amount: stock.amount,
-              criticUnit: stock.criticUnit,
-              code: stock.item.code,
-              brand_code: stock.item.brand_code,
-              generalItem: stock.item.generalItem.name,
-              category: stock.item.category.name,
-              brand: stock.item.brand.name,
-              presentation: stock.item.presentation.quantity + ' ' + stock.item.presentation.name + ' ' +
-                stock.item.presentation.measure_value + ' ' + stock.item.presentation.measure,
-              LotToStock: stock.LotToStock
-            };
-            return element;
-          });
-          this.paginatedStock = paginateObject<StockTable>(this.stocksTable, this.pageSize);
-          this.currentPageStock = this.paginatedStock[0];
-          this.isLoading = false;
-        }, error => {
-          this.isLoading = false;
-          console.log(error.error);
-          this.alertService.error('Error al Obtener la Información del Inventario', false);
+      .subscribe(response => {
+        this.inventory = response.body['data'];
+        this.stocks = this.inventory.stock;
+        this.stocksTable = this.stocks.map(stock => {
+          const element: StockTable = {
+            id: stock.id,
+            amount: stock.amount,
+            criticUnit: stock.criticUnit,
+            code: stock.item.code,
+            brand_code: stock.item.brand_code,
+            generalItem: stock.item.generalItem.name,
+            category: stock.item.category.name,
+            brand: stock.item.brand.name,
+            presentation: stock.item.presentation.quantity + ' ' + stock.item.presentation.name + ' ' +
+              stock.item.presentation.measure_value + ' ' + stock.item.presentation.measure,
+            LotToStock: stock.LotToStock
+          };
+          return element;
         });
+        this.paginatedStock = paginateObject<StockTable>(this.stocksTable, this.pageSize);
+        this.currentPageStock = this.paginatedStock[0];
+        this.isLoading = false;
+      }, error => {
+        this.isLoading = false;
+        console.log(error.error);
+        this.alertService.error('Error al Obtener la Información del Inventario', false);
+      });
+  }
+
+  async getSelectInventories() {
+    this.alertService.clear();
+    const array: Select2OptionData[] = [];
+    this.inventories = await this.service.getInventories().toPromise().then(value => {
+      this.inventoriesData = value.body['data'];
+      for (const location of this.inventoriesData) {
+        const data: Select2OptionData = {
+          id: location.id.toString(),
+          text: location.name
+        };
+        array.push(data);
+      }
+      return array;
+    })
+      .catch( error => {
+        this.alertService.error('Error al Obtener los Inventarios', false);
+        return array;
+      });
+  }
+
+  get f() {
+    return this.inventoryValueForm.controls;
+  }
+
+  inventoryChanged(data: { value: string }) {
+    this.f.inventory.setValue(data.value);
+    this.getInfo(Number(data));
   }
 
   checkRole(stock: StockTable) {
@@ -85,6 +137,9 @@ export class InventoryInfoComponent implements OnInit {
     }
   }
 
+  checkSuperUserRole() {
+    return this.rol.name === roles.superUser;
+  }
   checkStatus(amount: number, criticUnit: number): string {
     if (amount === 0) {
       return 'No Disponible';

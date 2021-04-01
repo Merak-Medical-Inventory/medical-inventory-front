@@ -11,21 +11,23 @@ import {InventoryService} from '../../services/inventory/inventory.service';
 import {LotListComponent} from '../lot/lot-list/lot-list.component';
 import {StockCriticUnitComponent} from './stock-critic-unit/stock-critic-unit.component';
 import {StockService} from '../../services/stock/stock.service';
+import {NgSelect2Module} from 'ng-select2';
 
 
 @NgModule({
   declarations: [InventoryInfoComponent, StockCriticUnitComponent],
-  imports: [
-    CommonModule,
-    InventoryRoutingModule,
-    LayoutModule,
-    FormsModule,
-    MatProgressSpinnerModule,
-    MatPaginatorModule,
-    ReactiveFormsModule,
-    NgbModule,
-    LotModule
-  ],
+    imports: [
+        CommonModule,
+        InventoryRoutingModule,
+        LayoutModule,
+        FormsModule,
+        MatProgressSpinnerModule,
+        MatPaginatorModule,
+        ReactiveFormsModule,
+        NgbModule,
+        LotModule,
+        NgSelect2Module
+    ],
   providers: [InventoryService, StockService],
   entryComponents: [ LotListComponent, StockCriticUnitComponent]
 })

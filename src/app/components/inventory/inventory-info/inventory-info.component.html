@@ -22,6 +22,20 @@
           <div class="ibox ">
             <div class="ibox-content">
               <div class="row bStock-bottom">
+                <div *ngIf="checkSuperUserRole()" class="align-items-start col-sm-5 m-b-xs">
+                  <form [formGroup]="inventoryValueForm">
+                    <div class="form-group row align-items-center">
+                      <label class="col-sm-12 col-form-label">Inventory
+                        <ng-select2 formControlName="inventory" width="100%"
+                                    [ngClass]="{'is-invalid': f.inventory.errors }"
+                                    [data]="inventories"
+                                    [options]="inventoryOptions"
+                                    (valueChanged)="inventoryChanged($event)">
+                        </ng-select2>
+                      </label>
+                    </div>
+                  </form>
+                </div>
                 <div class="align-items-end col-sm-4">
                   <label class="col-sm-12 col-form-label">
                     <input class="form-control" type ="search" placeholder="Búsqueda..." [(ngModel)]="search" (input)="searchTyped()">
