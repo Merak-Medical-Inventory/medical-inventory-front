@@ -27,6 +27,7 @@ export interface StockTable {
   category: string;
   brand: string;
   presentation: string;
+  status: string;
 }
 
 export interface UpdateStock {

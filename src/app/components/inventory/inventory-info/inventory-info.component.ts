@@ -80,6 +80,7 @@ export class InventoryInfoComponent implements OnInit {
             criticUnit: stock.criticUnit,
             code: stock.item.code,
             brand_code: stock.item.brand_code,
+            status: this.checkStatus(stock.amount, stock.criticUnit),
             generalItem: stock.item.generalItem.name,
             category: stock.item.category.name,
             brand: stock.item.brand.name,

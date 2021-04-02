@@ -25,7 +25,7 @@
                 <div *ngIf="checkSuperUserRole()" class="align-items-start col-sm-5 m-b-xs">
                   <form [formGroup]="inventoryValueForm">
                     <div class="form-group row align-items-center">
-                      <label class="col-sm-12 col-form-label">Inventory
+                      <label class="col-sm-12 col-form-label">Inventario
                         <ng-select2 formControlName="inventory" width="100%"
                                     [ngClass]="{'is-invalid': f.inventory.errors }"
                                     [data]="inventories"
@@ -66,7 +66,7 @@
                     <tr>
                       <td>{{ stock.amount }}</td>
                       <td>
-                        <span [ngClass]="checkStatusIcon(stock.amount, stock.criticUnit)">{{ checkStatus(stock.amount, stock.criticUnit) }}</span>
+                        <span [ngClass]="checkStatusIcon(stock.amount, stock.criticUnit)">{{ stock.status }}</span>
                       </td>
                       <td>{{ stock.code }}</td>
                       <td>{{ stock.generalItem }}</td>
