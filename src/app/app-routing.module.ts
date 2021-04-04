@@ -5,7 +5,6 @@ import {SessionGuard} from './guards/session/session.guard';
 import {SuperuserAuthGuard} from './guards/superuserAuth/superuser-auth.guard';
 import {AdminAuthGuard} from './guards/adminAuth/admin-auth.guard';
 import {MedicalAuthGuard} from './guards/medicalAuth/medical-auth.guard';
-import {AgeDevicesStatsModule} from './components/age-devices-stats/age-devices-stats.module';
 
 const routes: Routes = [
   {
@@ -101,6 +100,11 @@ const routes: Routes = [
   {
     path: 'deviceStats',
     loadChildren: './components/age-devices-stats/age-devices-stats.module#AgeDevicesStatsModule',
+    canActivate: [AdminAuthGuard]
+  },
+  {
+    path: 'orderDepartmentStats',
+    loadChildren: './components/order-department-stats/order-department-stats.module#OrderDepartmentStatsModule',
     canActivate: [AdminAuthGuard]
   }
 

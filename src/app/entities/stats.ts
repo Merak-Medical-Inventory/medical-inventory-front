@@ -9,3 +9,15 @@ export interface DeviceAgeStatsTable {
   production_year: number;
   generalDevice: string;
 }
+
+export interface PostDepartmentOrderStats {
+  order: string;
+}
+
+export interface DepartmentOrderStatsTable {
+  orders: number;
+  id: number;
+  code: string;
+  name: string;
+  description: string;
+}

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
-import {PostDeviceAgeStats} from '../../entities/stats';
+import {PostDepartmentOrderStats, PostDeviceAgeStats} from '../../entities/stats';
 
 @Injectable({
   providedIn: 'root'
@@ -12,5 +12,9 @@ export class StatsService {
 
   getDevicesAgeStats(body: PostDeviceAgeStats) {
     return this.http.post(`${environment.deviceServiceUrl}device/order`, body,  {observe: 'response'});
+  }
+
+  getDepartmentsOrder(body: PostDepartmentOrderStats) {
+    return this.http.post(`${environment.inventoryServiceUrl}orderDepartment/departmentStats`, body, {observe: 'response'});
   }
 }
