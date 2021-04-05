@@ -83,6 +83,21 @@
                     <button (click)="createPdf()" class="btn btn-primary btn-sm">Exportar Como PDF</button>
                   </div>
                 </div>
+                <div class="col-md-12">
+                  <mat-tab-group *ngIf="isLoading === false " dynamicHeight>
+                    <mat-tab label="Gráfico de Barras">
+                      <div style="display: block">
+                        <canvas baseChart
+                                [datasets]="barChartData"
+                                [labels]="barChartLabels"
+                                [options]="barChartOptions"
+                                [legend]="barChartLegend"
+                                [chartType]="barChartType">
+                        </canvas>
+                      </div>
+                    </mat-tab>
+                  </mat-tab-group>
+                </div>
               </div>
             </div>
           </div>

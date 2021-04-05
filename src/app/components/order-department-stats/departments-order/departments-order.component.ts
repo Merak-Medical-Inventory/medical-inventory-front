@@ -11,6 +11,8 @@ import {PageEvent} from '@angular/material';
 // @ts-ignore
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import {ChartOptions, ChartType} from 'chart.js';
+import {Label, SingleOrMultiDataSet} from 'ng2-charts';
 
 @Component({
   selector: 'app-departments-order',
@@ -30,6 +32,21 @@ export class DepartmentsOrderComponent implements OnInit {
   orderOptions: Options;
   orders: Select2OptionData[] = [];
   asc: any;
+  barChartOptions = {
+    responsive: true,
+    scales: {
+      yAxes: [{
+        ticks: {
+          beginAtZero: true
+        }
+      }]
+    }
+  };
+  barChartLabels: Label[] = [];
+  barChartType: ChartType = 'bar';
+  barChartLegend = true;
+
+  barChartData: { data: number[]; label: string; }[];
 
   constructor(private service: StatsService, private router: Router, private alertService: AlertService) { }
 
@@ -61,6 +78,7 @@ export class DepartmentsOrderComponent implements OnInit {
     this.service.getDepartmentsOrder(body)
       .subscribe(response => {
         this.departmentsTable = response.body['data'];
+        this.setPieChartData();
         console.log(this.departmentsTable);
         this.paginatedDepartments = paginateObject<DepartmentOrderStatsTable>(this.departmentsTable, this.pageSize);
         this.currentPageDepartment = this.paginatedDepartments[0];
@@ -70,6 +88,20 @@ export class DepartmentsOrderComponent implements OnInit {
         console.log(error.error);
         this.alertService.error('Error al Obtener las Unidades Médicas', false);
       });
+  }
+
+  setPieChartData() {
+    this.barChartLabels = [];
+    this.barChartData = [];
+    const dataPie: number[] = [];
+    this.departmentsTable.forEach((department, i) => {
+      dataPie.push(department.orders);
+      this.barChartLabels.push(department.name);
+      if (i === 4) {
+        return false;
+      }
+    });
+    this.barChartData = [{data: dataPie, label: 'Número de Pedidos'}];
   }
 
   orderChanged(data: { value: string }) {
