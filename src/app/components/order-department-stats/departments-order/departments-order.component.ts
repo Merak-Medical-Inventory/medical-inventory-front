@@ -11,8 +11,8 @@ import {PageEvent} from '@angular/material';
 // @ts-ignore
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-import {ChartOptions, ChartType} from 'chart.js';
-import {Label, SingleOrMultiDataSet} from 'ng2-charts';
+import {ChartType} from 'chart.js';
+import {Label} from 'ng2-charts';
 
 @Component({
   selector: 'app-departments-order',
@@ -20,13 +20,17 @@ import {Label, SingleOrMultiDataSet} from 'ng2-charts';
   styleUrls: ['./departments-order.component.css']
 })
 export class DepartmentsOrderComponent implements OnInit {
-  orderByForm = new FormGroup({
-    order: new FormControl('', [Validators.required])
+  filterForm = new FormGroup({
+    order: new FormControl('', [Validators.required]),
+    startDate: new FormControl('', [Validators.required]),
+    endDate: new FormControl('', [Validators.required])
   });
   departmentsTable: DepartmentOrderStatsTable[] = [];
   currentPageDepartment: DepartmentOrderStatsTable[];
   paginatedDepartments: DepartmentOrderStatsTable[][] = [];
   search = '';
+  submitted = false;
+  buttonDisabled = false;
   isLoading = true;
   pageSize = 10;
   orderOptions: Options;
@@ -45,8 +49,10 @@ export class DepartmentsOrderComponent implements OnInit {
   barChartLabels: Label[] = [];
   barChartType: ChartType = 'bar';
   barChartLegend = true;
-
   barChartData: { data: number[]; label: string; }[];
+  doughnutChartLabels: Label[] = [];
+  doughnutChartType: ChartType = 'doughnut';
+  doughnutChartData: { data: number[]; label: string; }[];
 
   constructor(private service: StatsService, private router: Router, private alertService: AlertService) { }
 
@@ -71,37 +77,54 @@ export class DepartmentsOrderComponent implements OnInit {
   }
 
   getData() {
-    const body: PostDepartmentOrderStats = {
-      order: this.asc
-    };
+    let body;
+    if (this.f.startDate.value && this.f.endDate.value) {
+      body = {
+        order: this.asc,
+        startDate: this.f.startDate.value,
+        endDate: this.f.endDate.value
+      };
+    } else {
+      body = {
+        order: this.asc
+      };
+    }
     console.log(body);
     this.service.getDepartmentsOrder(body)
       .subscribe(response => {
         this.departmentsTable = response.body['data'];
-        this.setPieChartData();
+        this.setChartData();
         console.log(this.departmentsTable);
         this.paginatedDepartments = paginateObject<DepartmentOrderStatsTable>(this.departmentsTable, this.pageSize);
         this.currentPageDepartment = this.paginatedDepartments[0];
+        this.submitted = false;
+        this.buttonDisabled = false;
         this.isLoading = false;
       }, error => {
         this.isLoading = false;
+        this.submitted = false;
+        this.buttonDisabled = false;
         console.log(error.error);
         this.alertService.error('Error al Obtener las Unidades Médicas', false);
       });
   }
 
-  setPieChartData() {
+  setChartData() {
     this.barChartLabels = [];
     this.barChartData = [];
-    const dataPie: number[] = [];
+    this.doughnutChartData = [];
+    this.doughnutChartLabels = [];
+    const dataChart: number[] = [];
     this.departmentsTable.forEach((department, i) => {
-      dataPie.push(department.orders);
+      dataChart.push(department.orders);
       this.barChartLabels.push(department.name);
+      this.doughnutChartLabels.push(department.name)
       if (i === 4) {
         return false;
       }
     });
-    this.barChartData = [{data: dataPie, label: 'Número de Pedidos'}];
+    this.barChartData = [{data: dataChart, label: 'Número de Pedidos'}];
+    this.doughnutChartData = [{data: dataChart, label: 'Número de Pedidos'}];
   }
 
   orderChanged(data: { value: string }) {
@@ -111,7 +134,7 @@ export class DepartmentsOrderComponent implements OnInit {
   }
 
   get f() {
-    return this.orderByForm.controls;
+    return this.filterForm.controls;
   }
 
   reloadCurrentRoute() {
@@ -134,6 +157,24 @@ export class DepartmentsOrderComponent implements OnInit {
       (this.departmentsTable, this.search),
       this.pageSize);
     this.currentPageDepartment = this.paginatedDepartments[0];
+  }
+
+  onSubmit() {
+    this.submitted = true;
+    if (this.filterForm.invalid) {
+      return;
+    }
+    this.isLoading = true;
+    this.alertService.clear();
+    this.buttonDisabled = true;
+    if (this.f.startDate.value > this.f.endDate.value) {
+      this.isLoading = false;
+      this.submitted = false;
+      this.buttonDisabled = false;
+      this.alertService.error('La Fecha Inicial no Puede ser Mayor a la Fecha Final', false);
+    } else {
+      this.getData();
+    }
   }
 
   createPdf() {
