@@ -1,3 +1,5 @@
+import {Item} from './item';
+
 export interface PostDeviceAgeStats {
   asc: boolean;
 }
@@ -20,4 +22,16 @@ export interface DepartmentOrderStatsTable {
   code: string;
   name: string;
   description: string;
+}
+
+export interface ItemDepartmentOrderStats {
+  orders: number;
+  total: number;
+  item: Item;
+}
+
+export interface ItemDepartmentOrderStatsTable {
+  orders: number;
+  total: number;
+  name: string;
 }

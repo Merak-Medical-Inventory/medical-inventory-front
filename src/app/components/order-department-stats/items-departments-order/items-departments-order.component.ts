@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {DepartmentOrderStatsTable} from '../../../entities/stats';
+import {DepartmentOrderStatsTable, ItemDepartmentOrderStats, ItemDepartmentOrderStatsTable} from '../../../entities/stats';
 import {Options} from 'select2';
 import {Select2OptionData} from 'ng-select2';
 import {StatsService} from '../../../services/stats/stats.service';
@@ -15,19 +15,20 @@ import {ChartType} from 'chart.js';
 import {Label} from 'ng2-charts';
 
 @Component({
-  selector: 'app-departments-order',
-  templateUrl: './departments-order.component.html',
-  styleUrls: ['./departments-order.component.css']
+  selector: 'app-items-departments-order',
+  templateUrl: './items-departments-order.component.html',
+  styleUrls: ['./items-departments-order.component.css']
 })
-export class DepartmentsOrderComponent implements OnInit {
+export class ItemsDepartmentsOrderComponent implements OnInit {
   filterForm = new FormGroup({
     order: new FormControl('', [Validators.required]),
     startDate: new FormControl('', [Validators.required]),
     endDate: new FormControl('', [Validators.required])
   });
-  departmentsTable: DepartmentOrderStatsTable[] = [];
-  currentPageDepartment: DepartmentOrderStatsTable[];
-  paginatedDepartments: DepartmentOrderStatsTable[][] = [];
+  items: ItemDepartmentOrderStats[] = [];
+  itemsTable: ItemDepartmentOrderStatsTable[] = [];
+  currentPageItem: ItemDepartmentOrderStatsTable[];
+  paginatedItems: ItemDepartmentOrderStatsTable[][] = [];
   search = '';
   submitted = false;
   buttonDisabled = false;
@@ -90,13 +91,23 @@ export class DepartmentsOrderComponent implements OnInit {
       };
     }
     console.log(body);
-    this.service.getDepartmentsOrder(body)
+    this.service.getItemsDepartmentsOrder(body)
       .subscribe(response => {
-        this.departmentsTable = response.body['data'];
+        this.items = response.body['data'];
+        console.log(this.items);
+        this.itemsTable = this.items.map(item => {
+          const element: ItemDepartmentOrderStatsTable = {
+            orders: item.orders,
+            total: item.total,
+            name: item.item.generalItem.name + ' ' +  item.item.brand.name + ' ' + item.item.presentation.quantity + ' ' +
+              item.item.presentation.name + ' ' + item.item.presentation.measure_value + ' ' + item.item.presentation.measure
+          };
+          return element;
+        });
         this.setChartData();
-        console.log(this.departmentsTable);
-        this.paginatedDepartments = paginateObject<DepartmentOrderStatsTable>(this.departmentsTable, this.pageSize);
-        this.currentPageDepartment = this.paginatedDepartments[0];
+        console.log(this.itemsTable);
+        this.paginatedItems = paginateObject<ItemDepartmentOrderStatsTable>(this.itemsTable, this.pageSize);
+        this.currentPageItem = this.paginatedItems[0];
         this.submitted = false;
         this.buttonDisabled = false;
         this.isLoading = false;
@@ -105,7 +116,7 @@ export class DepartmentsOrderComponent implements OnInit {
         this.submitted = false;
         this.buttonDisabled = false;
         console.log(error.error);
-        this.alertService.error('Error al Obtener las Unidades Médicas', false);
+        this.alertService.error('Error al Obtener los Insumos', false);
       });
   }
 
@@ -114,17 +125,19 @@ export class DepartmentsOrderComponent implements OnInit {
     this.barChartData = [];
     this.doughnutChartData = [];
     this.doughnutChartLabels = [];
-    const dataChart: number[] = [];
-    this.departmentsTable.forEach((department, i) => {
-      dataChart.push(department.orders);
-      this.barChartLabels.push(department.name);
-      this.doughnutChartLabels.push(department.name)
+    const dataChartOrders: number[] = [];
+    const dataChartTotal: number[] = [];
+    this.itemsTable.forEach((item, i) => {
+      dataChartOrders.push(item.orders);
+      dataChartTotal.push(item.total);
+      this.barChartLabels.push(item.name);
+      this.doughnutChartLabels.push(item.name);
       if (i === 4) {
         return false;
       }
     });
-    this.barChartData = [{data: dataChart, label: 'Número de Pedidos'}];
-    this.doughnutChartData = [{data: dataChart, label: 'Número de Pedidos'}];
+    this.barChartData = [{data: dataChartOrders, label: 'Número de Pedidos'}, {data: dataChartTotal, label: 'Cantidad Solicitada'}];
+    this.doughnutChartData = [{data: dataChartOrders, label: 'Número de Pedidos'}];
   }
 
   orderChanged(data: { value: string }) {
@@ -145,7 +158,7 @@ export class DepartmentsOrderComponent implements OnInit {
   }
 
   onPageChanged(event: PageEvent) {
-    this.currentPageDepartment = this.paginatedDepartments[event.pageIndex];
+    this.currentPageItem = this.paginatedItems[event.pageIndex];
   }
 
   checkOrder() {
@@ -153,10 +166,10 @@ export class DepartmentsOrderComponent implements OnInit {
   }
 
   searchTyped() {
-    this.paginatedDepartments = paginateObject<DepartmentOrderStatsTable>(filterTable<DepartmentOrderStatsTable>
-      (this.departmentsTable, this.search),
+    this.paginatedItems = paginateObject<ItemDepartmentOrderStatsTable>(filterTable<ItemDepartmentOrderStatsTable>
+      (this.itemsTable, this.search),
       this.pageSize);
-    this.currentPageDepartment = this.paginatedDepartments[0];
+    this.currentPageItem = this.paginatedItems[0];
   }
 
   onSubmit() {
@@ -178,7 +191,7 @@ export class DepartmentsOrderComponent implements OnInit {
   }
 
   createPdf() {
-    if (this.currentPageDepartment && this.currentPageDepartment.length !== 0) {
+    if (this.currentPageItem && this.currentPageItem.length !== 0) {
       this.isLoading = true;
       const DATA = document.getElementById('htmlData');
       const doc = new jsPDF('p', 'pt', 'a4');
@@ -200,7 +213,7 @@ export class DepartmentsOrderComponent implements OnInit {
         return doc;
       }).then((docResult) => {
         this.isLoading = false;
-        docResult.save(`${new Date().toISOString()}_UnidadesMédicas.pdf`);
+        docResult.save(`${new Date().toISOString()}_Insumos.pdf`);
       });
       this.isLoading = false;
     } else {

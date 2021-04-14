@@ -8,10 +8,11 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgSelect2Module} from 'ng-select2';
 import {LayoutModule} from '../layout/layout.module';
 import {ChartsModule, ThemeService} from 'ng2-charts';
+import { ItemsDepartmentsOrderComponent } from './items-departments-order/items-departments-order.component';
 
 
 @NgModule({
-  declarations: [DepartmentsOrderComponent],
+  declarations: [DepartmentsOrderComponent, ItemsDepartmentsOrderComponent],
   imports: [
     CommonModule,
     OrderDepartmentStatsRoutingModule,

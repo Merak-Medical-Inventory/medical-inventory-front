@@ -3,7 +3,7 @@
     <app-alert></app-alert>
     <div class="row wrapper border-bottom white-bg page-heading">
       <div class="col-lg-10">
-        <h2>Estadísticas Pedidos por Departamento</h2>
+        <h2>Estadísticas Insumos Pedidos por Departamento</h2>
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
             <a href="">Home</a>
@@ -68,15 +68,15 @@
                   <div class="sk-spinner sk-spinner-rotating-plane"></div>
                 </div>
               </div>
-              <p *ngIf="isLoading === false && (!currentPageDepartment || currentPageDepartment.length == 0)"
+              <p *ngIf="isLoading === false && (!currentPageItem || currentPageItem.length == 0)"
                  style="margin-top: 2.5%">No hay datos disponibles.</p>
-              <div *ngIf="isLoading === false && currentPageDepartment && currentPageDepartment.length != 0" class="table-responsive">
+              <div *ngIf="isLoading === false && currentPageItem && currentPageItem.length != 0" class="table-responsive">
                 <div id="htmlData">
                   <ng-container *ngIf="checkOrder()">
-                    <h2>Unidades Médicas con Más Pedidos</h2>
+                    <h2>Insumos con Más Pedidos</h2>
                   </ng-container>
                   <ng-container *ngIf="!checkOrder()">
-                    <h2>Unidades Médicas con Menos Pedidos</h2>
+                    <h2>Insumos con Menos Pedidos</h2>
                   </ng-container>
                   <div class="align-items-end">
                     <label class="col-sm-12 col-form-label">
@@ -87,21 +87,21 @@
                     <thead>
                     <tr>
                       <th>Nombre</th>
-                      <th>Descripción</th>
                       <th>Número de Pedidos</th>
+                      <th>Cantidad Solicitada</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let department of currentPageDepartment">
-                      <td>{{ department.name }}</td>
-                      <td>{{ department.description}}</td>
-                      <td>{{ department.orders }}</td>
+                    <tr *ngFor="let item of currentPageItem">
+                      <td>{{ item.name }}</td>
+                      <td>{{ item.orders}}</td>
+                      <td>{{ item.total }}</td>
                     </tr>
                     </tbody>
                   </table>
                 </div>
                 <div class="pagination float-right">
-                  <mat-paginator [pageSize]="1" [length]="paginatedDepartments.length" hidePageSize="true" showFirstLastButtons="true" (page)="onPageChanged($event)"></mat-paginator>
+                  <mat-paginator [pageSize]="1" [length]="paginatedItems.length" hidePageSize="true" showFirstLastButtons="true" (page)="onPageChanged($event)"></mat-paginator>
                 </div>
                 <div class="form-group row">
                   <div class="col-sm-11"></div>
