@@ -9,8 +9,8 @@ import {filterTable, paginateObject} from '../../../util';
 
 @Component({
   selector: 'app-general-device-list',
-  templateUrl: './general-Device-list.component.html',
-  styleUrls: ['./general-Device-list.component.css']
+  templateUrl: './general-device-list.component.html',
+  styleUrls: ['./general-device-list.component.css']
 })
 export class GeneralDeviceListComponent implements OnInit {
   generalDevices: GeneralDevice[] = [];

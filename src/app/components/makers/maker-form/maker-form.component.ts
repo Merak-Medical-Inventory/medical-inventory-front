@@ -8,8 +8,8 @@ import {AlertService} from '../../../services/alert/alert.service';
 
 @Component({
   selector: 'app-maker-form',
-  templateUrl: './Maker-form.component.html',
-  styleUrls: ['./Maker-form.component.css']
+  templateUrl: './maker-form.component.html',
+  styleUrls: ['./maker-form.component.css']
 })
 export class MakerFormComponent implements OnInit {
   makerForm = new FormGroup({
