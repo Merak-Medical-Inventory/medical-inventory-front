@@ -18,8 +18,6 @@ import {StockCriticUnitComponent} from '../stock-critic-unit/stock-critic-unit.c
 import {Options} from 'select2';
 import {Select2OptionData} from 'ng-select2';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {Department} from '../../../entities/department';
-import {DepartmentService} from '../../../services/department/department.service';
 
 @Component({
   selector: 'app-inventory-info',

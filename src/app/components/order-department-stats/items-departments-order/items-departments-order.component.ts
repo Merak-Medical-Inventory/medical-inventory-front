@@ -13,6 +13,8 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import {ChartType} from 'chart.js';
 import {Label} from 'ng2-charts';
+import {User} from '../../../entities/user';
+import {roles} from '../../../constants/rolConstants';
 
 @Component({
   selector: 'app-items-departments-order',
@@ -37,6 +39,7 @@ export class ItemsDepartmentsOrderComponent implements OnInit {
   orderOptions: Options;
   orders: Select2OptionData[] = [];
   asc: any;
+  user: User;
   barChartOptions = {
     responsive: true,
     scales: {
@@ -58,6 +61,7 @@ export class ItemsDepartmentsOrderComponent implements OnInit {
   constructor(private service: StatsService, private router: Router, private alertService: AlertService) { }
 
   ngOnInit() {
+    this.user = JSON.parse(localStorage.getItem('User') );
     this.orderOptions = {
       width: '100%',
       placeholder: {id: '', text: 'Seleccione el Orden de Búsqueda...'}
@@ -80,15 +84,31 @@ export class ItemsDepartmentsOrderComponent implements OnInit {
   getData() {
     let body;
     if (this.f.startDate.value && this.f.endDate.value) {
-      body = {
-        order: this.asc,
-        startDate: this.f.startDate.value,
-        endDate: this.f.endDate.value
-      };
+      if (this.user.rol.name === roles.admin || this.user.rol.name === roles.superUser) {
+        body = {
+          order: this.asc,
+          startDate: this.f.startDate.value,
+          endDate: this.f.endDate.value
+        };
+      } else {
+        body = {
+          order: this.asc,
+          startDate: this.f.startDate.value,
+          endDate: this.f.endDate.value,
+          department: this.user.department.id
+        };
+      }
     } else {
-      body = {
-        order: this.asc
-      };
+      if (this.user.rol.name === roles.admin || this.user.rol.name === roles.superUser) {
+        body = {
+          order: this.asc
+        };
+      } else {
+        body = {
+          order: this.asc,
+          department: this.user.department.id
+        };
+      }
     }
     console.log(body);
     this.service.getItemsDepartmentsOrder(body)
