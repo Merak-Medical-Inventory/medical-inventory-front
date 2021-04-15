@@ -105,7 +105,7 @@ const routes: Routes = [
   {
     path: 'orderDepartmentStats',
     loadChildren: './components/order-department-stats/order-department-stats.module#OrderDepartmentStatsModule',
-    canActivate: [AdminAuthGuard]
+    canActivate: [UnauthorizedGuard]
   }
 
 ];

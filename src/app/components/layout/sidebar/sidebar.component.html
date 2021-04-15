@@ -145,7 +145,19 @@
           <ul class="nav nav-second-level mm-collapse">
             <li><a [routerLink]="'/orderDepartmentStats'">Estadística de los Pedidos de las Unidades Médicas</a></li>
           </ul>
+          <ul class="nav nav-second-level mm-collapse">
+            <li><a [routerLink]="'/orderDepartmentStats/items'">Estadística de los Insumos de los Pedidos de las Unidades Médicas</a></li>
+          </ul>
         </li>
+        <li [ngClass]="{'mm-active border-left-green':ariaExpanded.statsDepartment}"
+            (click)="changeAriaExpanded('statsDepartment')"
+            *ngIf="rol.name === roles.medico || rol.name === roles.enfermero ">
+          <a aria-expanded="ariaExpanded.statsDepartment"><i class="fa fa-th-large"></i> <span
+            class="nav-label">Estadísticas</span> <span
+            class="fa arrow"></span></a>
+          <ul class="nav nav-second-level mm-collapse">
+            <li><a [routerLink]="'/orderDepartmentStats/items'">Estadística de los Pedidos</a></li>
+          </ul>
       </ul>
     </div>
   </nav>
