@@ -21,4 +21,8 @@ export class StatsService {
   getItemsDepartmentsOrder(body: PostDepartmentOrderStats) {
     return this.http.post(`${environment.inventoryServiceUrl}orderDepartment/itemStats`, body, {observe: 'response'});
   }
+
+  getItemsOrder(body: PostDepartmentOrderStats) {
+    return this.http.post(`${environment.inventoryServiceUrl}order/stats`, body, {observe: 'response'});
+  }
 }
