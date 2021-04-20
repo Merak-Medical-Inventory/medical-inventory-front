@@ -1,0 +1,71 @@
+<app-sidebar>
+  <ng-container class="body">
+    <app-alert></app-alert>
+    <div class="row wrapper border-bottom white-bg page-heading">
+      <div class="col-lg-10">
+        <h2>Transaciones</h2>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="">Home</a>
+          </li>
+          <li class="breadcrumb-item active">
+            <strong><a href=""> Transacciones </a></strong>
+          </li>
+        </ol>
+      </div>
+      <div class="col-lg-2">
+      </div>
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="ibox ">
+            <div class="ibox-content">
+              <div class="row border-bottom">
+                <div class="align-items-end col-sm-4">
+                  <label class="col-sm-12 col-form-label">
+                    <input class="form-control" type ="search" placeholder="Búsqueda..." [(ngModel)]="search" (input)="searchTyped()">
+                  </label>
+                </div>
+              </div>
+              <div *ngIf="isLoading === true" class=" row align-items-center">
+                <div class="spiner-example">
+                  <div class="sk-spinner sk-spinner-rotating-plane"></div>
+                </div>
+              </div>
+              <p *ngIf="isLoading === false && (!currentPageTransaction || currentPageTransaction.length == 0)"
+                 style="margin-top: 2.5%">No hay datos disponibles.</p>
+              <div *ngIf="isLoading === false && currentPageTransaction && currentPageTransaction.length != 0" class="table-responsive">
+                <table class="table table-striped">
+                  <thead>
+                  <tr>
+                    <th>Fecha</th>
+                    <th>Cantidad</th>
+                    <th>Usuario</th>
+                    <th>Inventario de Salida</th>
+                    <th>Inventario de Entrada</th>
+                    <th>Insumo</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let transaction of currentPageTransaction">
+                    <td>{{ transaction.date }}</td>
+                    <td>{{ transaction.amount }}</td>
+                    <td>{{ transaction.sender }}</td>
+                    <td>{{ transaction.inventory1 }}</td>
+                    <td>{{ transaction.inventory2 }}</td>
+                    <td>{{ transaction.item }}</td>
+                  </tr>
+                  </tbody>
+                </table>
+                <div class="pagination float-right">
+                  <mat-paginator [pageSize]="1" [length]="paginatedTransactions.length" hidePageSize="true" showFirstLastButtons="true" (page)="onPageChanged($event)"></mat-paginator>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</app-sidebar>

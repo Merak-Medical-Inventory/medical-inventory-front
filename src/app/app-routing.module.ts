@@ -5,7 +5,6 @@ import {SessionGuard} from './guards/session/session.guard';
 import {SuperuserAuthGuard} from './guards/superuserAuth/superuser-auth.guard';
 import {AdminAuthGuard} from './guards/adminAuth/admin-auth.guard';
 import {MedicalAuthGuard} from './guards/medicalAuth/medical-auth.guard';
-import {OrderStatsModule} from './components/order-stats/order-stats.module';
 
 const routes: Routes = [
   {
@@ -112,6 +111,11 @@ const routes: Routes = [
     path: 'orderStats',
     loadChildren: './components/order-stats/order-stats.module#OrderStatsModule',
     canActivate: [AdminAuthGuard]
+  },
+  {
+    path: 'transactions',
+    loadChildren: './components/transactions/transactions.module#TransactionsModule',
+    canActivate: [UnauthorizedGuard]
   }
 
 ];

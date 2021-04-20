@@ -26,6 +26,9 @@
           <ul class="nav nav-second-level mm-collapse">
             <li><a [routerLink]="'/inventory'">Estado del Inventario</a></li>
           </ul>
+          <ul class="nav nav-second-level mm-collapse">
+            <li><a [routerLink]="'/transactions'">Transacciones</a></li>
+          </ul>
         </li>
         <li [ngClass]="{'mm-active border-left-green':ariaExpanded.users}"
             (click)="changeAriaExpanded('users')"
