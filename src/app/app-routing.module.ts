@@ -5,6 +5,7 @@ import {SessionGuard} from './guards/session/session.guard';
 import {SuperuserAuthGuard} from './guards/superuserAuth/superuser-auth.guard';
 import {AdminAuthGuard} from './guards/adminAuth/admin-auth.guard';
 import {MedicalAuthGuard} from './guards/medicalAuth/medical-auth.guard';
+import {DevicesTransactionsModule} from './components/devices-transactions/devices-transactions.module';
 
 const routes: Routes = [
   {
@@ -116,6 +117,10 @@ const routes: Routes = [
     path: 'transactions',
     loadChildren: './components/transactions/transactions.module#TransactionsModule',
     canActivate: [UnauthorizedGuard]
+  },
+  {
+    path: 'deviceTransactions',
+    loadChildren: './components/devices-transactions/devices-transactions.module#DevicesTransactionsModule'
   }
 
 ];
