@@ -13,7 +13,7 @@ export class DeviceTransactionService {
     return this.http.get(`${environment.deviceServiceUrl}transaction`, {observe: 'response'});
   }
 
-  getTransactionById(id: number) {
-    return this.http.get(`${environment.deviceServiceUrl}transaction/${id}`, {observe: 'response'});
+  getInventoryTransactions(id: number) {
+    return this.http.get(`${environment.deviceServiceUrl}transaction/inventory/${id}`, {observe: 'response'});
   }
 }

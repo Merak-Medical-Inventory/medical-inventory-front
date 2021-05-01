@@ -61,8 +61,8 @@ export class DevicesTransactionListComponent implements OnInit {
               blockchainTx: deviceTransaction.blockchainTx,
               date: deviceTransaction.date,
               bcTransactionId: deviceTransaction.bcTransactionId,
-              inventory1: deviceTransaction.inventory1.name,
-              inventory2: deviceTransaction.inventory2.name,
+              inventory1: deviceTransaction.inventory1 ? deviceTransaction.inventory1.name : 'Exterior',
+              inventory2: deviceTransaction.inventory2 ? deviceTransaction.inventory2.name : 'Exterior',
               device: deviceTransaction.device.generalDevice.name + ' ' + deviceTransaction.device.serial_code
             };
             return element;
@@ -75,6 +75,36 @@ export class DevicesTransactionListComponent implements OnInit {
           console.log(error.error);
           this.alertService.error('Error al Obtener las Transacciones', false);
         });
+    } else {
+      this.service.getInventoryTransactions(user.department.inventory[0].id).subscribe(response => {
+        this.deviceTransactions = response.body['data'];
+        console.log(this.deviceTransactions);
+        this.deviceTransactions = this.deviceTransactions.map(value => {
+          const date = new Date(value.date);
+          // @ts-ignore
+          value.date = `${date.getDate()} de ${this.months[date.getMonth()]} de ${date.getFullYear()}`;
+          return value;
+        });
+        this.deviceTransactionsTable = this.deviceTransactions.map(deviceTransaction => {
+          const element: DeviceTransactionTable = {
+            id: deviceTransaction.id,
+            blockchainTx: deviceTransaction.blockchainTx,
+            date: deviceTransaction.date,
+            bcTransactionId: deviceTransaction.bcTransactionId,
+            inventory1: deviceTransaction.inventory1 ? deviceTransaction.inventory1.name : 'Exterior',
+            inventory2: deviceTransaction.inventory2 ? deviceTransaction.inventory2.name : 'Exterior',
+            device: deviceTransaction.device.generalDevice.name + ' ' + deviceTransaction.device.serial_code
+          };
+          return element;
+        });
+        this.paginatedDeviceTransactions = paginateObject<DeviceTransactionTable>(this.deviceTransactionsTable, this.pageSize);
+        this.currentPageDeviceTransaction = this.paginatedDeviceTransactions[0];
+        this.isLoading = false;
+      }, error => {
+        this.isLoading = false;
+        console.log(error.error);
+        this.alertService.error('Error al Obtener las Transacciones', false);
+      });
     }
   }
 

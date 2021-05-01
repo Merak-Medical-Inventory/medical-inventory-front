@@ -13,7 +13,7 @@ export class TransactionService {
     return this.http.get(`${environment.inventoryServiceUrl}transaction`, {observe: 'response'});
   }
 
-  getTransactionById(id: number) {
-    return this.http.get(`${environment.inventoryServiceUrl}transaction/${id}`, {observe: 'response'});
+  getInventoryTransactions(id: number) {
+    return this.http.get(`${environment.inventoryServiceUrl}transaction/inventory/${id}`, {observe: 'response'});
   }
 }

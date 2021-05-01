@@ -9,6 +9,7 @@ import {TransactionService} from '../../../services/transaction/transaction.serv
 import {Rol} from '../../../entities/rol';
 import {User} from '../../../entities/user';
 import {roles} from '../../../constants/rolConstants';
+import {mainInventory} from '../../../constants/inventoryConstans';
 
 @Component({
   selector: 'app-transaction-list',
@@ -44,7 +45,7 @@ export class TransactionListComponent implements OnInit {
   ngOnInit() {
     const user: User = JSON.parse(localStorage.getItem('User') );
     this.rol = user.rol;
-    if (this.rol.name === roles.admin || this.rol.name === roles.superUser) {
+    if (this.rol.name === roles.superUser) {
       this.service.getTransactions()
         .subscribe(response => {
           this.transactions = response.body['data'];
@@ -62,9 +63,9 @@ export class TransactionListComponent implements OnInit {
               date: transaction.date,
               bcTransactionId: transaction.bcTransactionId,
               amount: transaction.amount,
-              sender: transaction.sender.name + ' ' + transaction.sender.last_name,
-              inventory1: transaction.inventory1.name,
-              inventory2: transaction.inventory2.name,
+              sender: transaction.sender ? transaction.sender.name + ' ' + transaction.sender.last_name : '',
+              inventory1: transaction.inventory1 ? transaction.inventory1.name : 'Exterior',
+              inventory2: transaction.inventory2 ? transaction.inventory2.name : 'Exterior',
               item: transaction.item.generalItem.name + ' ' +  transaction.item.brand.name + ' ' + transaction.item.presentation.quantity +
                 ' ' + transaction.item.presentation.name + ' ' + transaction.item.presentation.measure_value + ' ' +
                 transaction.item.presentation.measure
@@ -79,8 +80,9 @@ export class TransactionListComponent implements OnInit {
           console.log(error.error);
           this.alertService.error('Error al Obtener las Transacciones', false);
         });
-    }/* else {
-      this.service.getTransactionsInventory(user.department.inventory[0].id).subscribe(response => {
+    } else {
+      const inventoryId = this.rol.name === roles.admin ? mainInventory.id : user.department.inventory[0].id;
+      this.service.getInventoryTransactions(inventoryId).subscribe(response => {
         this.transactions = response.body['data'];
         console.log(this.transactions);
         this.transactions = this.transactions.map(value => {
@@ -96,9 +98,9 @@ export class TransactionListComponent implements OnInit {
             date: transaction.date,
             bcTransactionId: transaction.bcTransactionId,
             amount: transaction.amount,
-            sender: transaction.sender.name + ' ' + transaction.sender.last_name,
-            inventory1: transaction.inventory1.name,
-            inventory2: transaction.inventory2.name,
+            sender: transaction.sender ? transaction.sender.name + ' ' + transaction.sender.last_name : '',
+            inventory1: transaction.inventory1 ? transaction.inventory1.name : 'Exterior',
+            inventory2: transaction.inventory2 ? transaction.inventory2.name : 'Exterior',
             item: transaction.item.generalItem.name + ' ' +  transaction.item.brand.name + ' ' + transaction.item.presentation.quantity +
               ' ' + transaction.item.presentation.name + ' ' + transaction.item.presentation.measure_value + ' ' +
               transaction.item.presentation.measure
@@ -113,7 +115,7 @@ export class TransactionListComponent implements OnInit {
         console.log(error.error);
         this.alertService.error('Error al Obtener las Transacciones', false);
       });
-    }*/
+    }
   }
 
   checkRole() {
