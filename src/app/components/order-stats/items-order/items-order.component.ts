@@ -16,6 +16,7 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import {CategoryService} from '../../../services/category/category.service';
 import {Category} from '../../../entities/category';
+import {ExcelService} from '../../../services/excel/excel.service';
 
 @Component({
   selector: 'app-items-order',
@@ -64,7 +65,7 @@ export class ItemsOrderComponent implements OnInit {
   doughnutChartData: { data: number[]; label: string; }[];
 
   constructor(private service: StatsService, private router: Router, private alertService: AlertService,
-              private categoryService: CategoryService) { }
+              private categoryService: CategoryService, private excelService: ExcelService) { }
 
   ngOnInit() {
     this.user = JSON.parse(localStorage.getItem('User') );
@@ -279,6 +280,21 @@ export class ItemsOrderComponent implements OnInit {
       this.isLoading = false;
     } else {
       this.alertService.error('No es Posible Exportar PDF sin Registros', false);
+    }
+  }
+
+  exportExcel() {
+    if (this.itemsTable && this.itemsTable.length !== 0) {
+      this.isLoading = true;
+      try {
+        this.excelService.exportAsExcelFile(this.itemsTable, 'Pedidos_Insumos');
+        this.isLoading = false;
+      } catch (e) {
+        this.alertService.error('No se Pudo Exportar el Excel', false);
+        this.isLoading = false;
+      }
+    } else {
+      this.alertService.error('No es Posible Exportar Excel sin Registros', false);
     }
   }
 

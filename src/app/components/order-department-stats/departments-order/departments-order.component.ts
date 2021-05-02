@@ -13,6 +13,7 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import {ChartType} from 'chart.js';
 import {Label} from 'ng2-charts';
+import {ExcelService} from '../../../services/excel/excel.service';
 
 @Component({
   selector: 'app-departments-order',
@@ -54,7 +55,8 @@ export class DepartmentsOrderComponent implements OnInit {
   doughnutChartType: ChartType = 'doughnut';
   doughnutChartData: { data: number[]; label: string; }[];
 
-  constructor(private service: StatsService, private router: Router, private alertService: AlertService) { }
+  constructor(private service: StatsService, private router: Router, private alertService: AlertService,
+              private excelService: ExcelService) { }
 
   ngOnInit() {
     this.orderOptions = {
@@ -118,7 +120,7 @@ export class DepartmentsOrderComponent implements OnInit {
     this.departmentsTable.forEach((department, i) => {
       dataChart.push(department.orders);
       this.barChartLabels.push(department.name);
-      this.doughnutChartLabels.push(department.name)
+      this.doughnutChartLabels.push(department.name);
       if (i === 4) {
         return false;
       }
@@ -205,6 +207,22 @@ export class DepartmentsOrderComponent implements OnInit {
       this.isLoading = false;
     } else {
       this.alertService.error('No es Posible Exportar PDF sin Registros', false);
+    }
+  }
+
+  exportExcel() {
+    if (this.departmentsTable && this.departmentsTable.length !== 0) {
+      this.isLoading = true;
+      const headers = ['Departamento', 'Descripción', 'Número de Pedidos'];
+      try {
+        this.excelService.exportAsExcelFile(this.departmentsTable, 'Pedidos_Departamentos');
+        this.isLoading = false;
+      } catch (e) {
+        this.alertService.error('No se Pudo Exportar el Excel', false);
+        this.isLoading = false;
+      }
+    } else {
+      this.alertService.error('No es Posible Exportar Excel sin Registros', false);
     }
   }
 

@@ -13,6 +13,7 @@ import html2canvas from 'html2canvas';
 import {Options} from 'select2';
 import {Select2OptionData} from 'ng-select2';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {ExcelService} from '../../services/excel/excel.service';
 
 @Component({
   selector: 'app-age-devices',
@@ -48,7 +49,8 @@ export class AgeDevicesComponent implements OnInit {
   orders: Select2OptionData[] = [];
   asc: boolean;
 
-  constructor(private service: StatsService, private router: Router, private alertService: AlertService) { }
+  constructor(private service: StatsService, private router: Router, private alertService: AlertService,
+              private excelService: ExcelService) { }
 
   ngOnInit() {
     this.orderOptions = {
@@ -163,6 +165,20 @@ export class AgeDevicesComponent implements OnInit {
     }
   }
 
+  exportExcel() {
+    if (this.devicesTable && this.devicesTable.length !== 0) {
+      this.isLoading = true;
+      try {
+        this.excelService.exportAsExcelFile(this.devicesTable, 'EquiposMedicos_Edad');
+        this.isLoading = false;
+      } catch (e) {
+        this.alertService.error('No se Pudo Exportar el Excel', false);
+        this.isLoading = false;
+      }
+    } else {
+      this.alertService.error('No es Posible Exportar Excel sin Registros', false);
+    }
+  }
 
 
 }
