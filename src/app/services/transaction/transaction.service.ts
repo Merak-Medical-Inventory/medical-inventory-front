@@ -16,4 +16,8 @@ export class TransactionService {
   getInventoryTransactions(id: number) {
     return this.http.get(`${environment.inventoryServiceUrl}transaction/inventory/${id}`, {observe: 'response'});
   }
+
+  getBlockchainTransaction(id: string) {
+    return this.http.get(`${environment.inventoryServiceUrl}transaction/${id}`, {observe: 'response'});
+  }
 }

@@ -6,10 +6,11 @@ import { TransactionListComponent } from './transaction-list/transaction-list.co
 import {LayoutModule} from '../layout/layout.module';
 import {PaginatorModule} from 'primeng/paginator';
 import {MatPaginatorModule} from '@angular/material';
+import { TransactionBlockchainComponent } from './transaction-blockchain/transaction-blockchain.component';
 
 
 @NgModule({
-  declarations: [TransactionListComponent],
+  declarations: [TransactionListComponent, TransactionBlockchainComponent],
   imports: [
     CommonModule,
     TransactionsRoutingModule,

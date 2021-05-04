@@ -10,6 +10,10 @@ import {Rol} from '../../../entities/rol';
 import {User} from '../../../entities/user';
 import {roles} from '../../../constants/rolConstants';
 import {mainInventory} from '../../../constants/inventoryConstans';
+import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import {ItemListComponent} from '../../items/item-list/item-list.component';
+import {TransactionBlockchainComponent} from '../transaction-blockchain/transaction-blockchain.component';
+import {OrderService} from '../../../services/order/order.service';
 
 @Component({
   selector: 'app-transaction-list',
@@ -40,7 +44,8 @@ export class TransactionListComponent implements OnInit {
   };
   rol: Rol;
 
-  constructor(private service: TransactionService, private router: Router, private alertService: AlertService) { }
+  constructor(private service: TransactionService, private router: Router, private alertService: AlertService,
+              private modalService: NgbModal) { }
 
   ngOnInit() {
     const user: User = JSON.parse(localStorage.getItem('User') );
@@ -123,6 +128,12 @@ export class TransactionListComponent implements OnInit {
       return true;
     }
     return false;
+  }
+
+  showBlockchain(transactionTable: TransactionTable) {
+    const modalRef: NgbModalRef = this.modalService.open(TransactionBlockchainComponent, { centered: true } );
+    modalRef.componentInstance.transactionTable = transactionTable;
+    modalRef.componentInstance.isClient = true;
   }
 
   reloadCurrentRoute() {

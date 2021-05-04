@@ -16,4 +16,8 @@ export class DeviceTransactionService {
   getInventoryTransactions(id: number) {
     return this.http.get(`${environment.deviceServiceUrl}transaction/inventory/${id}`, {observe: 'response'});
   }
+
+  getBlockchainDeviceTransaction(id: string) {
+    return this.http.get(`${environment.deviceServiceUrl}transaction/${id}`, {observe: 'response'});
+  }
 }
