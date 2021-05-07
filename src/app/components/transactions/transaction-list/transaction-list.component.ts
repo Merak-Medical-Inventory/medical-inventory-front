@@ -11,9 +11,7 @@ import {User} from '../../../entities/user';
 import {roles} from '../../../constants/rolConstants';
 import {mainInventory} from '../../../constants/inventoryConstans';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
-import {ItemListComponent} from '../../items/item-list/item-list.component';
 import {TransactionBlockchainComponent} from '../transaction-blockchain/transaction-blockchain.component';
-import {OrderService} from '../../../services/order/order.service';
 
 @Component({
   selector: 'app-transaction-list',

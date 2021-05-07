@@ -1,0 +1,58 @@
+<ng-container class="body">
+  <div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="ibox ">
+          <div class="ibox-content">
+            <div class="row border-bottom">
+              <div class="align-items-end col-sm-4">
+              </div>
+            </div>
+            <div *ngIf="isLoading === true" class=" row align-items-center">
+              <div class="spiner-example">
+                <div class="sk-spinner sk-spinner-rotating-plane"></div>
+              </div>
+            </div>
+            <p *ngIf="isLoading === false && (!transactionTable || !transaction)"
+               style="margin-top: 2.5%">No hay datos disponibles.</p>
+            <div *ngIf="isLoading === false && transactionTable && transaction" class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                <tr>
+                  <th>Fuente</th>
+                  <th>Fecha</th>
+                  <th>Cantidad</th>
+                  <th>Usuario</th>
+                  <th>Inventario de Salida</th>
+                  <th>Inventario de Entrada</th>
+                  <th>Insumo</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td>Base de Datos</td>
+                  <td>{{ transactionTable.date }}</td>
+                  <td>{{ transactionTable.amount }}</td>
+                  <td>{{ transactionTable.sender }}</td>
+                  <td>{{ transactionTable.inventory1 }}</td>
+                  <td>{{ transactionTable.inventory2 }}</td>
+                  <td>{{ transactionTable.item }}</td>
+                </tr>
+                <tr>
+                  <td>Blockchain</td>
+                  <td>{{ transactionBcTable.date}}</td>
+                  <td>{{ transactionBcTable.amount }}</td>
+                  <td>{{ transactionBcTable.sender }}</td>
+                  <td>{{ transactionBcTable.inventory1 }}</td>
+                  <td>{{ transactionBcTable.inventory2 }}</td>
+                  <td>{{ transactionBcTable.item }}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

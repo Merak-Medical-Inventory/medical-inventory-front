@@ -7,6 +7,7 @@ import {LayoutModule} from '../layout/layout.module';
 import {PaginatorModule} from 'primeng/paginator';
 import {MatPaginatorModule} from '@angular/material';
 import { TransactionBlockchainComponent } from './transaction-blockchain/transaction-blockchain.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -16,7 +17,9 @@ import { TransactionBlockchainComponent } from './transaction-blockchain/transac
     TransactionsRoutingModule,
     LayoutModule,
     PaginatorModule,
-    MatPaginatorModule
-  ]
+    MatPaginatorModule,
+    NgbModule
+  ],
+  entryComponents : [TransactionBlockchainComponent]
 })
 export class TransactionsModule { }

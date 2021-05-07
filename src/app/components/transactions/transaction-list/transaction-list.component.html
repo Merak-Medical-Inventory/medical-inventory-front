@@ -55,6 +55,12 @@
                     <td>{{ transaction.inventory1 }}</td>
                     <td>{{ transaction.inventory2 }}</td>
                     <td>{{ transaction.item }}</td>
+                    <td>
+                      <button (click)="showBlockchain(transaction)"
+                              class="btn-white btn btn-xs">
+                        Blockchain
+                      </button>
+                    </td>
                   </tr>
                   </tbody>
                 </table>

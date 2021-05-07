@@ -9,6 +9,8 @@ import {DeviceTransactionService} from '../../../services/deviceTransaction/devi
 import {Rol} from '../../../entities/rol';
 import {User} from '../../../entities/user';
 import {roles} from '../../../constants/rolConstants';
+import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import {DeviceTransactionBlockchainComponent} from '../device-transaction-blockchain/device-transaction-blockchain.component';
 
 @Component({
   selector: 'app-devices-transaction-list',
@@ -39,7 +41,8 @@ export class DevicesTransactionListComponent implements OnInit {
   };
   rol: Rol;
 
-  constructor(private service: DeviceTransactionService, private router: Router, private alertService: AlertService) { }
+  constructor(private service: DeviceTransactionService, private router: Router, private alertService: AlertService,
+              private modalService: NgbModal) { }
 
   ngOnInit() {
     const user: User = JSON.parse(localStorage.getItem('User') );
@@ -60,6 +63,7 @@ export class DevicesTransactionListComponent implements OnInit {
               id: deviceTransaction.id,
               blockchainTx: deviceTransaction.blockchainTx,
               date: deviceTransaction.date,
+              sender: deviceTransaction.sender ? deviceTransaction.sender.name + ' ' + deviceTransaction.sender.last_name : ' ',
               bcTransactionId: deviceTransaction.bcTransactionId,
               inventory1: deviceTransaction.inventory1 ? deviceTransaction.inventory1.name : 'Exterior',
               inventory2: deviceTransaction.inventory2 ? deviceTransaction.inventory2.name : 'Exterior',
@@ -90,6 +94,7 @@ export class DevicesTransactionListComponent implements OnInit {
             id: deviceTransaction.id,
             blockchainTx: deviceTransaction.blockchainTx,
             date: deviceTransaction.date,
+            sender: deviceTransaction.sender ? deviceTransaction.sender.name + ' ' + deviceTransaction.sender.last_name : ' ',
             bcTransactionId: deviceTransaction.bcTransactionId,
             inventory1: deviceTransaction.inventory1 ? deviceTransaction.inventory1.name : 'Exterior',
             inventory2: deviceTransaction.inventory2 ? deviceTransaction.inventory2.name : 'Exterior',
@@ -113,6 +118,12 @@ export class DevicesTransactionListComponent implements OnInit {
       return true;
     }
     return false;
+  }
+
+  showBlockchain(deviceTransactionTable: DeviceTransactionTable) {
+    const modalRef: NgbModalRef = this.modalService.open(DeviceTransactionBlockchainComponent, { centered: true } );
+    modalRef.componentInstance.deviceTransactionTable = deviceTransactionTable;
+    modalRef.componentInstance.isClient = true;
   }
 
   reloadCurrentRoute() {

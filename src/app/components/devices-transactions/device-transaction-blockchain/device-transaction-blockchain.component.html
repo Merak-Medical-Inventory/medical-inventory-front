@@ -1,0 +1,55 @@
+<ng-container class="body">
+  <div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="ibox ">
+          <div class="ibox-content">
+            <div class="row border-bottom">
+              <div class="align-items-end col-sm-4">
+              </div>
+            </div>
+            <div *ngIf="isLoading === true" class=" row align-items-center">
+              <div class="spiner-example">
+                <div class="sk-spinner sk-spinner-rotating-plane"></div>
+              </div>
+            </div>
+            <p *ngIf="isLoading === false && (!deviceTransactionTable || !deviceTransaction)"
+               style="margin-top: 2.5%">No hay datos disponibles.</p>
+            <div *ngIf="isLoading === false && deviceTransactionTable && deviceTransaction" class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                <tr>
+                  <th>Fuente</th>
+                  <th>Fecha</th>
+                  <th>Usuario</th>
+                  <th>Inventario de Salida</th>
+                  <th>Inventario de Entrada</th>
+                  <th>Equipo Médico</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td>Base de Datos</td>
+                  <td>{{ deviceTransactionTable.date }}</td>
+                  <td>{{ deviceTransactionTable.sender }}</td>
+                  <td>{{ deviceTransactionTable.inventory1 }}</td>
+                  <td>{{ deviceTransactionTable.inventory2 }}</td>
+                  <td>{{ deviceTransactionTable.device }}</td>
+                </tr>
+                <tr>
+                  <td>Blockchain</td>
+                  <td>{{ deviceTransactionBcTable.date}}</td>
+                  <td>{{ deviceTransactionBcTable.sender }}</td>
+                  <td>{{ deviceTransactionBcTable.inventory1 }}</td>
+                  <td>{{ deviceTransactionBcTable.inventory2 }}</td>
+                  <td>{{ deviceTransactionBcTable.device }}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

@@ -17,6 +17,7 @@ export interface DeviceTransactionTable {
   id: number;
   blockchainTx: string;
   date: Date;
+  sender: string;
   bcTransactionId: string;
   inventory1: string;
   inventory2: string;

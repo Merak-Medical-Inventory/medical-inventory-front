@@ -40,6 +40,7 @@
                   <thead>
                   <tr>
                     <th>Fecha</th>
+                    <th>Usuario</th>
                     <th>Inventario de Salida</th>
                     <th>Inventario de Entrada</th>
                     <th>Equipo Médico</th>
@@ -48,9 +49,16 @@
                   <tbody>
                   <tr *ngFor="let transaction of currentPageDeviceTransaction">
                     <td>{{ transaction.date }}</td>
+                    <td>{{ transaction.sender }}</td>
                     <td>{{ transaction.inventory1 }}</td>
                     <td>{{ transaction.inventory2 }}</td>
                     <td>{{ transaction.device }}</td>
+                    <td>
+                      <button (click)="showBlockchain(transaction)"
+                              class="btn-white btn btn-xs">
+                        Blockchain
+                      </button>
+                    </td>
                   </tr>
                   </tbody>
                 </table>

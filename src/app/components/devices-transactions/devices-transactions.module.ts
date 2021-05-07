@@ -7,6 +7,7 @@ import {LayoutModule} from '../layout/layout.module';
 import {PaginatorModule} from 'primeng/paginator';
 import {MatPaginatorModule} from '@angular/material';
 import { DeviceTransactionBlockchainComponent } from './device-transaction-blockchain/device-transaction-blockchain.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -16,7 +17,9 @@ import { DeviceTransactionBlockchainComponent } from './device-transaction-block
     DevicesTransactionsRoutingModule,
     LayoutModule,
     PaginatorModule,
-    MatPaginatorModule
-  ]
+    MatPaginatorModule,
+    NgbModule
+  ],
+  entryComponents : [DeviceTransactionBlockchainComponent]
 })
 export class DevicesTransactionsModule { }
