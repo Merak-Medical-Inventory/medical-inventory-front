@@ -103,7 +103,7 @@ export class OrderDepartmentListComponent implements OnInit {
     this.currentPageOrder = this.paginatedOrder[0];
   }
   showItems(orderItems: OrderToItem[]) {
-    const modalRef: NgbModalRef = this.modalService.open(ItemListComponent, { centered: true } );
+    const modalRef: NgbModalRef = this.modalService.open(ItemListComponent, { centered: true,size: 'xl' } );
     modalRef.componentInstance.orderItems = orderItems;
     modalRef.componentInstance.isClient = true;
   }

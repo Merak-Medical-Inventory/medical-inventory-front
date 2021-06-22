@@ -14,24 +14,39 @@ export class TransactionBlockchainComponent implements OnInit {
   transactionBcTable: any;
   search = '';
   isLoading = true;
+  months = {
+    0: 'Enero',
+    1: 'Febrero',
+    2: 'Marzo',
+    3: 'Abril',
+    4: 'Mayo',
+    5: 'Junio',
+    6: 'Julio',
+    7: 'Agosto',
+    8: 'Septiembre',
+    9: 'Octubre',
+    10: 'Noviembre',
+    11: 'Diciembre',
+  };
 
   constructor(private service: TransactionService, private alertService: AlertService) { }
 
   ngOnInit() {
     this.service.getBlockchainTransaction(this.transactionTable.bcTransactionId)
       .subscribe(response => {
-        console.log(response);
         this.transaction = response.body['data'];
-        console.log(this.transaction);
+        const date = new Date(this.transaction.date);
+          // @ts-ignore
         this.transactionBcTable = {
-          date: this.transaction.date,
+          date: `${date.getDate()} de ${this.months[date.getMonth()]} de ${date.getFullYear()}`,
           amount: this.transaction.amount,
           sender: this.transaction.sender ? this.transaction.sender.name + ' ' + this.transaction.sender.last_name : '',
           inventory1: this.transaction.inventory1 ? this.transaction.inventory1.name : 'Exterior',
           inventory2: this.transaction.inventory2 ? this.transaction.inventory2.name : 'Exterior',
           item: this.transaction.item.generalItem.name + ' ' +  this.transaction.item.brand.name + ' ' +
             this.transaction.item.presentation.quantity + ' ' + this.transaction.item.presentation.name + ' '
-            + this.transaction.item.presentation.measure_value + ' ' + this.transaction.item.presentation.measure
+            + this.transaction.item.presentation.measure_value + ' ' + this.transaction.item.presentation.measure,
+          blockchainTx : this.transactionTable.blockchainTx
         };
         console.log(this.transactionBcTable);
         this.isLoading = false;

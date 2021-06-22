@@ -129,7 +129,7 @@ export class TransactionListComponent implements OnInit {
   }
 
   showBlockchain(transactionTable: TransactionTable) {
-    const modalRef: NgbModalRef = this.modalService.open(TransactionBlockchainComponent, { centered: true } );
+    const modalRef: NgbModalRef = this.modalService.open(TransactionBlockchainComponent, { centered: true,size : 'xl' } );
     modalRef.componentInstance.transactionTable = transactionTable;
     modalRef.componentInstance.isClient = true;
   }

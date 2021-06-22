@@ -103,7 +103,7 @@ export class OrderDepartmentAdminListComponent implements OnInit {
   }
   showItems(orderItems: OrderToItem[]) {
     console.log(orderItems);
-    const modalRef: NgbModalRef = this.modalService.open(ItemListComponent, { centered: true } );
+    const modalRef: NgbModalRef = this.modalService.open(ItemListComponent, { centered: true,size: 'xl' } );
     modalRef.componentInstance.orderItems = orderItems;
     modalRef.componentInstance.isClient = true;
   }

@@ -121,7 +121,7 @@ export class DevicesTransactionListComponent implements OnInit {
   }
 
   showBlockchain(deviceTransactionTable: DeviceTransactionTable) {
-    const modalRef: NgbModalRef = this.modalService.open(DeviceTransactionBlockchainComponent, { centered: true } );
+    const modalRef: NgbModalRef = this.modalService.open(DeviceTransactionBlockchainComponent, { centered: true,size:'xl' } );
     modalRef.componentInstance.deviceTransactionTable = deviceTransactionTable;
     modalRef.componentInstance.isClient = true;
   }

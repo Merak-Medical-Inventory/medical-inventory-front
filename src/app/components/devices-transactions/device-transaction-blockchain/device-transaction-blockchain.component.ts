@@ -14,6 +14,20 @@ export class DeviceTransactionBlockchainComponent implements OnInit {
   deviceTransactionBcTable: any;
   search = '';
   isLoading = true;
+  months = {
+    0: 'Enero',
+    1: 'Febrero',
+    2: 'Marzo',
+    3: 'Abril',
+    4: 'Mayo',
+    5: 'Junio',
+    6: 'Julio',
+    7: 'Agosto',
+    8: 'Septiembre',
+    9: 'Octubre',
+    10: 'Noviembre',
+    11: 'Diciembre',
+  };
 
   constructor(private service: DeviceTransactionService, private alertService: AlertService) { }
 
@@ -22,13 +36,14 @@ export class DeviceTransactionBlockchainComponent implements OnInit {
       .subscribe(response => {
         console.log(response);
         this.deviceTransaction = response.body['data'];
-        console.log(this.deviceTransaction);
+        const date = new Date(this.deviceTransaction.date);
         this.deviceTransactionBcTable = {
-          date: this.deviceTransaction.date,
+          date: `${date.getDate()} de ${this.months[date.getMonth()]} de ${date.getFullYear()}`,
           sender: this.deviceTransaction.sender ? this.deviceTransaction.sender.name + ' ' + this.deviceTransaction.sender.last_name : '',
           inventory1: this.deviceTransaction.inventory1 ? this.deviceTransaction.inventory1.name : 'Exterior',
           inventory2: this.deviceTransaction.inventory2 ? this.deviceTransaction.inventory2.name : 'Exterior',
-          device: this.deviceTransaction.device.generalDevice.name + ' ' + this.deviceTransaction.device.serial_code
+          device: this.deviceTransaction.device.generalDevice.name + ' ' + this.deviceTransaction.device.serial_code,
+          blockchainTx : this.deviceTransactionTable.blockchainTx
         };
         console.log(this.deviceTransactionBcTable);
         this.isLoading = false;
